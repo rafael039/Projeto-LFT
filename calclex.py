@@ -111,7 +111,7 @@ def t_ID(t):
     return t
 
 def t_IDENT(t):
-    r'[\n][ |\t]+'
+    r'[\n][ \t]+'
     spc = t.value.count(' ')
     tab = t.value.count('\t')
     identList.append((spc,tab))
