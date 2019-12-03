@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="835da700-cf81-4ff5-8d52-ab80f4387643" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/calclex.py" beforeDir="false" afterPath="$PROJECT_DIR$/calclex.py" afterDir="false" />
     </list>
@@ -96,7 +95,10 @@
       <workItem from="1574254986363" duration="6350000" />
       <workItem from="1574790480755" duration="15242000" />
       <workItem from="1574876718781" duration="1041000" />
-      <workItem from="1574887522564" duration="980000" />
+      <workItem from="1574887522564" duration="1579000" />
+      <workItem from="1574985553458" duration="281000" />
+      <workItem from="1574985938715" duration="620000" />
+      <workItem from="1575396974457" duration="8692000" />
     </task>
     <servers />
   </component>
@@ -117,6 +119,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CopiaCalcLex$calclex.coverage" NAME="calclex Coverage Results" MODIFIED="1574876811509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CopiaCalcLex$calclex.coverage" NAME="calclex Coverage Results" MODIFIED="1575406822280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

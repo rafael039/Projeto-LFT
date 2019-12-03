@@ -87,6 +87,20 @@ t_DOTDOT = r'\.\.'
 
 
 # A regular expression rule with some action code
+def t_IDENT(t):
+    r'\n[ \t]+'
+    spc = t.value.count(' ')
+    tab = t.value.count('\t')
+    tuplaident = (spc,tab)
+    if identList[-1] > tuplaident:
+        #desempilha ident
+        #retorna dedent
+        pass
+    elif identList[-1] < tuplaident:
+        identList.append((spc,tab)) #empilha ident
+        return t #retorna ident
+
+
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
@@ -110,37 +124,18 @@ def t_ID(t):
     t.type = palRESERVADA.get(t.value,'ID') # Check for reserved words
     return t
 
-def t_IDENT(t):
-    r'[\n][ \t]+'
-    spc = t.value.count(' ')
-    tab = t.value.count('\t')
-    identList.append((spc,tab))
-    return t
-
-
 # Build the lexer
 lexer = lex.lex()
 
 # Test it out
-data = '''
-     procedure soma is 
-     valor: integer
-     begin 
-        ((3 + 4) * 10) + (-20 * 2)  
-     end soma
-     
-    PROCEDURE REPETICAO IS
-    CONTADOR : INTEGER
-    BEGIN
-    
-    FOR CONTADOR IN 1 .. 10 LOOP
-    END LOOP
-    
-      END REPETICAO     
-    
-    
-     
-     '''
+data = '''procedure soma is 
+valor: integer
+begin
+    if valor == 5..10 loop
+    begin
+        ((3 + 4) * 10) + (-20 * 2)
+    end loop
+end soma'''
 
 # Give the lexer some input
 lexer.input(data)
