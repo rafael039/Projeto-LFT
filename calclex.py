@@ -70,9 +70,11 @@ tokens = [
     'ID'
 ]+list(palRESERVADA.values())
 
-''' tuple structure = (numSpaces,numTabs)'''
+'''
+This is a tuple list, which store code idents. 
+tuple structure = (numSpaces,numTabs)
+'''
 identList = []
-
 
 # Regular expression rules for simple tokens
 t_PLUS = r'\+'
@@ -85,8 +87,9 @@ t_STRING = r'"[^--]*"'
 t_COLON = r'\:'
 t_DOTDOT = r'\.\.'
 
-
 # A regular expression rule with some action code
+# A cada token, uma regra deve ser executada
+
 def t_IDENT(t):
     r'\n[ \t]+'
     if identList.__len__() == 0:
@@ -95,13 +98,19 @@ def t_IDENT(t):
     tab = t.value.count('\t')
     tuplaident = (spc,tab)
     if identList[-1] > tuplaident:
-        #desempilha ident
-        #retorna dedent
-        pass
+        identList.pop() #desempilha ident
+        print(identList)  # dedent final não tratado
+        t.type = 'DEDENT'
+        if tuplaident == identList[-1]:
+            return t #retorna dedent
+        else:
+            pass
+            #pode ser um dedent múltiplo
+            #ou um erro de identação
     elif identList[-1] < tuplaident:
         identList.append((spc,tab)) #empilha ident
-        return t #retorna ident
-
+        print(identList)
+        return t
 
 def t_NUMBER(t):
     r'\d+'
@@ -133,7 +142,7 @@ lexer = lex.lex()
 data = '''procedure soma is 
 valor: integer
 begin
-    if valor == 5..10 loop
+    if valor 5..10 loop
     begin
         ((3 + 4) * 10) + (-20 * 2)
     end loop
@@ -148,4 +157,3 @@ while True:
     if not tok:
         break # No more input
     print(tok)
-
