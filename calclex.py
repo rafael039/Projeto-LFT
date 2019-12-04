@@ -6,7 +6,7 @@
 
 # ------------------------------------------------------------
 # calclex.py
- #
+#
 #tokenizer for a simple expression evaluator for
 # numbers and +,-,*,/
 # ------------------------------------------------------------
@@ -89,6 +89,8 @@ t_DOTDOT = r'\.\.'
 # A regular expression rule with some action code
 def t_IDENT(t):
     r'\n[ \t]+'
+    if identList.__len__() == 0:
+        identList.append((0,0))
     spc = t.value.count(' ')
     tab = t.value.count('\t')
     tuplaident = (spc,tab)
