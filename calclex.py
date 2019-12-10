@@ -91,26 +91,31 @@ t_DOTDOT = r'\.\.'
 # A cada token, uma regra deve ser executada
 
 def t_IDENT(t):
-    r'\n[ \t]+'
+    r'\n[ \t]*'
     if identList.__len__() == 0:
         identList.append((0,0))
+        print(identList)
     spc = t.value.count(' ')
     tab = t.value.count('\t')
     tuplaident = (spc,tab)
+
     if identList[-1] > tuplaident:
         identList.pop() #desempilha ident
         print(identList)  # dedent final não tratado
         t.type = 'DEDENT'
-        if tuplaident == identList[-1]:
-            return t #retorna dedent
-        else:
-            pass
+        return t #retorna dedent
+
             #pode ser um dedent múltiplo
             #ou um erro de identação
     elif identList[-1] < tuplaident:
         identList.append((spc,tab)) #empilha ident
         print(identList)
+    #    print(identList.__len__())
         return t
+
+    if identList[0] == 0:
+        pass
+
 
 def t_NUMBER(t):
     r'\d+'
@@ -142,11 +147,13 @@ lexer = lex.lex()
 data = '''procedure soma is 
 valor: integer
 begin
-    if valor 5..10 loop
-    begin
-        ((3 + 4) * 10) + (-20 * 2)
-    end loop
-end soma'''
+   if valor 5..10 loop
+   begin
+       ((3 + 4) * 10) + (-20 * 2)
+   end loop
+end soma
+
+'''
 
 # Give the lexer some input
 lexer.input(data)
