@@ -7,12 +7,11 @@
 # ------------------------------------------------------------
 # calclex.py
 #
-#tokenizer for a simple expression evaluator for
+# tokenizer for a simple expression evaluator for
 # numbers and +,-,*,/
 # ------------------------------------------------------------
 
 import ply.lex as lex
-#dicionário
 
 palRESERVADA =  {
     'abs' : 'ABS',
@@ -64,8 +63,11 @@ tokens = [
     'RPAREN',
     'STRING',
     'COLON',
+    'SEMICOLON',
+    'COMMENT',
     'DOTDOT',
     'IDENT',
+    'ASSIGN',
     'DEDENT',
     'ID'
 ]+list(palRESERVADA.values())
@@ -77,6 +79,7 @@ tuple structure = (numSpaces,numTabs)
 identList = []
 
 # Regular expression rules for simple tokens
+t_COMMENT = r'[--][^\n]*\n'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
@@ -84,7 +87,9 @@ t_DIVIDE = r'/'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_STRING = r'"[^--]*"'
+t_ASSIGN = r':='
 t_COLON = r'\:'
+t_SEMICOLON = r';'
 t_DOTDOT = r'\.\.'
 
 # A regular expression rule with some action code
@@ -92,30 +97,24 @@ t_DOTDOT = r'\.\.'
 
 def t_IDENT(t):
     r'\n[ \t]*'
-    if identList.__len__() == 0:
+    if identList.__len__() == 0: # insere o primeiro item da pilha
         identList.append((0,0))
         print(identList)
     spc = t.value.count(' ')
     tab = t.value.count('\t')
     tuplaident = (spc,tab)
 
+    # comparando o topo da pilha com a identação atual
     if identList[-1] > tuplaident:
-        identList.pop() #desempilha ident
-        print(identList)  # dedent final não tratado
-        t.type = 'DEDENT'
-        return t #retorna dedent
-
-            #pode ser um dedent múltiplo
-            #ou um erro de identação
-    elif identList[-1] < tuplaident:
-        identList.append((spc,tab)) #empilha ident
+        identList.pop() # desempilha ident
         print(identList)
-    #    print(identList.__len__())
+        t.type = 'DEDENT'
+        return t # retorna dedent
+
+    elif identList[-1] < tuplaident:
+        identList.append((spc,tab)) # empilha ident
+        print(identList)
         return t
-
-    if identList[0] == 0:
-        pass
-
 
 def t_NUMBER(t):
     r'\d+'
@@ -146,13 +145,14 @@ lexer = lex.lex()
 # Test it out
 data = '''procedure soma is 
 valor: integer
+-- Isto é um comentario
 begin
-   if valor 5..10 loop
-   begin
-       ((3 + 4) * 10) + (-20 * 2)
-   end loop
-end soma
-
+    if valor 5..10 loop
+    begin
+        valor := ((valor + 4) * 10) + (-20 * 2);
+        end if
+    end loop
+end soma;
 '''
 
 # Give the lexer some input
