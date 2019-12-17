@@ -79,7 +79,7 @@ tuple structure = (numSpaces,numTabs)
 identList = []
 
 # Regular expression rules for simple tokens
-t_COMMENT = r'[--][^\n]*\n'
+t_COMMENT = r'--[^\n]*\n'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
@@ -107,9 +107,13 @@ def t_IDENT(t):
     # comparando o topo da pilha com a identação atual
     if identList[-1] > tuplaident:
         identList.pop() # desempilha ident
-        print(identList)
-        t.type = 'DEDENT'
-        return t # retorna dedent
+        # se a identação for diferente do topo atual da pilha = identação errada
+        if identList[-1] != tuplaident:
+            print('Erro de identação')
+        else :
+            print(identList)
+            t.type = 'DEDENT'
+            return t # retorna dedent
 
     elif identList[-1] < tuplaident:
         identList.append((spc,tab)) # empilha ident
