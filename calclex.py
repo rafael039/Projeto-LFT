@@ -13,6 +13,11 @@
 
 import ply.lex as lex
 
+# tamanho padrão para tabs neste compilador
+# pode ser alterado na GUI
+
+tabSize = 4
+
 palRESERVADA =  {
     'abs' : 'ABS',
     'aliased' : 'ALIASED',
@@ -97,26 +102,38 @@ t_DOTDOT = r'\.\.'
 
 def t_IDENT(t):
     r'\n[ \t]*'
+    counter = 0
     if identList.__len__() == 0: # insere o primeiro item da pilha
-        identList.append((0,0))
+        identList.append(counter)
         print(identList)
-    spc = t.value.count(' ')
-    tab = t.value.count('\t')
-    tuplaident = (spc,tab)
-
+    for i in range(0,len(t.value)):
+    	if t.value[i] == ' ':
+    		counter += 1
+    	# deve ser feito num laço
+    	if t.value[i] == '/t':
+    		if counter % 4 == 0:
+    			counter += tabSize
+    		elif counter % 4 == 1:
+    			counter += tabSize - 1
+    		elif counter % 4 == 2:
+    			counter += tabSize - 2
+    		else:
+    			counter += tabSize - 3
+    		#ou counter += 1	
+ 
     # comparando o topo da pilha com a identação atual
-    if identList[-1] > tuplaident:
+    if identList[-1] > counter:
         identList.pop() # desempilha ident
         # se a identação for diferente do topo atual da pilha = identação errada
-        if identList[-1] != tuplaident:
+        if identList[-1] != counter:
             print('Erro de identação')
         else :
             print(identList)
             t.type = 'DEDENT'
             return t # retorna dedent
 
-    elif identList[-1] < tuplaident:
-        identList.append((spc,tab)) # empilha ident
+    elif identList[-1] < counter:
+        identList.append(counter) # empilha ident
         print(identList)
         return t
 
@@ -147,17 +164,9 @@ def t_ID(t):
 lexer = lex.lex()
 
 # Test it out
-data = '''procedure soma is 
-valor: integer
--- Isto é um comentario
-begin
-    if valor 5..10 loop
-    begin
-        valor := ((valor + 4) * 10) + (-20 * 2);
-        end if
-    end loop
-end soma;
-'''
+
+sourceCode = open('progExemplo.adc','r')
+data = sourceCode.read()
 
 # Give the lexer some input
 lexer.input(data)
