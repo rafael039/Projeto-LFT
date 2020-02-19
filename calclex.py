@@ -18,13 +18,12 @@ import ply.lex as lex
 
 tabSize = 4
 
+#revisar palavras
 palRESERVADA =  {
-    'abs' : 'ABS',
-    'aliased' : 'ALIASED',
     'and' : 'AND',
     'array' : 'ARRAY',
-    'begin' : 'BEGIN',
-    'body' : 'BODY',
+    'begin' : 'BEGIN', 
+    'body' : 'BODY', #pode ser eliminado
     'case' : "CASE",
     'constant' : 'CONSTANT',
     'declare' : 'DECLARE',
@@ -110,16 +109,8 @@ def t_IDENT(t):
     	if t.value[i] == ' ':
     		counter += 1
     	# deve ser feito num laço
-    	if t.value[i] == '/t':
-    		if counter % 4 == 0:
-    			counter += tabSize
-    		elif counter % 4 == 1:
-    			counter += tabSize - 1
-    		elif counter % 4 == 2:
-    			counter += tabSize - 2
-    		else:
-    			counter += tabSize - 3
-    		#ou counter += 1	
+    	elif t.value[i] == '/t':
+    		counter += tabSize-(counter % tabSize)
  
     # comparando o topo da pilha com a identação atual
     if identList[-1] > counter:
