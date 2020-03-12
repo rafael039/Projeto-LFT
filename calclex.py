@@ -156,9 +156,9 @@ lexer = lex.lex()
 
 # Test it out
 
-sourceCode = open('progExemplo.adc','r')
-data = sourceCode.read()
-
+#sourceCode = open('progExemplo.adc','r')
+#data = sourceCode.read()
+data = ''
 # Give the lexer some input
 lexer.input(data)
 
