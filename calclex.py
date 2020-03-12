@@ -114,19 +114,35 @@ def t_IDENT(t):
  
     # comparando o topo da pilha com a identação atual
     if identList[-1] > counter:
-        identList.pop() # desempilha ident
-        # se a identação for diferente do topo atual da pilha = identação errada
-        if identList[-1] != counter:
-            print('Erro de identação')
-        else :
-            print(identList)
-            t.type = 'DEDENT'
-            return t # retorna dedent
-
+        #não existe do-while em python
+        while True:
+            identList.pop() #desempilha ident
+            if identList[-1] > counter:   # contador menor que a pilha = houve uma dedentação múltipla
+                continue
+            elif identList[-1] < counter: # contador maior que a pilha = erro no dedent
+                print('Erro de identação')
+                break 
+            else: 						# contador igual a pilha = identação OK
+                break
+        print(identList)  
+          
     elif identList[-1] < counter:
         identList.append(counter) # empilha ident
         print(identList)
         return t
+
+             
+'''
+     identList.pop() # desempilha ident
+        # se a identação for diferente do topo atual da pilha = identação errada
+        if identList[-1] != counter:
+            print('Erro de identação')
+        else :
+            -- Isto é um comentario
+            t.type = 'DEDENT'
+            return t # retorna dedent
+'''
+    
 
 def t_NUMBER(t):
     r'\d+'
@@ -156,9 +172,15 @@ lexer = lex.lex()
 
 # Test it out
 
+<<<<<<< HEAD
 #sourceCode = open('progExemplo.adc','r')
 #data = sourceCode.read()
 data = ''
+=======
+sourceCode = open('progExemplo.adb','r')
+data = sourceCode.read()
+
+>>>>>>> c526421258accc5c443242eda3f685f4c0a15b57
 # Give the lexer some input
 lexer.input(data)
 
