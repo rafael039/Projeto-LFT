@@ -73,6 +73,55 @@ def p_factor(p):
 
 #  PARTE DO MITO
 
+def p_primary(p):
+''' primary: numeric_literal | "null" | string_literal | named_array_aggregate
+| name | qualified_expression | ("(" expression ")") '''
+
+def p_qualified_expression(p):
+''' qualified_expression: name"" ("("expression")")'''
+
+def p_named_array_aggregate(p):
+''' named_array_aggregate: "(" array_component_association {"," array_component_association } ")"'''
+
+def p_array_component_association(p):
+''' array_component_association: { "|" discrete_choice "=>" expression '''
+
+def p_discrete_choice_list(p):
+''' discrete_choice_list: expression | '''
+
+def p_discrete_choice(p):
+''' discrete_choice: expression | discrete_range'''
+
+def p_subtype_indication(p):
+''' subtype_indication: name[contraint]'''
+
+def p_contraint(p):
+''' constraint: range_constraint | digits_constraint | index_constraint | discriminant_constraint '''
+
+def p_discriminant_contraint(p):
+''' discrimination_constraint:  "(" discriminant_association { "," discriminant_association } ")" '''
+
+def p_discriminant_association(p):
+''' discriminant_association: [selector_name { "|" selector_name } "=>" ] expression '''
+
+def p_index_constraint(p):
+''' "(" discrete_range: { "," discrete_range } ")" '''
+
+def p_digits_constraint(p):
+''' digits_constraint: "digits  expression [range_constraint] "'''
+
+def p_range_constraint(p):
+'''"range: range"'''
+
+def p_range(p):
+'''range: (simple_expression ".." simple_expression )'''
+
+def p_range_attribute_reference(p):
+''' range_attribute_reference: name "" range_attribute_designator '''
+
+def p_range_attribute_designator(p):
+''' range_attribute_designator: "Range" ["(" expression ")"] '''
+
 #------------------------------------------------------------------------
 
 def p_name(p):
@@ -118,5 +167,48 @@ def defining_program_unit_name(p):
 #------------------------------------------------------------------------
 
 #  PARTE DO MITO
+
+def p_identifier_list(p):
+''' identifier_list: {"," identifier }'''
+    
+def p_loop_statement(p):
+'''loop_statement: [name] | [('while' expression)] | ( 'for' identifier 'in'
+    ['reverse'] discrete_subtype_definition)] 'loop' sequence_of_statements 'end' 'loop' [name] ';''''
+    
+def p_if_statement(p):
+'''if_statement: if expression 'then' sequence_of_statements { 'elsif' | expression 'then' sequence_of_statements }
+['else'|| sequence_of_statements] 'end' 'if' ';''''
+    
+def p_sequence_of_statements(p):
+''' sequence_of_statements: statement {statement}'''
+
+def p_statement(p):
+'''statement: (simple_statement | compound_statement)'''
+
+def p_compound_statement(p):
+'''compound_statement: if_statement | loop_statement'''
+
+def p_discrete_subtype_definition(p):
+'''discrete_subtype_definition: subtype_indication | range'''
+
+def p_simple_statement(p):
+''' simple_statement: null_statement | assignment_statement | exit_statement | procedure_call_statement
+    | return_statement | entry_call_statement | code_statement '''
+
+def p_entry_call_statement(p):
+'''entry_call_statement: name[atual_paramenter_part] ";"'''
+
+def p_code_statement(p):
+'''code_statement: qualified_expression ";"'''
+
+def p_exit_statement(p):
+'''exit_statement: "exit" [name] ";"'''
+
+def p_null_statement(p):
+'''null_statement: "null"'''
+
+def p_assignment_statement(p):
+''' assignment_statement: name ":=" expression ";"'''
+
 
 #------------------------------------------------------------------------

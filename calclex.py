@@ -172,15 +172,12 @@ lexer = lex.lex()
 
 # Test it out
 
-<<<<<<< HEAD
 #sourceCode = open('progExemplo.adc','r')
 #data = sourceCode.read()
 data = ''
-=======
 sourceCode = open('progExemplo.adb','r')
 data = sourceCode.read()
 
->>>>>>> c526421258accc5c443242eda3f685f4c0a15b57
 # Give the lexer some input
 lexer.input(data)
 
