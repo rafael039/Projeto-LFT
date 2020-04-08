@@ -2,363 +2,302 @@ from abc import abstractmethod
 from abc import ABCMeta
 from Visitor import Visitor
 
-'''
-Exp e classes concretas
-'''
-class Exp(metaclass=ABCMeta):
+class subprogram_body(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self,visitor):
+        pass
+
+class subprogram_specification(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
 
-class SomaExp(Exp):
-    def __init__(self, exp1, exp2):
-        self.exp1 = exp1
-        self.exp2 = exp2
-    def accept(self, visitor):
-        visitor.visitSomaExp(self)
-
-
-class MulExp(Exp):
-    def __init__(self, exp1, exp2):
-        self.exp1 = exp1
-        self.exp2 = exp2
-    def accept(self, visitor):
-        visitor.visitMulExp(self)
-
-
-class PotExp(Exp):
-    def __init__(self, exp1, exp2):
-        self.exp1 = exp1
-        self.exp2 = exp2
-    def accept(self, visitor):
-        visitor.visitPotExp(self)
-
-
-class CallExp(Exp):
-    def __init__(self, call):
-        self.call = call
-
-    def accept(self, visitor):
-        visitor.visitCallExp(self)
-
-class AssignExp(Exp):
-    def __init__(self, assign):
-        self.assign = assign
-    def accept(self, visitor):
-        visitor.visitAssignExp(self)
-
-
-class NumExp(Exp):
-    def __init__(self, num):
-        self.num = num
-    def accept(self, visitor):
-        visitor.visitNumExp(self)
-
-
-class IdExp(Exp):
-    def __init__(self, id):
-        self.id = id
-    def accept(self, visitor):
-        visitor.visitIdExp(self)
-
-
-'''
-Call e classes concretas
-'''
-class Call(metaclass=ABCMeta):
+class declarative_part(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
 
-class ParamsCall(Call):
-    def __init__ (self, id, params):
-        self.id = id
-        self.params = params
-    def accept(self, visitor):
-        visitor.visitParamsCall(self)
-
-class SimpleCall(Call):
-    def __init__(self, id):
-        self.id = id
-    def accept(self, visitor):
-        visitor.visitSimpleCall(self)
-
-
-'''
-Params e classes concretas
-'''
-class Params(metaclass=ABCMeta):
+class sequence_of_statements(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
 
-class CompoundParams(Params):
-    def __init__(self, id, params):
-        self.id = id
-        self.params = params
-    def accept(self, visitor):
-        visitor.visitCompoundParams(self)
-
-class SingleParam(Params):
-    def __init__(self, id):
-        self.id = id
-    def accept(self, visitor):
-        visitor.visitSingleParam(self)
-
-
-'''
-Assign e classes concretas
-'''
-
-class Assign(metaclass=ABCMeta):
+class designator(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
 
-class AssignAss(Assign):
-    def __init__(self, id, exp):
-        self.id = id
-        self.exp = exp
+class identfier_list(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
-        visitor.visitAssignAss(self)
+        pass
 
-class identfier_list(Params):
-    #''' identifier_list: {"," identifier }'''
-    def __init__(self, identifier):
+class loop_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class loop_statement(Params):
-   def __init__(self):
-   def accept(self, visitor):
-
-class if_statement(Params):
-    def __init__(self):
+class if_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class sequence_of_statements(Params):
-    def __init__(self):
+class statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class statement(Params):
-    def __init__(self):
+class compound(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class compound(Params):
-    def __init__(self):
+class compound_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class compound_statement(Params):
-    def __init__(self):
+class discrete_subtype_definition(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class discrete_subtype_definition(Params):
-    def __init__(self):
+class simple_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class simple_statement(Params):
-    def __init__(self):
+class entry_call_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class entry_call_statement(Params):
-    def __init__(self):
+class code_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class code_statement(Params):
-    def __init__(self):
+class exit_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class exit_statement(Params):
-    def __init__(self):
+class null_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class null_statement(Params):
-    def __init__(self):
+class assignment_statement(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class assignment_statement(Params):
-    def __init__(self):
+class basic_declarative_item(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class designator(Params):
-    def __init__(self):
+class represation_clause(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class subprogram_spaecification(Params):
-    def __init__(self):
+class direct_name(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class declarative_part(Params):
-    def __init__(self):
+class attribute_definition_clause(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class basic_declarative_item(Params):
-    def __init__(self):
+class element_name(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class represation_clause(Params):
-    def __init__(self):
+class indexed_component(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class direct_name(Params):
-    def __init__(self):
+class type_conversion(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class attribute_definition_clause(Params):
-    def __init__(self):
+class selected_component(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class element_name(Params):
-    def __init__(self):
+class attribute_designator(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class indexed_component(Params):
-    def __init__(self):
+class expression(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class type_conversion(Params):
-    def __init__(self):
+class relation(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class selected_component(Params):
-    def __init__(self):
+class simple_expression(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class attribute_designator(Params):
-    def __init__(self):
+class term(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class expression(Params):
-    def __init__(self):
+class factor(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class relation(Params):
-    def __init__(self):
+class primary(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class simple_expression(Params):
-    def __init__(self):
+class qualified_expression(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class term(Params):
-    def __init__(self):
+class named_array_aggregate(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class factor(Params):
-    def __init__(self):
+class array_component_association(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class primary(Params):
-    def __init__(self):
+class discrete_choice_list(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class qualified_expression(Params):
-    def __init__(self):
+class discrete_choice(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class named_array_aggregate(Params):
-    def __init__(self):
+class subtype_identification(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class array_component_association(Params):
-    def __init__(self):
+class constraint(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class discrete_choice_list(Params):
-    def __init__(self):
+class discriminant_constraint(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class discrete_choice(Params):
-    def __init__(self):
+class discriminant_association(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class subtype_identification(Params):
-    def __init__(self):
+class index_constraint(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class constraint(Params):
-    def __init__(self):
+class digits_constraint(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class discriminant_constraint(Params):
-    def __init__(self):
+class range_constraint(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class discriminant_association(Params):
-    def __init__(self):
+class range(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class index_constraint(Params):
-    def __init__(self):
+class range_attribute_reference(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class digits_constraint(Params):
-    def __init__(self):
+class range_attribute_designator(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class range_constraint(Params):
-    def __init__(self):
-        def accept(self, visitor):
-
-class range(Params):
-    def __init__(self):
+class name(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class range_attribute_reference(Params):
-    def __init__(self):
+class slice(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class range_attribute_designator(Params):
-    def __init__(self):
+class funcion_call(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class name(Params):
-    def __init__(self):
+class actual_parameter_part(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class slice(Params):
-    def __init__(self):
+class parameter_association(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class funcion_call(Params):
-    def __init__(self):
+class selector_name(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class actual_parameter_part(Params):
-    def __init__(self):
+class character_literal(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class parameter_association(Params):
-    def __init__(self):
+class enumeration_represation_clause(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class selector_name(Params):
-    def __init__(self):
+class use_clause(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class character_literal(Params):
-    def __init__(self):
+class basic_declaration(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class enumeration_represation_clause(Params):
-    def __init__(self):
+class subprogram_declaration(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
+        pass
 
-class use_clause(Params):
-    def __init__(self):
+class defining_program_unit_name(metaclass=ABCMeta):
+    @abstractmethod
     def accept(self, visitor):
-
-class basic_declaration(Params):
-    def __init__(self):
-    def accept(self, visitor):
-
-class subprogram_declaration(Params):
-    def __init__(self):
-    def accept(self, visitor):
-
-class subprogram_specification(Params):
-    def __init__(self):
-    def accept(self, visitor):
-
-class defining_program_unit_name(Params):
-    def __init__(self):
-    def accept(self, visitor):
+        pass

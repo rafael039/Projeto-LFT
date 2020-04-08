@@ -69,10 +69,6 @@ def p_term(p):
 def p_factor(p):
     ''' factor: ( primary [ "**" primary ] ) '''
 
-#------------------------------------------------------------------------
-
-#  PARTE DO MITO
-
 def p_primary(p):
     ''' primary: numeric_literal | "null" | string_literal | named_array_aggregate
     | name | qualified_expression | ("(" expression ")") ''' 
@@ -122,8 +118,6 @@ def p_range_attribute_reference(p):
 def p_range_attribute_designator(p):
     ''' range_attribute_designator: "Range" ["(" expression ")"] '''
 
-#------------------------------------------------------------------------
-
 def p_name(p):
     ''' name: direct_name | indexed_component | slice | selected_component | attribute_reference 
     | type_conversion | function_call | character_literal '''
@@ -163,10 +157,6 @@ def subprogram_specification(p):
 
 def defining_program_unit_name(p):
     ''' [ name '.' ] identifier '''
-
-#------------------------------------------------------------------------
-
-#  PARTE DO MITO
 
 def p_identifier_list(p):
     ''' identifier_list: {"," identifier }'''
@@ -209,6 +199,3 @@ def p_null_statement(p):
 
 def p_assignment_statement(p):
     ''' assignment_statement: name ":=" expression ";" '''
-
-
-#------------------------------------------------------------------------
