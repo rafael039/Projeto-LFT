@@ -2,18 +2,28 @@ from abc import abstractmethod
 from abc import ABCMeta
 from Visitor import Visitor
 
-class subprogram_body(metaclass=ABCMeta):
+class a_subprogram_body(metaclass=ABCMeta):
     @abstractmethod
     def accept(self,visitor):
         pass
 
-class subprogram_specification(metaclass=ABCMeta):
+class c_subprogram_body(a_subprogram_body):
+    def __init__(self,subprogram_specification,declarative_part,sequence_of_statements,designator):
+        self.subprogram_specification = subprogram_specification
+        self.declarative_part = declarative_part
+        self.sequence_of_statements = sequence_of_statements
+        self.designator = designator
+    def accept(self,visitor):
+        pass
+
+class a_subprogram_specification(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
 
-class declarative_part(metaclass=ABCMeta):
-    @abstractmethod
+class c_subprogram_specification(a_subprogram_specification):
+    def __init__(self,defining_program_unit_name):
+        self.defining_program_unit_name = defining_program_unit_name
     def accept(self, visitor):
         pass
 

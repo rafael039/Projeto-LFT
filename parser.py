@@ -10,18 +10,34 @@ def p_subprogram_body(p):
         'begin'
         sequence_of_statements
         'end'
-        [designator]
+        designator
+        ';'
+        | subprogram_specification
+        'is'
+        declarative_part
+        'begin'
+        sequence_of_statements
+        'end'
         ';'
     '''
 
+    if len(p) == 9:
+        p[0] = c_subprogram_body(p[1],p[3],p[5],p[7])
+    else:
+        p[0] = c_subprogram_body(p[1],p[3],p[5],None)
+
 def p_designator(p):
-    ''' designator: [name "."] ( identifier|operator_symbol ) '''
+    ''' designator: [name "."] ( identifier | operator_symbol ) '''
 
 def p_subprogram_specification(p):
     ''' subprogram_specification: 'procedure' defining_program_unit_name '''
+    p[0] = c_subprogram_specification(p[2])
 
 def p_declarative_part(p):
-    ''' declarative_part: { basic_declarative_item | subprogram_body } '''
+    # ocorrência de chaves = recursão
+    ''' declarative_part: basic_declarative_item | subprogram_body 
+        | basic_declarative_item declarative_part | subprogram_body declarative part
+    '''
 
 def p_basic_declarative_item(p):
     ''' basic_declarative_item: basic_declaration | representation_clause | use_clause '''
