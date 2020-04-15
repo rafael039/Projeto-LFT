@@ -26,8 +26,23 @@ def p_subprogram_body(p):
     else:
         p[0] = c_subprogram_body(p[1],p[3],p[5],None)
 
+#############################
+
 def p_designator(p):
-    ''' designator: [name "."] ( identifier | operator_symbol ) '''
+    ''' designator: 
+        name "." identifier 
+        | name "." operator_symbol 
+        | identifier 
+        | operator_symbol
+    ''' 
+
+'''
+    if len(p) == 5:
+        p[0] = c.designator(p[1],p[3],p[4])
+    else:
+        p[0] = c.designator(p[1])
+'''
+#############################
 
 def p_subprogram_specification(p):
     ''' subprogram_specification: 'procedure' defining_program_unit_name '''
@@ -40,7 +55,11 @@ def p_declarative_part(p):
     '''
 
 def p_basic_declarative_item(p):
-    ''' basic_declarative_item: basic_declaration | representation_clause | use_clause '''
+    ''' basic_declarative_item: 
+    basic_declaration 
+    | representation_clause 
+    | use_clause 
+    '''
 
 def p_representation_clause(p):
     ''' representation_clause: attribute_definition_clause | enumeration_represation_clause '''

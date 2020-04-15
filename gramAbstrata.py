@@ -7,7 +7,7 @@ class a_subprogram_body(metaclass=ABCMeta):
     def accept(self,visitor):
         pass
 
-class c_subprogram_body(a_subprogram_body):
+class c_subprogram_body(a_subprogram_body): #indica que a classe implementa a classe abstrata  
     def __init__(self,subprogram_specification,declarative_part,sequence_of_statements,designator):
         self.subprogram_specification = subprogram_specification
         self.declarative_part = declarative_part
@@ -15,6 +15,41 @@ class c_subprogram_body(a_subprogram_body):
         self.designator = designator
     def accept(self,visitor):
         pass
+
+#############################
+class a_designator(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+'''
+class c_designator_name_identfier(a_designator):
+    def __init__(self, name, identifier):
+        self.name = name
+        self.identifier = identifier
+    def accept(self, visitor):
+        pass
+
+class c_designator_name_operation_symbol(a_designator):
+    def __init__(self, name, operation_symbol):
+        self.name = name
+        self.operation_symbol = operation_symbol
+    def accept(self, visitor):
+        pass
+
+class c_designator_identfier(a_designator):
+    def __init__(self, identifier):
+        self.identifier = identifier
+    def accept(self, visitor):
+        pass
+
+class c_designator_operation_symbol(a_designator):
+    def __init__(self, operation_symbol):
+        self.operation_symbol = operation_symbol
+    def accept(self, visitor):
+        pass
+'''
+#############################
 
 class a_subprogram_specification(metaclass=ABCMeta):
     @abstractmethod
@@ -27,15 +62,36 @@ class c_subprogram_specification(a_subprogram_specification):
     def accept(self, visitor):
         pass
 
+class a_declarative_part(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class c_declarative_part(a_declarative_part):
+    def __init__(self,basic_declarative_item,subprogram_body): 
+        self.declarative_part = declarative_part
+        self.subprogram_body = subprogram_body
+    def accept(self, visitor):
+        pass
+
+class a_basic_declarative_item(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class c_basic_declarative_item(a_basic_declarative_item):
+    def __init__(self,basic_declaration, representation_clause, use_clause):
+        self.basic_declaration = basic_declaration
+        self.representation_clause = representation_clause
+        self.use_clause = use_clause
+    def accept(self, visitor):
+        pass
+
 class sequence_of_statements(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
 
-class designator(metaclass=ABCMeta):
-    @abstractmethod
-    def accept(self, visitor):
-        pass
 
 class identfier_list(metaclass=ABCMeta):
     @abstractmethod
@@ -102,12 +158,7 @@ class assignment_statement(metaclass=ABCMeta):
     def accept(self, visitor):
         pass
 
-class basic_declarative_item(metaclass=ABCMeta):
-    @abstractmethod
-    def accept(self, visitor):
-        pass
-
-class represation_clause(metaclass=ABCMeta):
+class representation_clause(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
@@ -287,7 +338,7 @@ class character_literal(metaclass=ABCMeta):
     def accept(self, visitor):
         pass
 
-class enumeration_represation_clause(metaclass=ABCMeta):
+class enumeration_representation_clause(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
