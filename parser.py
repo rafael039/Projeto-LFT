@@ -20,13 +20,10 @@ def p_subprogram_body(p):
         'end'
         ';'
     '''
-
     if len(p) == 9:
         p[0] = c_subprogram_body(p[1],p[3],p[5],p[7])
     else:
         p[0] = c_subprogram_body(p[1],p[3],p[5],None)
-
-#############################
 
 def p_designator(p):
     ''' designator: 
@@ -35,14 +32,16 @@ def p_designator(p):
         | identifier 
         | operator_symbol
     ''' 
-
-'''
-    if len(p) == 5:
-        p[0] = c.designator(p[1],p[3],p[4])
+    if len(p) == 4:
+        if type(p[3]) == 'c_identifier': 
+            p[0] = c_designator_name_identifier(p[1],p[3],p[4])
+        else:
+            p[0] = c_designator_name_operator_symbol(p[1],p[3],p[4])
     else:
-        p[0] = c.designator(p[1])
-'''
-#############################
+        if type(p[3]) == 'c_identifier':
+            p[0] = c_designator_identifier(p[1],p[3],p[4])
+        else:
+            p[0] = c_designator_operator_symbol(p[1],p[3],p[4])
 
 def p_subprogram_specification(p):
     ''' subprogram_specification: 'procedure' defining_program_unit_name '''
@@ -50,9 +49,22 @@ def p_subprogram_specification(p):
 
 def p_declarative_part(p):
     # ocorrência de chaves = recursão
-    ''' declarative_part: basic_declarative_item | subprogram_body 
-        | basic_declarative_item declarative_part | subprogram_body declarative part
+    ''' declarative_part: 
+        basic_declarative_item 
+        | subprogram_body 
+        | basic_declarative_item declarative_part 
+        | subprogram_body declarative part
     '''
+    if len(p) == 2:
+        if type(p[1]) == 'basic_declarative_item':
+            p[0] = c_declarative_part_basic_declarative_item(p[1])
+        else:
+            p[0] = c_declarative_part_subprogram_body(p[1])
+    else: 
+        if type(p[1]) == 'basic_declarative_item':
+            p[0] = c_declarative_part_basic_declarative_item_loop(p[1],p[2])
+        else: 
+            p[0] = c_declarative_part_subprogram_body_loop(p[1],p[2])
 
 def p_basic_declarative_item(p):
     ''' basic_declarative_item: 
@@ -61,26 +73,68 @@ def p_basic_declarative_item(p):
     | use_clause 
     '''
 
+    if type(p[1]) == 'basic_declaration':
+        p[0] = c_basic_declarative_item_basic_declaration(p[1])
+    elif type(p[1]) == 'representation_clause':
+        p[0] = c_basic_declarative_item_representation_clause(p[1])
+    else:
+        p[0] = c_basic_declarative_item_use_clause(p[1])
+
+
 def p_representation_clause(p):
-    ''' representation_clause: attribute_definition_clause | enumeration_represation_clause '''
+    ''' representation_clause: 
+    attribute_definition_clause 
+    | enumeration_represation_clause '''
+
+    if type(p[1]) == 'attribute_definition_clause':
+        p[0] = c_representation_clause_attribute_definition_clause(p[1])
+    else:
+        p[0] = c_representation_enumeration_representation_clause(p[1])
 
 def p_direct_name(p):
-    ''' direct_name: identifier | operator_symbol '''
+    ''' direct_name: 
+    identifier 
+    | operator_symbol '''
+
+    if type(p[1]) == 'identifier':
+        p[0] = c_direct_name_identifier(p[1])
+    else:
+        p[0] = c_direct_name_operator_symbol(p[1])
+    
 
 def p_attribute_definition_clause(p):
-    ''' attribute_definition_name: 'for' name 'single_quote' attribute_designator 'use' expression ';' 
-    'for' name  'single_quote' attribute designator 'use' element_name ';' '''
+    ''' attribute_definition_name: 
+    'for' name 'single_quote' attribute_designator 'use' expression ';' 
+    | 'for' name  'single_quote' attribute designator 'use' name ';' '''
 
-def p_element_name(p):
-    ''' element_name: direct_name | slice | selected_component | attribute_reference | type_conversion
-    | function_call | 'character_literal' | indexed_component'''
+    if type(p[6]) == 'expression':
+        p[0] = c_attribute_definition_clause_expression(p[2],p[4],p[6])
+    else: 
+        p[0] = c_attribute_definition_clause_name(p[2],p[4],p[6])
+
 
 def p_indexed_component(p):
-    ''' indexed_component: name"(" expression {"," expression } ")" '''
+    ''' indexed_component: 
+    name "(" expression ")"
+    | name "(" expression "," indexed_component ")"
+    '''
+
+    if len(p[0]) = 5:
+        p[0] = indexed_component(p[1],p[3])
+    else:
+        p[0] = indexed_component_loop(p[1],p[3],p[5])
 
 def p_type_conversion(p):
-    ''' type_conversion: name"(" ( expression | name ) ")" ''' 
-
+    '''type_conversion: 
+    name "(" expression ")"
+    | name "(" name ")" ''' 
+    
+    if type(p[3]) = 'expression':
+        p[0] = c_type_conversion_expression(p[1],p[3])
+    else: 
+        p[0] = c_type_conversion_name(p[1],p[3])
+        
+#########################
 def p_selected_component(p):
     ''' select_component: name "." selector_name '''
 
@@ -154,8 +208,31 @@ def p_range_attribute_designator(p):
     ''' range_attribute_designator: "Range" ["(" expression ")"] '''
 
 def p_name(p):
-    ''' name: direct_name | indexed_component | slice | selected_component | attribute_reference 
-    | type_conversion | function_call | character_literal '''
+    ''' name:
+    direct_name 
+    | slice 
+    | selected_component 
+    | attribute_reference 
+    | type_conversion
+    | function_call
+    | character_literal
+    | indexed_component '''
+
+    if type(p[1]) == direct_name:
+        p[0] = c_name_direct_name(p[1])
+    elif type(p[1]) == slice:
+        p[0] = c_name_slice(p[1])
+    elif type(p[1]) == select_component:
+        p[0] = c_name_select_component(p[1])
+    elif type(p[1]) == attribute_reference:
+        p[0] = c_name_attribute_reference(p[1])
+    elif type(p[1]) == type_conversion:
+        p[0] = c_name_type_conversion(p[1])
+    elif type(p[1]) == function_call:
+        p[0] = c_name_function_call(p[1])
+    elif type(p[1]) == character_literal:
+        p[0] = c_name_character_literal(p[1])
+    else :
 
 def p_slice(p):
     ''' slice: name "(" discrete_range ")" '''
