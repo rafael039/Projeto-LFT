@@ -5,47 +5,47 @@ import visitor as vis
 
 def p_subprogram_body(p):
     ''' subprogram_body: subprogram_specification
-        'is'
+        IS
         declarative_part
-        'begin'
+        BEGIN
         sequence_of_statements
-        'end'
+        END
         designator
-        ';'
+        SEMICOLON
         | subprogram_specification
-        'is'
+        IS
         declarative_part
-        'begin'
+        BEGIN
         sequence_of_statements
-        'end'
-        ';'
+        END
+        SEMICOLON
     '''
     if len(p) == 9:
-        p[0] = c_subprogram_body(p[1],p[3],p[5],p[7])
+        p[0] = ga.c_subprogram_body(p[1],p[3],p[5],p[7])
     else:
-        p[0] = c_subprogram_body(p[1],p[3],p[5],None)
+        p[0] = ga.c_subprogram_body(p[1],p[3],p[5],None)
 
 def p_designator(p):
     ''' designator: 
-        name "." identifier 
-        | name "." operator_symbol 
+        name DOT identifier 
+        | name DOT operator_symbol 
         | identifier 
         | operator_symbol
     ''' 
     if len(p) == 4:
         if type(p[3]) == 'c_identifier': 
-            p[0] = c_designator_name_identifier(p[1],p[3],p[4])
+            p[0] = ga.c_designator_name_identfier(p[1],p[3],p[4])
         else:
-            p[0] = c_designator_name_operator_symbol(p[1],p[3],p[4])
+            p[0] = ga.c_designator_name_operator_symbol(p[1],p[3],p[4])
     else:
         if type(p[3]) == 'c_identifier':
-            p[0] = c_designator_identifier(p[1],p[3],p[4])
+            p[0] = ga.c_designator_identfier(p[1],p[3],p[4])
         else:
-            p[0] = c_designator_operator_symbol(p[1],p[3],p[4])
+            p[0] = ga.c_designator_operator_symbol(p[1],p[3],p[4])
 
 def p_subprogram_specification(p):
-    ''' subprogram_specification: 'procedure' defining_program_unit_name '''
-    p[0] = c_subprogram_specification(p[2])
+    ''' subprogram_specification: PROCEDURE defining_program_unit_name '''
+    p[0] = ga.c_subprogram_specification(p[2])
 
 def p_declarative_part(p):
     # ocorrência de chaves = recursão
@@ -56,15 +56,15 @@ def p_declarative_part(p):
         | subprogram_body declarative part
     '''
     if len(p) == 2:
-        if type(p[1]) == 'basic_declarative_item':
-            p[0] = c_declarative_part_basic_declarative_item(p[1])
+        if type(p[1]) == 'c_basic_declarative_item':
+            p[0] = ga.c_declarative_part_basic_declarative_item(p[1])
         else:
-            p[0] = c_declarative_part_subprogram_body(p[1])
+            p[0] = ga.c_declarative_part_subprogram_body(p[1])
     else: 
-        if type(p[1]) == 'basic_declarative_item':
-            p[0] = c_declarative_part_basic_declarative_item_loop(p[1],p[2])
+        if type(p[1]) == 'c_basic_declarative_item':
+            p[0] = ga.c_declarative_part_basic_declarative_item_loop(p[1],p[2])
         else: 
-            p[0] = c_declarative_part_subprogram_body_loop(p[1],p[2])
+            p[0] = ga.c_declarative_part_subprogram_body_loop(p[1],p[2])
 
 def p_basic_declarative_item(p):
     ''' basic_declarative_item: 
@@ -73,12 +73,12 @@ def p_basic_declarative_item(p):
     | use_clause 
     '''
 
-    if type(p[1]) == 'basic_declaration':
-        p[0] = c_basic_declarative_item_basic_declaration(p[1])
-    elif type(p[1]) == 'representation_clause':
-        p[0] = c_basic_declarative_item_representation_clause(p[1])
+    if type(p[1]) == 'c_basic_declaration':
+        p[0] = ga.c_basic_declarative_item_basic_declaration(p[1])
+    elif type(p[1]) == 'c_representation_clause':
+        p[0] = ga.c_basic_declarative_item_representation_clause(p[1])
     else:
-        p[0] = c_basic_declarative_item_use_clause(p[1])
+        p[0] = ga.c_basic_declarative_item_use_clause(p[1])
 
 
 def p_representation_clause(p):
@@ -86,74 +86,90 @@ def p_representation_clause(p):
     attribute_definition_clause 
     | enumeration_represation_clause '''
 
-    if type(p[1]) == 'attribute_definition_clause':
-        p[0] = c_representation_clause_attribute_definition_clause(p[1])
+    if type(p[1]) == 'c_attribute_definition_clause':
+        p[0] = ga.c_representation_clause_attribute_definition_clause(p[1])
     else:
-        p[0] = c_representation_enumeration_representation_clause(p[1])
+        p[0] = ga.c_representation_clause_enumeration_representation_clause(p[1])
 
 def p_direct_name(p):
     ''' direct_name: 
     identifier 
     | operator_symbol '''
 
-    if type(p[1]) == 'identifier':
-        p[0] = c_direct_name_identifier(p[1])
+    if type(p[1]) == 'c_identifier':
+        p[0] = ga.c_direct_name_identifier(p[1])
     else:
-        p[0] = c_direct_name_operator_symbol(p[1])
+        p[0] = ga.c_direct_name_operator_symbol(p[1])
     
 
 def p_attribute_definition_clause(p):
     ''' attribute_definition_name: 
-    'for' name 'single_quote' attribute_designator 'use' expression ';' 
-    | 'for' name  'single_quote' attribute designator 'use' name ';' '''
+    FOR name SINGLEQUOTE attribute_designator USE expression SEMICOLON 
+    | FOR name SINGLEQUOTE attribute designator USE name SEMICOLON '''
 
-    if type(p[6]) == 'expression':
-        p[0] = c_attribute_definition_clause_expression(p[2],p[4],p[6])
+    if type(p[6]) == 'c_expression':
+        p[0] = ga.c_attribute_definition_clause_expression(p[2],p[4],p[6])
     else: 
-        p[0] = c_attribute_definition_clause_name(p[2],p[4],p[6])
+        p[0] = ga.c_attribute_definition_clause_name(p[2],p[4],p[6])
 
 
 def p_indexed_component(p):
     ''' indexed_component: 
-    name "(" expression ")"
-    | name "(" expression "," indexed_component ")"
+    name LPAREN expression RPAREN
+    | name LPAREN expression COLON indexed_component RPAREN
     '''
 
-    if len(p[0]) = 5:
-        p[0] = indexed_component(p[1],p[3])
+    if len(p[0]) == 5:
+        p[0] = ga.c_indexed_component(p[1],p[3])
     else:
-        p[0] = indexed_component_loop(p[1],p[3],p[5])
+        p[0] = ga.c_indexed_component_loop(p[1],p[3],p[5])
 
 def p_type_conversion(p):
     '''type_conversion: 
-    name "(" expression ")"
-    | name "(" name ")" ''' 
+    name LPAREN expression RPAREN
+    | name LPAREN name RPAREN ''' 
     
-    if type(p[3]) = 'expression':
-        p[0] = c_type_conversion_expression(p[1],p[3])
+    if type(p[3]) == 'c_expression':
+        p[0] = ga.c_type_conversion_expression(p[1],p[3])
     else: 
-        p[0] = c_type_conversion_name(p[1],p[3])
+        p[0] = ga.c_type_conversion_name(p[1],p[3])
         
 #########################
 def p_selected_component(p):
-    ''' select_component: name "." selector_name '''
+    ''' select_component: name DOT selector_name '''
+    p[0] = ga.c_selected_component(p[1],p[3])
 
 def p_attribute_designator(p):
-    ''' attribute_designator: ( identifier [" (" expression ")" ]) | "Digits" '''
+    ''' attribute_designator:
+    identifier
+    | identifier LPAREN expression RPAREN
+    | DIGITS '''
+    if len(p[0]) == 1:
+        if type(p[0]) == 'c_identifier':
+            p[0] = ga.c_attribute_designator_identifier(p[1])
+        else:
+            p[0] = ga.c_attribute_designator_digits()
+    else:
+        p[0] = ga.c_attribute_designator_identifier_expression(p[1],p[3])
 
 def p_expression(p):
-    ''' expression: relation { "and" relation} | relation { "and" "then" relation }
-    | relation { "or" relation } | relation { "or" "else" relation } | relation { "xor" relation } '''
+    ''' expression:
+    relation { "and" relation } 
+    | relation { "and" "then" relation }
+    | relation { "or" relation } 
+    | relation { "or" "else" relation } 
+    | relation { "xor" relation } '''
 
 def p_relation(p):
-    ''' relation: ( simple_expression [ ("=" | "/=" | "<" | "<=" | ">" | ">=" ) simple_expression ] )
-    | (simple_exoression [ "not" ] "in" (range | name) ) '''
+    ''' relation: 
+    ( simple_expression [ ("=" | "/=" | "<" | "<=" | ">" | ">=" ) simple_expression ] )
+    | (simple_expression [ "not" ] "in" (range | name) ) '''
 
 def p_simple_expression(p):
-    ''' simple_epxression: [ ( "+" | "-") ] term { ( "+" | "-" | "&") term } '''
+    ''' simple_expression: [ ( "+" | "-") ] term { ( "+" | "-" | "&") term } '''
 
 def p_term(p): 
-    ''' term: factor { ( "*" | "/" | "mod"  | "rem" ) factor } '''
+    ''' term: factor { ( "*" | "/" | "mod" | "rem" ) factor } '''
 
 def p_factor(p):
     ''' factor: ( primary [ "**" primary ] ) '''
@@ -169,7 +185,7 @@ def p_named_array_aggregate(p):
     ''' named_array_aggregate: "(" array_component_association {"," array_component_association } ")"'''
 
 def p_array_component_association(p):
-    ''' array_component_association: { "|" discrete_choice "=>" expression '''
+    ''' array_component_association: discrete_choice "=>" expression '''
 
 def p_discrete_choice_list(p):
     ''' discrete_choice_list: expression | '''
@@ -180,10 +196,10 @@ def p_discrete_choice(p):
 def p_subtype_indication(p):
     ''' subtype_indication: name[contraint]'''
 
-def p_contraint(p):
+def p_constraint(p):
     ''' constraint: range_constraint | digits_constraint | index_constraint | discriminant_constraint '''
 
-def p_discriminant_contraint(p):
+def p_discriminant_constraint(p):
     ''' discrimination_constraint:  "(" discriminant_association { "," discriminant_association } ")" '''
 
 def p_discriminant_association(p):
@@ -193,16 +209,16 @@ def p_index_constraint(p):
     ''' "(" discrete_range: { "," discrete_range } ")" '''
 
 def p_digits_constraint(p):
-    ''' digits_constraint: "digits  expression [range_constraint] "'''
+    ''' digits_constraint: "digits"  expression [range_constraint] '''
 
 def p_range_constraint(p):
-    '''"range: range"'''
+    '''"range: "range" range'''
 
 def p_range(p):
     '''range: (simple_expression ".." simple_expression )'''
 
 def p_range_attribute_reference(p):
-    ''' range_attribute_reference: name "" range_attribute_designator '''
+    ''' range_attribute_reference: name "'" range_attribute_designator '''
 
 def p_range_attribute_designator(p):
     ''' range_attribute_designator: "Range" ["(" expression ")"] '''
@@ -278,8 +294,10 @@ def p_loop_statement(p):
     ['reverse'] discrete_subtype_definition)] 'loop' sequence_of_statements 'end' 'loop' [name] ';' '''
     
 def p_if_statement(p):
-    '''if_statement: if expression 'then' sequence_of_statements { 'elsif' | expression 'then' sequence_of_statements }
-    ['else'|| sequence_of_statements] 'end' 'if' ';' '''
+    '''if_statement:
+     if expression 'then' sequence_of_statements 
+     { 'elsif' | expression 'then' sequence_of_statements }
+    ['else' sequence_of_statements] 'end' 'if' ';' '''
     
 def p_sequence_of_statements(p):
     ''' sequence_of_statements: statement {statement}'''

@@ -37,6 +37,7 @@ palRESERVADA =  {
     'for' : 'FOR',
     'function' : 'FUNCTION',
     'if' : 'IF',
+    'is' : 'IS',
     'loop' : 'LOOP',
     'mod' : 'MOD',
     'not' : 'NOT',
@@ -47,6 +48,7 @@ palRESERVADA =  {
     'raise' : 'RAISE',
     'range' : 'RANGE',
     'repeat' : 'REPEAT',
+    'res : RES', #resto
     'return' : 'RETURN',
     'reverse' : 'REVERSE',
     'task' : 'TASK',
@@ -58,21 +60,32 @@ palRESERVADA =  {
 
 # List of token names. This is always required
 tokens = [
+    'SINGLEQUOTE',
+    'DOUBLEQUOTE',
+    'DIGITS', #?
     'NUMBER',
     'PLUS',
     'MINUS',
     'TIMES',
     'DIVIDE',
+    'POWER',
     'LPAREN',
+    'PIPE',
     'RPAREN',
     'STRING',
     'COLON',
     'SEMICOLON',
     'COMMENT',
     'DOTDOT',
-    'IDENT',
-    'ASSIGN',
-    'DEDENT',
+    'ASSIGN', #:=
+    'REFASSIGN' #=>
+    'CONCAT', #concatenação
+    'GREATERTHAN',
+    'GREATERTHANEQUAL',
+    'LESSTHAN',
+    'LESSTHANEQUAL',
+    'NOTEQUAL',
+    'EQUAL',
     'ID'
 ]+list(palRESERVADA.values())
 
@@ -84,16 +97,29 @@ identList = []
 
 # Regular expression rules for simple tokens
 t_COMMENT = r'--[^\n]*\n'
+t_SINGLEQUOTE = r'\''
+t_DOUBLEQUOTE = r'"'
 t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
+t_POWER = r'**'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_PIPE = r'\|'
 t_STRING = r'"[^--]*"'
 t_ASSIGN = r':='
+t_REFASSIGN = r'=>'
+t_CONCAT = r'&'
 t_COLON = r'\:'
 t_SEMICOLON = r';'
+t_GREATERTHAN = r'>'
+t_GREATERTHANEQUAL = r'>='
+t_LESSTHAN = r'<'
+t_LESSTHANEQUAL = r'<='
+t_NOTEQUAL = r'/='
+t_EQUAL = r'='
+t_DOT = r'\.'
 t_DOTDOT = r'\.\.'
 
 # A regular expression rule with some action code
@@ -130,19 +156,6 @@ def t_IDENT(t):
         identList.append(counter) # empilha ident
         print(identList)
         return t
-
-             
-'''
-     identList.pop() # desempilha ident
-        # se a identação for diferente do topo atual da pilha = identação errada
-        if identList[-1] != counter:
-            print('Erro de identação')
-        else :
-            -- Isto é um comentario
-            t.type = 'DEDENT'
-            return t # retorna dedent
-'''
-    
 
 def t_NUMBER(t):
     r'\d+'

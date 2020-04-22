@@ -31,10 +31,10 @@ class c_designator_name_identfier(a_designator):
     def accept(self, visitor):
         pass
 
-class c_designator_name_operation_symbol(a_designator):
-    def __init__(self, name, operation_symbol):
+class c_designator_name_operator_symbol(a_designator):
+    def __init__(self, name, operator_symbol):
         self.name = name
-        self.operation_symbol = operation_symbol
+        self.operator_symbol = operator_symbol
     def accept(self, visitor):
         pass
 
@@ -44,9 +44,9 @@ class c_designator_identfier(a_designator):
     def accept(self, visitor):
         pass
 
-class c_designator_operation_symbol(a_designator):
-    def __init__(self, operation_symbol):
-        self.operation_symbol = operation_symbol
+class c_designator_operator_symbol(a_designator):
+    def __init__(self, operator_symbol):
+        self.operator_symbol = operator_symbol
     def accept(self, visitor):
         pass
 
@@ -138,9 +138,9 @@ class c_representation_clause_attribute_definition_clause(a_representation_claus
     def accept(self, visitor):
         pass
 
-class c_representation_clause_enumeration_represation_clause(a_representation_clause):
-    def __init__(self,enumeration_represation_clause):
-        self.enumeration_represation_clause = enumeration_represation_clause
+class c_representation_clause_enumeration_representation_clause(a_representation_clause):
+    def __init__(self,enumeration_representation_clause):
+        self.enumeration_representation_clause = enumeration_representation_clause
     def accept(self, visitor):
         pass
 
@@ -157,9 +157,9 @@ class c_direct_name_identifier(a_direct_name):
     def accept(self, visitor):
         pass
 
-class c_direct_name_operation_symbol(a_direct_name):
-    def __init__(self,operation_symbol):
-        self.operation_symbol = operation_symbol
+class c_direct_name_operator_symbol(a_direct_name):
+    def __init__(self,operator_symbol):
+        self.operator_symbol = operator_symbol
     def accept(self, visitor):
         pass
 
@@ -225,6 +225,54 @@ class c_type_conversion_expression(a_type_conversion):
 
 #------------------------------------------
 #####################################
+class a_selected_component(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class c_selected_component(a_selected_component):
+    def __init__(self,name,selector_name):
+        self.name = name
+        self.selector_name = selector_name
+    def accept(self, visitor):
+        pass
+
+#------------------------------------------
+class a_attribute_designator(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class c_attribute_designator_identifier(a_attribute_designator):
+    def __init__(self,identifier):
+        self.identifier = identifier
+    def accept(self, visitor):
+        pass
+
+class c_attribute_designator_identifier_expression(a_attribute_designator):
+    def __init__(self,identifier,expression):
+        self.identifier = identifier
+        self.expression = expression
+    def accept(self, visitor):
+        pass
+
+class c_attribute_designator_digits(a_attribute_designator):
+    def __init__(self):
+        pass
+    def accept(self, visitor):
+        pass
+#------------------------------------------
+#class a_expression(metaclass=ABCMeta):
+#    @abstractmethod
+#    def accept(self, visitor):
+#        pass
+#
+#class c_expression(a_expression):
+#    def __init__(self,)
+#    def accept(self, visitor):
+#        pass
+#------------------------------------------
+##############
 class sequence_of_statements(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
@@ -296,16 +344,6 @@ class assignment_statement(metaclass=ABCMeta):
         pass
 
 class selected_component(metaclass=ABCMeta):
-    @abstractmethod
-    def accept(self, visitor):
-        pass
-
-class attribute_designator(metaclass=ABCMeta):
-    @abstractmethod
-    def accept(self, visitor):
-        pass
-
-class expression(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
