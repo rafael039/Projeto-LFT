@@ -37,6 +37,7 @@ palRESERVADA =  {
     'for' : 'FOR',
     'function' : 'FUNCTION',
     'if' : 'IF',
+    'in' : 'IN',
     'is' : 'IS',
     'loop' : 'LOOP',
     'mod' : 'MOD',
@@ -48,7 +49,7 @@ palRESERVADA =  {
     'raise' : 'RAISE',
     'range' : 'RANGE',
     'repeat' : 'REPEAT',
-    'res : RES', #resto
+    'rem' : 'REM', #resto
     'return' : 'RETURN',
     'reverse' : 'REVERSE',
     'task' : 'TASK',
@@ -62,7 +63,6 @@ palRESERVADA =  {
 tokens = [
     'SINGLEQUOTE',
     'DOUBLEQUOTE',
-    'DIGITS', #?
     'NUMBER',
     'PLUS',
     'MINUS',
@@ -77,8 +77,9 @@ tokens = [
     'SEMICOLON',
     'COMMENT',
     'DOTDOT',
+    'DOT',
     'ASSIGN', #:=
-    'REFASSIGN' #=>
+    'REFASSIGN', #=>
     'CONCAT', #concatenação
     'GREATERTHAN',
     'GREATERTHANEQUAL',
@@ -103,7 +104,7 @@ t_PLUS = r'\+'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
-t_POWER = r'**'
+t_POWER = r'\*\*'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_PIPE = r'\|'
@@ -155,7 +156,6 @@ def t_IDENT(t):
     elif identList[-1] < counter:
         identList.append(counter) # empilha ident
         print(identList)
-        return t
 
 def t_NUMBER(t):
     r'\d+'
