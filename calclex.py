@@ -30,7 +30,7 @@ palRESERVADA =  {
     'digits' : 'DIGITS',
     'do' : 'DO',
     'else' : 'ELSE',
-    'elseif' : 'ELSEIF',
+    'elsif' : 'ELSIF',
     'end' : 'END',
     'exit' : 'EXIT',
     'false' : 'FALSE',
