@@ -4,58 +4,36 @@ import gramAbstrata as ga
 import visitor as vis
 
 def p_subprogram_body(p):
-    ''' subprogram_body: subprogram_specification
-        IS
-        declarative_part
-        BEGIN
-        sequence_of_statements
-        END
-        designator
-        SEMICOLON
-        | subprogram_specification
-        IS
-        declarative_part
-        BEGIN
-        sequence_of_statements
-        END
-        SEMICOLON
+    '''subprogram_body : subprogram_specification IS declarative_part BEGIN sequence_of_statements END designator SEMICOLON
+        | subprogram_specification IS declarative_part BEGIN sequence_of_statements END SEMICOLON
     '''
     if len(p) == 9:
         p[0] = ga.c_subprogram_body(p[1],p[3],p[5],p[7])
     else:
         p[0] = ga.c_subprogram_body(p[1],p[3],p[5],None)
 
+
 def p_designator(p):
-    ''' designator: 
-        name DOT identifier 
-        | name DOT operator_symbol 
-        | identifier 
-        | operator_symbol
+    ''' designator : name DOT ID
+        | ID
     ''' 
     if len(p) == 4:
-        if isinstance(p[3], ga.a_identifier): #dúvida: essa classe identifier é um token? 
-            p[0] = ga.c_designator_name_identfier(p[1],p[3])
-        else:
-            p[0] = ga.c_designator_name_operator_symbol(p[1],p[3])
+        p[0] = ga.c_designator_name_identfier(p[1],p[3])
+
     else:
-        if isinstance(p[3], ga.a_identifier):
-            p[0] = ga.c_designator_identfier(p[1])
-        else:
-            p[0] = ga.c_designator_operator_symbol(p[1])
+        p[0] = ga.c_designator_identfier(p[1])
 
 def p_subprogram_specification(p):
-    ''' subprogram_specification:
-    PROCEDURE defining_program_unit_name
+    ''' subprogram_specification : PROCEDURE defining_program_unit_name
     '''
     p[0] = ga.c_subprogram_specification(p[2])
 
 def p_declarative_part(p):
     # ocorrência de chaves = recursão
-    ''' declarative_part: 
-        basic_declarative_item 
+    ''' declarative_part : basic_declarative_item
         | subprogram_body 
         | basic_declarative_item declarative_part 
-        | subprogram_body declarative part
+        | subprogram_body declarative_part
     '''
     if len(p) == 2:
         if isinstance(p[1], ga.a_basic_declarative_item):
@@ -69,12 +47,11 @@ def p_declarative_part(p):
             p[0] = ga.c_declarative_part_subprogram_body_loop(p[1],p[2])
 
 def p_basic_declarative_item(p):
-    ''' basic_declarative_item: 
-    basic_declaration 
+    ''' basic_declarative_item : basic_declaration
     | representation_clause 
     | use_clause 
     '''
-
+    
     if isinstance(p[1], ga.a_basic_declarative_item):
         p[0] = ga.c_basic_declarative_item_basic_declaration(p[1])
     elif isinstance(p[1], ga.a_representation_clause):
@@ -84,9 +61,8 @@ def p_basic_declarative_item(p):
 
 
 def p_representation_clause(p):
-    ''' representation_clause: 
-    attribute_definition_clause 
-    | enumeration_represation_clause '''
+    ''' representation_clause : attribute_definition_clause
+    | enumeration_representation_clause '''
 
     if isinstance(p[1], ga.a_attribute_definition_clause):
         p[0] = ga.c_representation_clause_attribute_definition_clause(p[1])
@@ -94,20 +70,13 @@ def p_representation_clause(p):
         p[0] = ga.c_representation_clause_enumeration_representation_clause(p[1])
 
 def p_direct_name(p):
-    ''' direct_name: 
-    identifier 
-    | operator_symbol '''
-
-    if isinstance(p[1], ga.a_identifier):
-        p[0] = ga.c_direct_name_identifier(p[1])
-    else:
-        p[0] = ga.c_direct_name_operator_symbol(p[1])
+    ''' direct_name : ID'''
+    p[0] = ga.c_direct_name_identifier(p[1])
     
 
 def p_attribute_definition_clause(p):
-    ''' attribute_definition_name: 
-    FOR name SINGLEQUOTE attribute_designator USE expression SEMICOLON 
-    | FOR name SINGLEQUOTE attribute designator USE name SEMICOLON '''
+    ''' attribute_definition_clause : FOR name SINGLEQUOTE attribute_designator USE expression SEMICOLON
+    | FOR name SINGLEQUOTE attribute_designator USE name SEMICOLON '''
 
     if isinstance(p[6], ga.a_expression):
         p[0] = ga.c_attribute_definition_clause_expression(p[2],p[4],p[6])
@@ -116,8 +85,7 @@ def p_attribute_definition_clause(p):
 
 
 def p_indexed_component(p):
-    ''' indexed_component: 
-    name LPAREN expression RPAREN
+    ''' indexed_component : name LPAREN expression RPAREN
     | name LPAREN expression COLON indexed_component RPAREN
     '''
 
@@ -127,8 +95,7 @@ def p_indexed_component(p):
         p[0] = ga.c_indexed_component_loop(p[1],p[3],p[5])
 
 def p_type_conversion(p):
-    '''type_conversion: 
-    name LPAREN expression RPAREN
+    '''type_conversion : name LPAREN expression RPAREN
     | name LPAREN name RPAREN ''' 
     
     if isinstance(p[3], ga.a_expression):
@@ -137,29 +104,25 @@ def p_type_conversion(p):
         p[0] = ga.c_type_conversion_name(p[1],p[3])
         
 def p_selected_component(p):
-    ''' select_component: 
-    name DOT selector_name 
+    ''' selected_component : name DOT selector_name
     '''
     p[0] = ga.c_selected_component(p[1],p[3])
 
 def p_attribute_reference(p):
-    ''' attribute_reference:
-    name SINGLE_QUOTE attribute_designator
+    ''' attribute_reference : name SINGLEQUOTE attribute_designator
     '''
     p[0] = ga.c_attribute_reference(p[1],p[3])
 
 def p_attribute_designator(p):
-    ''' attribute_designator:
-    identifier
-    | identifier LPAREN expression RPAREN'''
+    ''' attribute_designator : ID
+    | ID LPAREN expression RPAREN'''
     if len(p[0]) == 2:
         p[0] = ga.c_attribute_designator_identifier(p[1])
     else:
         p[0] = ga.c_attribute_designator_identifier_expression(p[1],p[3])
 
 def p_expression(p):
-    ''' expression: 
-    relation AND relation 
+    ''' expression : relation AND relation
     | relation AND relation expression
     | relation AND THEN relation 
     | relation AND THEN relation expression
@@ -201,8 +164,7 @@ def p_expression(p):
         
 
 def p_relation(p):
-    ''' relation: 
-    simple_expression 
+    ''' relation : simple_expression
     | simple_expression EQUAL simple_expression 
     | simple_expression NOTEQUAL simple_expression
     | simple_expression LESSTHAN simple_expression
@@ -241,26 +203,12 @@ def p_relation(p):
             p[0] = ga.c_relation_not_in_name(p[1],p[3])
 
 def p_simple_expression(p):
-    ''' simple_expression:
-      term PLUS term 
-    | term MINUS term 
-    | term CONCAT term 
-    | PLUS term PLUS term 
-    | PLUS term MINUS term 
-    | PLUS term CONCAT term 
-    | MINUS term PLUS term 
-    | MINUS term MINUS term 
-    | MINUS term CONCAT term 
-    | term PLUS term simple_expression 
-    | term MINUS term simple_expression
-    | term CONCAT term simple_expression
-    | PLUS term PLUS term simple_expression
-    | PLUS term MINUS term simple_expression
-    | PLUS term CONCAT term simple_expression
-    | MINUS term PLUS term simple_expression
-    | MINUS term MINUS term simple_expression
-    | MINUS term CONCAT term simple_expression
+    ''' simple_expression : simple_expression PLUS term
+    | simple_expression MINUS term
+    | simple_expression CONCAT term
+    | unaryExp
     '''
+    #if p[2] == '+':
     if len(p[0]) == 4:
         if p[2] == '+':
             ga.c_simple_expression_plus(p[1],p[3])
@@ -307,9 +255,15 @@ def p_simple_expression(p):
             elif p[3] == '&':
                 ga.c_simple_expression_minus_concat_loop(p[2],p[4],p[5])
 
+def p_unary_exp(p):
+    '''unaryExp : PLUS term
+              | MINUS term
+              | term
+              '''
+    pass
+
 def p_term(p): 
-    ''' term:
-    factor
+    ''' term : factor
     | factor TIMES factor term
     | factor DIVIDE factor term
     | factor MOD factor term
@@ -328,8 +282,7 @@ def p_term(p):
             p[0] = ga.c_term_rem(p[1],p[3],p[4])
 
 def p_factor(p):
-    ''' factor:
-    primary
+    ''' factor : primary
     | primary POWER primary 
     '''
     if len(p[0]) == 2:
@@ -337,11 +290,15 @@ def p_factor(p):
     else:
         p[0] = ga.c_factor_power(p[1],p[3])
 
+def p_numeric_literal(p): #
+    '''numeric_literal : NUMBER_INT
+    | NUMBER_FLOAT
+    | NUMBER_EXPONENT
+    '''
+
 def p_primary(p):
-    ''' primary:
-    numeric_literal 
-    | NULL 
-    | string_literal 
+    ''' primary : numeric_literal
+    | NULL  
     | named_array_aggregate
     | name 
     | qualified_expression 
@@ -361,9 +318,8 @@ def p_primary(p):
         p[0] == ga.c_primary_null
 
 def p_qualified_expression(p):
-    ''' qualified_expression: 
-    name SINGLE_QUOTE LPAREN expression RPAREN
-    | name SINGLE_QUOTE named_array_aggregate
+    ''' qualified_expression : name SINGLEQUOTE LPAREN expression RPAREN
+    | name SINGLEQUOTE named_array_aggregate
     '''
     if isinstance(p[3], ga.a_expression):
         p[0] = ga.c_qualified_expression_expression(p[1])
@@ -371,8 +327,7 @@ def p_qualified_expression(p):
         p[0] = ga.c_qualified_expression_named_array_aggregate(p[1])
 
 def p_named_array_aggregate(p):
-    ''' named_array_aggregate: 
-    LPAREN array_component_association COMMA array_component_association named_array_aggregate RPAREN 
+    ''' named_array_aggregate : LPAREN array_component_association COMMA array_component_association named_array_aggregate RPAREN
     |  COMMA array_component_association 
     '''
 #371 - Utilizei uma forma diferente para gerar a repetição. Pode gerar algum problema futuro.
@@ -382,14 +337,12 @@ def p_named_array_aggregate(p):
         p[0] = ga.c_named_array_aggregate(p[2])
 
 def p_array_component_association(p):
-    ''' array_component_association:
-    discrete_choice REFASSIGN expression '''
+    ''' array_component_association : discrete_choice_list REFASSIGN expression '''
     p[0] = ga.c_array_component_association(p[1],p[3])
 
 def p_discrete_choice_list(p):
-    ''' discrete_choice_list: 
-    discrete_choice
-    | discrete_choice PIPE discrete_choice p_discrete_choice_list
+    ''' discrete_choice_list : discrete_choice
+    | discrete_choice PIPE discrete_choice discrete_choice_list
     '''
     if len(p[0]) == 2:
         p[0] = ga.c_discrete_choice_list(p[1])
@@ -397,8 +350,7 @@ def p_discrete_choice_list(p):
         p[0] = ga.c_discrete_choice_list_loop(p[1],p[3],p[4])
 
 def p_discrete_choice(p):
-    ''' discrete_choice: 
-    expression 
+    ''' discrete_choice : expression
     | discrete_range
     '''
     if isinstance(p[1], ga.a_expression):
@@ -407,8 +359,7 @@ def p_discrete_choice(p):
         p[0] = ga.c_discrete_choice_discrete_range(p[1])
 
 def p_discrete_range(p):
-    '''discrete_range:
-    subtype_indication 
+    '''discrete_range : subtype_indication
     | range
     '''
     if isinstance(p[1], ga.a_subtype_indicator):
@@ -417,8 +368,7 @@ def p_discrete_range(p):
         p[0] = ga.c_discrete_range_range(p[1])
 
 def p_subtype_indication(p):
-    ''' subtype_indication: 
-    name
+    ''' subtype_indication : name
     | name constraint
     '''
     if len(p[0]) == 2:
@@ -427,8 +377,7 @@ def p_subtype_indication(p):
         p[0] = ga.c_subtype_indicator_name_constraint(p[1],p[2])
 
 def p_constraint(p):
-    ''' constraint: 
-    range_constraint 
+    ''' constraint : range_constraint
     | digits_constraint 
     | index_constraint 
     | discriminant_constraint 
@@ -443,8 +392,7 @@ def p_constraint(p):
         p[0] = ga.c_constraint_discriminant_constraint(p[1])
         
 def p_discriminant_constraint(p):
-    ''' discrimination_constraint:  
-    LPAREN discriminant_association COMMA discriminant_association RPAREN 
+    ''' discriminant_constraint : LPAREN discriminant_association COMMA discriminant_association RPAREN
     | COMMA discriminant_association '''
     
     if p[1] == '(':
@@ -455,12 +403,10 @@ def p_discriminant_constraint(p):
 
 
 def p_discriminant_association(p):
-    ''' discriminant_association: 
-    selector_name PIPE selector_name REFASSIGN expression 
+    ''' discriminant_association : selector_name PIPE selector_name REFASSIGN expression
     | selector_name PIPE selector_name discriminant_association REFASSIGN expression 
     | PIPE selector_name 
     | expression
-    
     '''
     if len(p[0]) == 6:
         p[0] = ga.c_discriminant_association(p[1],p[3],p[5])  
@@ -473,8 +419,7 @@ def p_discriminant_association(p):
 
 
 def p_index_constraint(p):
-    ''' index_constraint:
-    LPAREN discrete_range RPAREN
+    ''' index_constraint : LPAREN discrete_range RPAREN
     | LPAREN discrete_range COMMA discrete_range index_constraint RPAREN 
     '''
     if len(p[0]) == 4:
@@ -483,8 +428,7 @@ def p_index_constraint(p):
         p[0] = ga.c_index_constraint_loop(p[2],p[4],p[5])
 
 def p_digits_constraint(p):
-    ''' digits_constraint: 
-    DIGITS expression range_constraint
+    ''' digits_constraint : DIGITS expression range_constraint
     | DIGITS expression
     '''
     if len(p[0]) == 4:
@@ -493,14 +437,12 @@ def p_digits_constraint(p):
         p[0] = ga.c_digits_constraint(p[2])
 
 def p_range_constraint(p):
-    '''range: 
-    RANGE range
+    '''range_constraint : RANGE range
     '''
     p[0] = ga.c_range_constraint(p[2])
 
 def p_range(p):
-    '''range: 
-    range_attribute_refrennce
+    '''range : range_attribute_reference
     | simple_expression DOTDOT simple_expression 
     '''
     if len(p[0]) == 2:
@@ -509,14 +451,12 @@ def p_range(p):
         p[0] = ga.c_range_simple_expression(p[1],p[3])
 
 def p_range_attribute_reference(p):
-    ''' range_attribute_reference: 
-    name SINGLEQUOTE range_attribute_designator 
+    ''' range_attribute_reference : name SINGLEQUOTE range_attribute_designator
     '''
     p[0] = ga.c_range_attribute_reference(p[1], p[3])
 
 def p_range_attribute_designator(p):
-    ''' range_attribute_designator:
-    RANGE
+    ''' range_attribute_designator : RANGE
     | RANGE LPAREN expression RPAREN 
     '''
     if len(p[0]) == 2:
@@ -525,8 +465,7 @@ def p_range_attribute_designator(p):
         p[0] = ga.c_range_attribute_designator_expression(p[3])
 
 def p_name(p):
-    ''' name:
-    direct_name 
+    ''' name : direct_name
     | slice 
     | selected_component 
     | attribute_reference 
@@ -553,14 +492,12 @@ def p_name(p):
         p[0] = ga.c_name_indexed_component(p[1])
 
 def p_slice(p):
-    ''' slice:
-    name LPAREN discrete_range RPAREN
+    ''' slice : name LPAREN discrete_range RPAREN
     '''
     p[0] = ga.c_slice(p[1],p[3])
 
 def p_function_call(p):
-    ''' function_call:
-    name 
+    ''' function_call : name
     | name actual_parameter_part
     '''
     if len(p[0]) == 2:
@@ -569,10 +506,8 @@ def p_function_call(p):
         p[0] = ga.c_function_call_actual_parameter_part(p[1],p[2])
 
 def p_actual_parameter_part(p):
-    ''' actual_parameter_part: 
-    LPAREN parameter_association actual_parameter_part RPAREN
-    LPAREN parameter_association RPAREN
-    COMMA parameter_association
+    ''' actual_parameter_part : LPAREN parameter_association RPAREN
+                                   | LPAREN parameter_association actual_parameter_part_loop RPAREN
     '''
     if len(p[0]) == 5:
         p[0] = ga.c_actual_parameter_part_loop(p[2],p[3])
@@ -581,10 +516,13 @@ def p_actual_parameter_part(p):
     else:
         p[0] = ga.c_actual_parameter_part_comma(p[2])
 
+def p_actual_parameter_part_loop(p): #
+    ''' actual_parameter_part_loop : COMMA parameter_association actual_parameter_part_loop
+                                   | COMMA parameter_association
+    '''
 
 def p_parameter_association(p):
-    ''' parameter_association: 
-    expression
+    ''' parameter_association : expression
     | name
     | selector_name REFASSIGN expression
     | selector_name REFASSIGN name 
@@ -602,58 +540,74 @@ def p_parameter_association(p):
         
 
 def p_selector_name(p):
-    ''' selector_name: 
-    identifier 
+    ''' selector_name : ID
     | character_literal 
-    | operator_symbol 
     '''
     if isinstance(p[1], ga.a_identifier): 
         p[0] = ga.c_selector_name_identifier(p[1])
-    elif isinstance(p[1], ga.a_character_literal):
-        p[0] = ga.c_selector_name_character_literal(p[1])
     else:
-        p[0] = ga.c_selector_name_operator_symbol(p[1])
+        p[0] = ga.c_selector_name_character_literal(p[1])
+
+def p_graphic_character(p): #
+    '''graphic_character : SPACE
+    | NUMBER_INT
+    | IDENTIFIER_LETTER_UPPER
+    | IDENTIFIER_LETTER_LOWER
+    '''
 
 def p_character_literal(p):
-    ''' character_literal:
-    SINGLE_QUOTE graphic_character SINGLE_QUOTE 
+    ''' character_literal : SINGLEQUOTE graphic_character SINGLEQUOTE
     '''
     p[0] = ga.c_character_literal(p[2])
 
-def enumeration_represation_clause(p):
-    ''' enumeration_represation_clause:
-    FOR direct_name USE named_array_aggregate SEMICOLON 
-    '''
+def p_enumeration_representation_clause(p):
+    ''' enumeration_representation_clause : FOR direct_name USE named_array_aggregate SEMICOLON '''
     p[0] = ga.c_enumeration_representation_clause(p[2],p[4])
 
-def use_clause(p):
-    ''' use_clause:
-    USE name 
-    | USE name COMMA name 
-    | TYPE name SEMICOLON
-    | TYPE name COMMA name SEMICOLON
+def p_use_clause(p):
+    ''' use_clause : LPAREN USE name RPAREN
+    | LPAREN TYPE name RPAREN
+    | LPAREN USE name use_clause_loop RPAREN
+    | LPAREN TYPE name use_clause_loop RPAREN
     '''
-    #como fazer o loop aqui?
+    if len(p[0]) == 4: 
+        p[0] = ga.c_use_clause_loop(p[2],p[3])
+    elif p[1] == 'use':
+        p[0] = ga.c_use_clause_use(p[2])
+    else :
+        p[0] = ga.c_use_clause_type(p[2])
 
-def p_incomplete_type_declaration(p):
+def p_use_clause_loop(p):
+    ''' use_clause_loop : COMMA name use_clause_loop
+                        | COMMA name
     '''
-    incomplete_type_declaration:
-    TYPE identifier SEMICOLON
-    | TYPE identifier discriminant_part SEMICOLON
+    if len(p[0]) == 2 :
+        p[0] = ga.c_use_clause_loop(p[2])
+    else:
+        p[0] = ga.c_use_clause_loop(p[2],p[3])
+
+def p_discriminant_part(p): #
+    '''discriminant_part : identifier_list COLON name ASSIGN expression '''
+    p[0] = ga.c_discriminant_part(p[1],p[3],p[5])
+
+
+def p_incomplete_type_definition(p):
+    '''
+    incomplete_type_definition : TYPE ID SEMICOLON
+    | TYPE ID discriminant_part SEMICOLON
     '''
     if len(p[0]) == 4:
-        p[0] = ga.c_incomplete_type_declaration(p[2])
+        p[0] = ga.c_incomplete_type_definition(p[2])
     else:
-        p[0] = ga.c_incomplete_type_declaration_discriminant_part(p[2],p[3])
+        p[0] = ga.c_incomplete_type_definition_discriminant_part(p[2],p[3])
 
 def p_basic_declaration(p):
-    ''' basic_declaration:  
-    incomplete_type_declaration
+    ''' basic_declaration : incomplete_type_definition
     | number_declaration 
     | subprogram_declaration
     '''
-    if isinstance(p[1], ga.a_incomplete_type_declaration):
-        p[0] = ga.c_basic_declaration_incomplete_type_declaration(p[1])
+    if isinstance(p[1], ga.a_incomplete_type_definition):
+        p[0] = ga.c_basic_declaration_incomplete_type_definition(p[1])
     elif isinstance(p[1], ga.a_number_declaration):
         p[0] = ga.c_basic_declaration_number_declaration(p[1])
     else:
@@ -661,16 +615,14 @@ def p_basic_declaration(p):
 
 
 def p_subprogram_declaration(p):
-    '''subprogram_declaration:
-    subprogram_specification SEMICOLON
+    '''subprogram_declaration : subprogram_specification SEMICOLON
     '''
     p[0] = ga.c_subprogram_declaration(p[1])
     
 
 def p_defining_program_unit_name(p):
-    ''' defining_program_unit_name:
-    identifier 
-    | name DOT identifier '''
+    ''' defining_program_unit_name : ID
+    | name DOT ID '''
 
     if isinstance(p[1], ga.a_identifier):
         p[0] = ga.c_defining_program_unit_name_identifier(p[1])
@@ -678,41 +630,24 @@ def p_defining_program_unit_name(p):
         p[0] = ga.c_defining_program_unit_name_name_identifier(p[1],p[3])
 
 def p_number_declaration(p):
-    ''' identifier_list:
-      | COLON CONSTANT ASSIGN expression SEMICOLON 
+    ''' number_declaration : COLON CONSTANT ASSIGN expression SEMICOLON
     '''
     p[0] = ga.c_number_declaration(p[4])
 
 def p_identifier_list(p):
-    ''' identifier:
-      | identifier { "," identifier } 
+    ''' identifier_list : ID
+                         | ID COMMA identifier_list
     '''
     # como fazer o loop aqui?
 
 def p_loop_statement(p):
-    ''' loop_statement:
-
-    LOOP sequence_of_statements END LOOP SEMICOLON 
-
-    LOOP sequence_of_statements END LOOP name SEMICOLON 
-
-    | LPAREN WHILE expression RPAREN
-    LOOP sequence_of_statements END LOOP SEMICOLON 
-
-    | LPAREN WHILE expression RPAREN
-    LOOP sequence_of_statements END LOOP name SEMICOLON 
-
-    | LPAREN FOR identifier IN discrete_subtype_definition RPAREN
-    LOOP sequence_of_statements END LOOP SEMICOLON 
-
-    | LPAREN FOR identifier IN discrete_subtype_definition RPAREN
-    LOOP sequence_of_statements END LOOP name SEMICOLON 
-
-    | LPAREN FOR identifier IN REVERSE discrete_subtype_definition RPAREN
-    LOOP sequence_of_statements END LOOP SEMICOLON 
-
-    |LPAREN FOR identifier IN REVERSE discrete_subtype_definition RPAREN
-    LOOP sequence_of_statements END LOOP name SEMICOLON 
+    ''' loop_statement : LOOP sequence_of_statements END LOOP SEMICOLON LOOP sequence_of_statements END LOOP name SEMICOLON
+    | LPAREN WHILE expression RPAREN LOOP sequence_of_statements END LOOP SEMICOLON
+    | LPAREN WHILE expression RPAREN LOOP sequence_of_statements END LOOP name SEMICOLON
+    | LPAREN FOR ID IN discrete_subtype_definition RPAREN LOOP sequence_of_statements END LOOP SEMICOLON
+    | LPAREN FOR ID IN discrete_subtype_definition RPAREN LOOP sequence_of_statements END LOOP name SEMICOLON
+    | LPAREN FOR ID IN REVERSE discrete_subtype_definition RPAREN LOOP sequence_of_statements END LOOP SEMICOLON
+    | LPAREN FOR ID IN REVERSE discrete_subtype_definition RPAREN LOOP sequence_of_statements END LOOP name SEMICOLON
     '''
     if len(p[0]) == 6:
         p[0] = ga.c_loop_statement(p[2])
@@ -733,30 +668,9 @@ def p_loop_statement(p):
         p[0] = ga.c_loop_statement_for_reverse_name(p[3],p[6],p[9],p[12])
 
 def p_if_statement(p):
-    '''if_statement:
-
-    IF expression THEN
-    sequence_of_statements 
-    END IF SEMICOLON 
-
-    | IF expression THEN
-    sequence_of_statements 
-    ELSIF expression THEN
-    sequence_of_statements
-    END IF SEMICOLON 
-
-    | IF expression THEN
-    sequence_of_statements 
-    ELSIF expression THEN
-    sequence_of_statements
-    if_statement 
-    END IF SEMICOLON
-    
-    | IF expression THEN
-    sequence_of_statements
-    ELSE sequence_of_statements
-    END IF SEMICOLON 
+    '''if_statement : IF expression THEN sequence_of_statements if_statemant_loop
     '''
+
     if len(p[0]) == 8:
         p[0] = ga.c_if_statement(p[2],p[4])
     elif len(p[0]) == 12:
@@ -766,10 +680,15 @@ def p_if_statement(p):
     else:
         p[0] = ga.c_if_statement_else(p[2],p[4],p[6])
 
+def p_if_statemant_loop(p):
+    ''' if_statemant_loop : ELSIF sequence_of_statements if_statemant_loop 
+                           | ELSE sequence_of_statements END IF SEMICOLON 
+                           | END IF SEMICOLON
+    '''
+
 def p_sequence_of_statements(p):
-    ''' sequence_of_statements: 
-    statement
-    statement sequence_of_statements
+    ''' sequence_of_statements : statement sequence_of_statements
+                                | statement
     '''
     if len(2):
         p[0] = ga.c_sequence_of_statements(p[1])
@@ -777,9 +696,8 @@ def p_sequence_of_statements(p):
         p[0] = ga.c_sequence_of_statements_loop(p[1],p[2])
 
 def p_statement(p):
-    '''statement: 
-    simple_statement 
-    | compound_statement
+    '''statement : simple_statement
+                 | compound_statement
     '''
     if isinstance(p[1], ga.a_simple_statement):
         p[0] = ga.c_statement_simple_statement(p[1])
@@ -787,9 +705,8 @@ def p_statement(p):
         p[0] = ga.c_statement_compound_statement(p[1])
 
 def p_compound_statement(p):
-    '''compound_statement:
-    if_statement
-    | loop_statement
+    '''compound_statement : if_statement
+                          | loop_statement
     '''
     if isinstance(p[1], ga.a_compound_statement):
         p[0] = ga.c_compound_statement_if_statement(p[1])
@@ -797,24 +714,18 @@ def p_compound_statement(p):
         p[0] = ga.c_compound_statement_loop_statement(p[1])
 
 def p_discrete_subtype_definition(p):
-    '''discrete_subtype_definition:
-     subtype_indication 
-     | range
+    '''discrete_subtype_definition : subtype_indication
+                                    | range
      '''
     if isinstance(p[1],ga.a_subtype_indicator):
         p[0] = ga.c_discrete_subtype_definition_subtype_indication(p[1])
     else:
         p[0] = ga.c_discrete_subtype_definition_range(p[1])
 
-
-
 def p_simple_statement(p):
-    ''' simple_statement:
-    null_statement 
-    | assignment_statement 
+    ''' simple_statement : null_statement
+    | assignment_statement
     | exit_statement 
-    | procedure_call_statement
-    | return_statement 
     | entry_call_statement 
     | code_statement 
     '''
@@ -828,9 +739,8 @@ def p_simple_statement(p):
         p[0] = ga.c_simple_statement_code_statement(p[1])
 
 def p_entry_call_statement(p):
-    '''entry_call_statement:
-    name SEMICOLON
-    | name atual_parameter_part SEMICOLON
+    '''entry_call_statement : name SEMICOLON
+    | name actual_parameter_part SEMICOLON
     '''
     if len(p[0]) == 2:
         p[0] = ga.c_entry_call_statement(p[1])
@@ -838,14 +748,12 @@ def p_entry_call_statement(p):
         p[0] = ga.c_entry_call_statement_actual_parameter_part(p[1],p[2])
 
 def p_code_statement(p):
-    '''code_statement:
-    qualified_expression SEMICOLON
+    '''code_statement : qualified_expression SEMICOLON
     '''
     p[0] = ga.c_code_statement(p[1])
 
 def p_exit_statement(p):
-    '''exit_statement:
-    EXIT SEMICOLON 
+    '''exit_statement : EXIT SEMICOLON
     | EXIT name SEMICOLON 
     '''
     if len(p[0]) == 3:
@@ -854,12 +762,11 @@ def p_exit_statement(p):
         p[0] = ga.c_exit_statement_name(p[1])
 
 def p_null_statement(p):
-    '''null_statement: NULL '''
+    '''null_statement : NULL '''
     p[0] = ga.c_null_statement()
 
 def p_assignment_statement(p):
-    ''' assignment_statement: 
-    name ASSIGN expression SEMICOLON 
+    ''' assignment_statement : name ASSIGN expression SEMICOLON
     '''
     p[0] = ga.c_assignment_statement(p[1], p[3])
 

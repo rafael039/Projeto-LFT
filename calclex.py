@@ -55,6 +55,7 @@ palRESERVADA =  {
     'task' : 'TASK',
     'then' : 'THEN',
     'true' : 'TRUE',
+    'type': 'TYPE',
     'use' : 'USE',
     'while' : 'WHILE',
     'xor' : 'XOR'}
@@ -63,7 +64,9 @@ palRESERVADA =  {
 tokens = [
     'SINGLEQUOTE',
     'DOUBLEQUOTE',
-    'NUMBER',
+    'NUMBER_INT',
+    'NUMBER_FLOAT',
+    'NUMBER_EXPONENT',
     'PLUS',
     'MINUS',
     'TIMES',
@@ -73,6 +76,7 @@ tokens = [
     'PIPE',
     'RPAREN',
     'STRING',
+    'COMMA',
     'COLON',
     'SEMICOLON',
     'COMMENT',
@@ -87,6 +91,9 @@ tokens = [
     'LESSTHANEQUAL',
     'NOTEQUAL',
     'EQUAL',
+    'SPACE',
+    'IDENTIFIER_LETTER_UPPER',
+    'IDENTIFIER_LETTER_LOWER',
     'ID'
 ]+list(palRESERVADA.values())
 
@@ -112,6 +119,7 @@ t_STRING = r'"[^--]*"'
 t_ASSIGN = r':='
 t_REFASSIGN = r'=>'
 t_CONCAT = r'&'
+t_COMMA = r','
 t_COLON = r'\:'
 t_SEMICOLON = r';'
 t_GREATERTHAN = r'>'
@@ -122,6 +130,10 @@ t_NOTEQUAL = r'/='
 t_EQUAL = r'='
 t_DOT = r'\.'
 t_DOTDOT = r'\.\.'
+t_SPACE = r'\ '
+t_IDENTIFIER_LETTER_UPPER = r'[a-z]'
+t_IDENTIFIER_LETTER_LOWER = r'[A-Z]'
+
 
 # A regular expression rule with some action code
 # A cada token, uma regra deve ser executada
@@ -157,9 +169,19 @@ def t_IDENT(t):
         identList.append(counter) # empilha ident
         print(identList)
 
-def t_NUMBER(t):
+def t_NUMBER_INT(t):
     r'\d+'
     t.value = int(t.value)
+    return t
+
+def t_NUMBER_FLOAT(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)
+    return t
+
+def t_NUMBER_EXPONENT(t):
+    r'\d+E[+-]\d+|\d+\.\d+E[+-]\d+'
+    t.value = float(t.value)
     return t
 
 # Define a rule so we can track line numbers
