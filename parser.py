@@ -548,12 +548,22 @@ def p_selector_name(p):
     else:
         p[0] = ga.c_selector_name_character_literal(p[1])
 
+########################################
+
 def p_graphic_character(p): #
     '''graphic_character : SPACE
     | NUMBER_INT
     | IDENTIFIER_LETTER_UPPER
     | IDENTIFIER_LETTER_LOWER
     '''
+    upper = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','R','S','T','U','V','W','X','Y','Z']
+    if p[1] = ' ':
+        p[0] = ga.c_graphic_character()
+    elif p[1] = : 
+        p[0] = ga.c_graphic_character()
+        ## 
+
+###########################################
 
 def p_character_literal(p):
     ''' character_literal : SINGLEQUOTE graphic_character SINGLEQUOTE
@@ -638,16 +648,20 @@ def p_identifier_list(p):
     ''' identifier_list : ID
                          | ID COMMA identifier_list
     '''
-    # como fazer o loop aqui?
+    if len(p[0]) = 2:
+        p[0] = ga.c_identifier_list()
+    else:
+        p[0] = ga.c_identifier_list(p[3])
 
 def p_loop_statement(p):
-    ''' loop_statement : LOOP sequence_of_statements END LOOP SEMICOLON LOOP sequence_of_statements END LOOP name SEMICOLON
-    | LPAREN WHILE expression RPAREN LOOP sequence_of_statements END LOOP SEMICOLON
-    | LPAREN WHILE expression RPAREN LOOP sequence_of_statements END LOOP name SEMICOLON
-    | LPAREN FOR ID IN discrete_subtype_definition RPAREN LOOP sequence_of_statements END LOOP SEMICOLON
-    | LPAREN FOR ID IN discrete_subtype_definition RPAREN LOOP sequence_of_statements END LOOP name SEMICOLON
-    | LPAREN FOR ID IN REVERSE discrete_subtype_definition RPAREN LOOP sequence_of_statements END LOOP SEMICOLON
-    | LPAREN FOR ID IN REVERSE discrete_subtype_definition RPAREN LOOP sequence_of_statements END LOOP name SEMICOLON
+    ''' loop_statement : LOOP sequence_of_statements END LOOP SEMICOLON
+    | LOOP sequence_of_statements END LOOP name SEMICOLON
+    | WHILE expression LOOP sequence_of_statements END LOOP SEMICOLON
+    | WHILE expression LOOP sequence_of_statements END LOOP name SEMICOLON
+    | FOR ID IN discrete_subtype_definition LOOP sequence_of_statements END LOOP SEMICOLON
+    | FOR ID IN discrete_subtype_definition LOOP sequence_of_statements END LOOP name SEMICOLON
+    | FOR ID IN REVERSE discrete_subtype_definition LOOP sequence_of_statements END LOOP SEMICOLON
+    | FOR ID IN REVERSE discrete_subtype_definition LOOP sequence_of_statements END LOOP name SEMICOLON
     '''
     if len(p[0]) == 6:
         p[0] = ga.c_loop_statement(p[2])
@@ -670,21 +684,19 @@ def p_loop_statement(p):
 def p_if_statement(p):
     '''if_statement : IF expression THEN sequence_of_statements if_statemant_loop
     '''
-
-    if len(p[0]) == 8:
-        p[0] = ga.c_if_statement(p[2],p[4])
-    elif len(p[0]) == 12:
-        p[0] = ga.c_if_statement_elsif(p[2],p[4],p[6],p[8])
-    elif len(p[0]) == 13:
-        p[0] = ga.c_if_statement_elsif_loop(p[2],p[4],p[6],p[8],p[9])
-    else:
-        p[0] = ga.c_if_statement_else(p[2],p[4],p[6])
+    p[0] = ga.c_if_statement(p[2],p[4],p[6])
 
 def p_if_statemant_loop(p):
     ''' if_statemant_loop : ELSIF sequence_of_statements if_statemant_loop 
                            | ELSE sequence_of_statements END IF SEMICOLON 
                            | END IF SEMICOLON
     '''
+    if len(p[0]) == 4:
+        p[0] = ga.c_if_statement_loop(p[2],p[3])
+    elif len(p[0]) == 6:
+        p[0] = ga.c_if_statement_loop(p[2])
+    else:
+        p[0] = ga.c_if_statement_loop()
 
 def p_sequence_of_statements(p):
     ''' sequence_of_statements : statement sequence_of_statements
@@ -716,7 +728,7 @@ def p_compound_statement(p):
 def p_discrete_subtype_definition(p):
     '''discrete_subtype_definition : subtype_indication
                                     | range
-     '''
+    '''
     if isinstance(p[1],ga.a_subtype_indicator):
         p[0] = ga.c_discrete_subtype_definition_subtype_indication(p[1])
     else:
