@@ -497,13 +497,9 @@ def p_slice(p):
     p[0] = ga.c_slice(p[1],p[3])
 
 def p_function_call(p):
-    ''' function_call : name
-    | name actual_parameter_part
+    ''' function_call : name actual_parameter_part
     '''
-    if len(p[0]) == 2:
-        p[0] = ga.c_function_call(p[1])
-    else:
-        p[0] = ga.c_function_call_actual_parameter_part(p[1],p[2])
+    p[0] = ga.c_function_call_actual_parameter_part(p[1],p[2])
 
 def p_actual_parameter_part(p):
     ''' actual_parameter_part : LPAREN parameter_association RPAREN
@@ -556,12 +552,6 @@ def p_graphic_character(p): #
     | IDENTIFIER_LETTER_UPPER
     | IDENTIFIER_LETTER_LOWER
     '''
-    upper = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','R','S','T','U','V','W','X','Y','Z']
-    if p[1] = ' ':
-        p[0] = ga.c_graphic_character()
-    elif p[1] = : 
-        p[0] = ga.c_graphic_character()
-        ## 
 
 ###########################################
 
@@ -648,7 +638,7 @@ def p_identifier_list(p):
     ''' identifier_list : ID
                          | ID COMMA identifier_list
     '''
-    if len(p[0]) = 2:
+    if len(p[0]) == 2:
         p[0] = ga.c_identifier_list()
     else:
         p[0] = ga.c_identifier_list(p[3])
@@ -788,12 +778,5 @@ def p_error(p):
  
 # Build the parser
 parser = yacc.yacc()
- 
-while True:
-    try:
-        s = raw_input('calc > ')
-    except EOFError:
-        break
-    if not s: continue
-    result = parser.parse(s)
-    print(result)
+
+parser.parse(debug=True)
