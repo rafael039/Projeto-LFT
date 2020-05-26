@@ -23,42 +23,25 @@ palRESERVADA =  {
     'and' : 'AND',
     'array' : 'ARRAY',
     'begin' : 'BEGIN', 
-    'body' : 'BODY', #pode ser eliminado
-    'case' : "CASE",
-    'constant' : 'CONSTANT',
-    'declare' : 'DECLARE',
-    'digits' : 'DIGITS',
-    'do' : 'DO',
     'else' : 'ELSE',
     'elsif' : 'ELSIF',
     'end' : 'END',
     'exit' : 'EXIT',
-    'false' : 'FALSE',
     'for' : 'FOR',
     'function' : 'FUNCTION',
+    'procedure' : 'PROCEDURE',
     'if' : 'IF',
     'in' : 'IN',
     'is' : 'IS',
     'loop' : 'LOOP',
-    'mod' : 'MOD',
-    'not' : 'NOT',
-    'null' : 'NULL',
     'of' : 'OF',
     'or' : 'OR',
-    'procedure' : 'PROCEDURE',
-    'raise' : 'RAISE',
-    'range' : 'RANGE',
-    'repeat' : 'REPEAT',
-    'rem' : 'REM', #resto
+    'puts' : 'PUTS',
     'return' : 'RETURN',
-    'reverse' : 'REVERSE',
-    'task' : 'TASK',
     'then' : 'THEN',
-    'true' : 'TRUE',
-    'type': 'TYPE',
-    'use' : 'USE',
     'while' : 'WHILE',
-    'xor' : 'XOR'}
+    'when' : 'WHEN'
+  }
 
 # List of token names. This is always required
 tokens = [
@@ -67,24 +50,24 @@ tokens = [
     'NUMBER_INT',
     'NUMBER_FLOAT',
     'NUMBER_EXPONENT',
+    'BOOLEAN',
+    'CHAR',
     'PLUS',
+    'UMINUS',
     'MINUS',
     'TIMES',
     'DIVIDE',
     'POWER',
     'LPAREN',
-    'PIPE',
     'RPAREN',
     'STRING',
     'COMMA',
     'COLON',
+    'TYPE',
     'SEMICOLON',
     'COMMENT',
     'DOTDOT',
-    'DOT',
-    'ASSIGN', #:=
-    'REFASSIGN', #=>
-    'CONCAT', #concatenação
+    'ASSIGN', 
     'GREATERTHAN',
     'GREATERTHANEQUAL',
     'LESSTHAN',
@@ -92,8 +75,6 @@ tokens = [
     'NOTEQUAL',
     'EQUAL',
     'SPACE',
-    'IDENTIFIER_LETTER_UPPER',
-    'IDENTIFIER_LETTER_LOWER',
     'ID'
 ]+list(palRESERVADA.values())
 
@@ -108,17 +89,16 @@ t_COMMENT = r'--[^\n]*\n'
 t_SINGLEQUOTE = r'\''
 t_DOUBLEQUOTE = r'"'
 t_PLUS = r'\+'
+t_UMINUS = r'\(-\d\)'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
 t_POWER = r'\*\*'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_PIPE = r'\|'
 t_STRING = r'"[^--]*"'
+t_CHAR  = r"'[^\r\n\t\f]'"
 t_ASSIGN = r':='
-t_REFASSIGN = r'=>'
-t_CONCAT = r'&'
 t_COMMA = r','
 t_COLON = r'\:'
 t_SEMICOLON = r';'
@@ -128,11 +108,10 @@ t_LESSTHAN = r'<'
 t_LESSTHANEQUAL = r'<='
 t_NOTEQUAL = r'/='
 t_EQUAL = r'='
-t_DOT = r'\.'
 t_DOTDOT = r'\.\.'
 t_SPACE = r'\ '
-t_IDENTIFIER_LETTER_UPPER = r'[a-z]'
-t_IDENTIFIER_LETTER_LOWER = r'[A-Z]'
+t_BOOLEAN = r'true|false'
+t_TYPE = r'Integer|Float|Character|String|Boolean'
 
 
 # A regular expression rule with some action code
