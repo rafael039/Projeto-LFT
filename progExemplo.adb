@@ -1,5 +1,5 @@
 procedure soma is 
-valor: integer
+valor: Integer
     -- Isto é um comentario
   -- Isto é um comentario
 begin

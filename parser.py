@@ -6,13 +6,17 @@ import visitor as vis
 
 
 def p_program(p):
-    '''program : PROCEDURE ID IS decl BEGIN cmd END ID SEMICOLON
-               | PROCEDURE ID IS BEGIN cmd END ID SEMICOLON
+    '''program : PROCEDURE ID IS decl body
+               | PROCEDURE ID IS body
     '''
 
 def p_subprogram(p):
-    '''subprogram : FUNCTION ID decl_param IS decl BEGIN cmd END ID SEMICOLON
-                  | FUNCTION ID decl_param IS BEGIN cmd END ID SEMICOLON
+    '''subprogram : FUNCTION ID decl_param IS decl body
+                  | FUNCTION ID decl_param IS body
+    '''
+
+def p_body(p):
+    ''' body : BEGIN cmd_loop END ID SEMICOLON
     '''
 
 def p_decl(p):
@@ -92,7 +96,7 @@ def p_cmd(p):
     '''
 
 def p_cmd_loop(p):
-    '''cmd : cmd cmd_loop
+    '''cmd_loop : cmd_loop cmd
            | cmd
     '''
 
@@ -101,12 +105,12 @@ def p_puts(p):
     '''
 
 def p_if_statement(p):
-    ''' if_statement : IF expression THEN cmd if_statement_loop
+    ''' if_statement : IF expression THEN cmd_loop if_statement_loop
     '''
 
 def p_if_statement_loop(p):
-    ''' if_statement_loop : ELSIF expression cmd if_statement_loop
-                          | ELSE expression cmd END IF SEMICOLON
+    ''' if_statement_loop : ELSIF expression cmd_loop if_statement_loop
+                          | ELSE expression cmd_loop END IF SEMICOLON
                           | END IF SEMICOLON
     '''
 
@@ -117,15 +121,15 @@ def p_repeat_statement(p):
     '''
 
 def p_loop_statement(p):
-    ''' loop_statement : LOOP cmd END LOOP
+    ''' loop_statement : LOOP cmd_loop END LOOP
     '''
 
 def p_while_statement(p):
-    ''' while_statement : WHILE expression NUMBER_INT LOOP cmd END LOOP SEMICOLON
+    ''' while_statement : WHILE expression NUMBER_INT LOOP cmd_loop END LOOP SEMICOLON
     '''
 
 def p_for_statement(p):
-    ''' for_statement : FOR ID IN range LOOP cmd END LOOP SEMICOLON
+    ''' for_statement : FOR ID IN range LOOP cmd_loop END LOOP SEMICOLON
     '''
 
 def p_range(p):
@@ -138,20 +142,22 @@ def p_assign(p):
 
 def p_expression(p):
     ''' expression : expression AND or_exp
+                   | or_exp
     '''
 
 def p_or_exp(p):
     ''' or_exp : or_exp OR comp_exp
+               | comp_exp
     '''
 
 def p_comp_exp(p):
-    ''' comp_exp : comp_exp comp_op bterm
+    ''' comp_exp : comp_exp comp_op bparen
+                 | bparen
     '''
 
-def p_bterm(p):
-    ''' bterm : ID 
-              | function_call_exp
-              | LPAREN expression RPAREN
+def p_bparen(p):
+    ''' bparen : LPAREN expression RPAREN
+               | term
     ''' 
 
 def p_comp_op(p):
@@ -176,13 +182,18 @@ def p_factor(p):
     '''
 
 def p_power(p):
-    ''' power : power POWER term
+    ''' power : power POWER paren
+              | paren
     '''
 
 
+def p_paren(p):
+    ''' paren : LPAREN op_arithmetic RPAREN
+              | term
+    '''
+
 def p_term(p):
-    ''' term : LPAREN op_arithmetic RPAREN
-             | ID
+    ''' term : ID
              | function_call_exp
     '''
 
@@ -203,4 +214,4 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
-parser.parse(debug=True)
+parser.parse(debug=False)
