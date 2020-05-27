@@ -3,9 +3,7 @@ from calclex import tokens
 import gramAbstrata as ga
 import visitor as vis
 
-
-
-def p_program(p):
+    def p_program(p):
     '''program : PROCEDURE ID IS decl body
                | PROCEDURE ID IS body
     '''
@@ -49,13 +47,14 @@ def p_decl_param(p):
     '''
 
 def p_param(p):
-    ''' param : ID COLON TYPE n_param
+    ''' param : ID COLON TYPE SEMICOLON param
+                | ID COLON TYPE SEMICOLON
     '''
 
-def p_n_param(p):
-    ''' n_param : SEMICOLON ID COLON TYPE n_param
-                | SEMICOLON ID COLON TYPE
-    '''
+# def p_n_param(p):
+#     ''' n_param :  ID COLON TYPE SEMICOLON n_param
+#                 | ID COLON TYPE SEMICOLON
+#     '''
 
 def p_function_call(p):
     ''' function_call : ID LPAREN param_pass RPAREN SEMICOLON
@@ -66,16 +65,16 @@ def p_function_call_exp(p):
     '''
 
 def p_param_pass(p):
-    ''' param_pass : expression param_pass_loop
-	               | op_arithmetic param_pass_loop
+    ''' param_pass : expression COMMA param_pass
+                   | expression
     '''
 
-def p_param_pass_loop(p):
-    ''' param_pass_loop : SEMICOLON expression param_pass_loop
-	                    | SEMICOLON op_arithmetic param_pass_loop
-                        | SEMICOLON expression
-                        | SEMICOLON op_arithmetic
-    '''
+# def p_param_pass_loop(p):
+#     ''' param_pass_loop : SEMICOLON expression param_pass_loop
+# 	                    | SEMICOLON op_arithmetic param_pass_loop
+#                         | SEMICOLON expression
+#                         | SEMICOLON op_arithmetic
+#     '''
 
 def p_value(p):
     ''' value : NUMBER_INT
@@ -151,14 +150,14 @@ def p_or_exp(p):
     '''
 
 def p_comp_exp(p):
-    ''' comp_exp : comp_exp comp_op bparen
-                 | bparen
+    ''' comp_exp : comp_exp comp_op op_arithmetic
+                 | op_arithmetic
     '''
 
-def p_bparen(p):
-    ''' bparen : LPAREN expression RPAREN
-               | term
-    ''' 
+# def p_bparen(p):
+#     ''' bparen : LPAREN expression RPAREN
+#                | op_arithmetic
+#     '''
 
 def p_comp_op(p):
     ''' comp_op : GREATERTHAN
@@ -182,19 +181,20 @@ def p_factor(p):
     '''
 
 def p_power(p):
-    ''' power : power POWER paren
-              | paren
-    '''
-
-
-def p_paren(p):
-    ''' paren : LPAREN op_arithmetic RPAREN
+    ''' power : power POWER term
               | term
     '''
+
+
+# def p_paren(p):
+#     ''' paren : LPAREN expression RPAREN
+#               | term
+#     '''
 
 def p_term(p):
     ''' term : ID
              | function_call_exp
+             | LPAREN expression RPAREN
     '''
 
 def p_array(p):
@@ -202,8 +202,7 @@ def p_array(p):
     '''
 
 def p_return(p):
-    ''' return : RETURN expression
-               | RETURN op_arithmetic
+    ''' return : RETURN expression SEMICOLON
     '''
 
 

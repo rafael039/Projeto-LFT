@@ -26,7 +26,6 @@ palRESERVADA =  {
     'else' : 'ELSE',
     'elsif' : 'ELSIF',
     'end' : 'END',
-    'exit' : 'EXIT',
     'for' : 'FOR',
     'function' : 'FUNCTION',
     'procedure' : 'PROCEDURE',
@@ -40,20 +39,16 @@ palRESERVADA =  {
     'return' : 'RETURN',
     'then' : 'THEN',
     'while' : 'WHILE',
-    'when' : 'WHEN'
   }
 
 # List of token names. This is always required
 tokens = [
-    'SINGLEQUOTE',
-    'DOUBLEQUOTE',
     'NUMBER_INT',
     'NUMBER_FLOAT',
     'NUMBER_EXPONENT',
     'BOOLEAN',
     'CHAR',
     'PLUS',
-    'UMINUS',
     'MINUS',
     'TIMES',
     'DIVIDE',
@@ -65,7 +60,6 @@ tokens = [
     'COLON',
     'TYPE',
     'SEMICOLON',
-    'COMMENT',
     'DOTDOT',
     'ASSIGN', 
     'GREATERTHAN',
@@ -74,7 +68,6 @@ tokens = [
     'LESSTHANEQUAL',
     'NOTEQUAL',
     'EQUAL',
-    'SPACE',
     'ID'
 ]+list(palRESERVADA.values())
 
@@ -85,11 +78,8 @@ tuple structure = (numSpaces,numTabs)
 identList = []
 
 # Regular expression rules for simple tokens
-t_COMMENT = r'--[^\n]*\n'
-t_SINGLEQUOTE = r'\''
-t_DOUBLEQUOTE = r'"'
+t_ignore_COMMENT = r'--[^\n]*\n'
 t_PLUS = r'\+'
-t_UMINUS = r'\(-\d\)'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
@@ -109,13 +99,8 @@ t_LESSTHANEQUAL = r'<='
 t_NOTEQUAL = r'/='
 t_EQUAL = r'='
 t_DOTDOT = r'\.\.'
-t_SPACE = r'\ '
 t_BOOLEAN = r'true|false'
 t_TYPE = r'Integer|Float|Character|String|Boolean'
-
-
-# A regular expression rule with some action code
-# A cada token, uma regra deve ser executada
 
 def t_IDENT(t):
     r'\n[ \t]*'
@@ -147,6 +132,8 @@ def t_IDENT(t):
     elif identList[-1] < counter:
         identList.append(counter) # empilha ident
         print(identList)
+
+
 
 def t_NUMBER_INT(t):
     r'\d+'
