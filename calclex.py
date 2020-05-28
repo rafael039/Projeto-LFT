@@ -71,12 +71,6 @@ tokens = [
     'ID'
 ]+list(palRESERVADA.values())
 
-'''
-This is a tuple list, which store code idents. 
-tuple structure = (numSpaces,numTabs)
-'''
-identList = []
-
 # Regular expression rules for simple tokens
 t_ignore_COMMENT = r'--[^\n]*\n'
 t_PLUS = r'\+'
@@ -102,6 +96,7 @@ t_DOTDOT = r'\.\.'
 t_BOOLEAN = r'true|false'
 t_TYPE = r'Integer|Float|Character|String|Boolean'
 
+identList = []
 def t_IDENT(t):
     r'\n[ \t]*'
     counter = 0

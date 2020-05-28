@@ -3,7 +3,7 @@ from calclex import tokens
 import gramAbstrata as ga
 import visitor as vis
 
-    def p_program(p):
+def p_program(p):
     '''program : PROCEDURE ID IS decl body
                | PROCEDURE ID IS body
     '''
@@ -18,16 +18,11 @@ def p_body(p):
     '''
 
 def p_decl(p):
-    ''' decl : var SEMICOLON decl_loop
-		     | subprogram decl_loop
+    ''' decl : var SEMICOLON decl
+             | var SEMICOLON
+		     | subprogram decl
+             | subprogram
     ''' 
-
-def p_decl_loop(p):
-    ''' decl_loop : subprogram decl_loop
-                  | subprogram
-                  | var SEMICOLON decl_loop
-                  | var SEMICOLON
-    '''
 
 def p_var(p):
     ''' var : ID COMMA TYPE ASSIGN value
@@ -51,11 +46,6 @@ def p_param(p):
                 | ID COLON TYPE SEMICOLON
     '''
 
-# def p_n_param(p):
-#     ''' n_param :  ID COLON TYPE SEMICOLON n_param
-#                 | ID COLON TYPE SEMICOLON
-#     '''
-
 def p_function_call(p):
     ''' function_call : ID LPAREN param_pass RPAREN SEMICOLON
     '''
@@ -68,13 +58,6 @@ def p_param_pass(p):
     ''' param_pass : expression COMMA param_pass
                    | expression
     '''
-
-# def p_param_pass_loop(p):
-#     ''' param_pass_loop : SEMICOLON expression param_pass_loop
-# 	                    | SEMICOLON op_arithmetic param_pass_loop
-#                         | SEMICOLON expression
-#                         | SEMICOLON op_arithmetic
-#     '''
 
 def p_value(p):
     ''' value : NUMBER_INT
@@ -154,11 +137,6 @@ def p_comp_exp(p):
                  | op_arithmetic
     '''
 
-# def p_bparen(p):
-#     ''' bparen : LPAREN expression RPAREN
-#                | op_arithmetic
-#     '''
-
 def p_comp_op(p):
     ''' comp_op : GREATERTHAN
                 | GREATERTHANEQUAL
@@ -181,15 +159,15 @@ def p_factor(p):
     '''
 
 def p_power(p):
-    ''' power : power POWER term
-              | term
+    ''' power : power POWER unary
+              | unary
     '''
 
-
-# def p_paren(p):
-#     ''' paren : LPAREN expression RPAREN
-#               | term
-#     '''
+def p_unary(p):
+    ''' unary : PLUS term
+              | MINUS term 
+              | term 
+    '''
 
 def p_term(p):
     ''' term : ID
@@ -204,7 +182,6 @@ def p_array(p):
 def p_return(p):
     ''' return : RETURN expression SEMICOLON
     '''
-
 
 # Error rule for syntax errors
 def p_error(p):
