@@ -100,9 +100,9 @@ class c_var(a_var):
     def accept(self,visitor):
         pass
 
-class c_var__value(a_var):
-    def __init__(self,value):
-        self.value = value
+class c_var__ID(a_var):
+    def __init__(self):
+        pass
     def accept(self,visitor):
         pass
 
@@ -220,38 +220,6 @@ class c_param_pass__param_pass(a_param_pass):
         self.param_pass = param_pass
     def accept(self,visitor):
         pass
-
-#-----------------------------------------------
-
-class a_value(metaclass=ABCMeta):
-    @abstractmethod
-    def accept(self,visitor):
-        pass
-
-class c_value__int(a_value):
-    def __init__(self):
-    def accept(self,visitor):
-        pass
-
-class c_value__float(a_value):
-    def __init__(self):
-    def accept(self,visitor):
-        pass
-
-class c_value__exponent(a_value):
-    def __init__(self):
-    def accept(self,visitor):
-        pass
-
-class c_value__boolean(a_value):
-    def __init__(self):
-    def accept(self,visitor):
-        pass
-
-class c_value__string(a_value):
-    def __init__(self):
-    def accept(self,visitor):
-        pass 
 
 #-----------------------------------------------
 
@@ -513,14 +481,14 @@ class a_comp_exp(metaclass=ABCMeta):
         pass
 
 class c_comp_exp(a_comp_exp):
-    def __init__(self,comp_exp):
-        self.comp_exp = comp_exp
+    def __init__(self,op_arithmetic):
+        self.op_arithmetic = op_arithmetic
     def accept(self,visitor):
         pass
 
 class c_comp_exp__op_arithmetic(a_comp_exp):
-    def __init__(self,comp_exp,op_arithmetic):
-        self.comp_exp = comp_exp
+    def __init__(self,comp_op,op_arithmetic):
+        self.comp_op = comp_op
         self.op_arithmetic = op_arithmetic
     def accept(self,visitor):
         pass
@@ -609,7 +577,7 @@ class c_factor__TIMES(a_factor):
     def accept(self,visitor):
         pass
 
-class c_factor_DIVIDE(a_factor):
+class c_factor__DIVIDE(a_factor):
     def __init__(self,factor,power):
         self.factor = factor
         self.power = power
