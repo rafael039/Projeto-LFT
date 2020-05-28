@@ -79,7 +79,7 @@ def p_cmd(p):
 
 def p_cmd_loop(p):
     '''cmd_loop : cmd_loop cmd
-           | cmd
+                | cmd
     '''
 
 def p_puts(p):
