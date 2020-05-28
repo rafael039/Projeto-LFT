@@ -111,16 +111,16 @@ def p_cmd(p):
 			| assign
 			| function_call
     '''
-    if len(p[0]) == 1:
-        p[0] = ga.c_if_statement(p[1])
+    if isinstance(p[0], ga.a_if_statement):
+        p[0] = ga.c_cmd__if_statement(p[1])
     elif isinstance(p[0], ga.a_repeat_statement):
-        p[0] = ga.c_repeat_statement(p[1])
+        p[0] = ga.c_cmd__repeat_statement(p[1])
     elif isinstance(p[0], ga.a_puts):
-        p[0] = ga.c_puts(p[1])
+        p[0] = ga.c_cmd__puts(p[1])
     elif isinstance(p[0], ga.a_return):
-        p[0] = ga.c_return(p[1])
+        p[0] = ga.c_cmd__return(p[1])
     elif isinstance(p[0], ga.a_assign):
-        p[0] = ga.c_assign(p[1])
+        p[0] = ga.c_cmd__assign(p[1])
     else:
         p[0] = ga.c_function_call(p[1])
         
@@ -130,9 +130,9 @@ def p_cmd_loop(p):
                 | cmd
     '''
     if len(p[0]) == 3:
-        p[0] = ga.c_loop(p[1],p[2])
+        p[0] = ga.c_cmd_loop__loop(p[1],p[2])
     else:
-        p[0] = ga.c_cmd(p[1])
+        p[0] = ga.c_cmd_loop(p[1])
 
 
 def p_puts(p):
@@ -143,7 +143,7 @@ def p_puts(p):
 def p_if_statement(p):
     ''' if_statement : IF expression THEN cmd_loop if_statement_loop
     '''
-    p[0] = ga.ca_if_statement(p[2], p[4])
+    p[0] = ga.c_if_statement(p[2], p[4], p[5])
 
 def p_if_statement_loop(p):
     ''' if_statement_loop : ELSIF expression cmd_loop if_statement_loop
@@ -164,11 +164,11 @@ def p_repeat_statement(p):
                          | while_statement
     '''
     if isinstance(p[1], ga.a_loop_statement):
-        p[0] = ga.c_loop_statement(p[1])
+        p[0] = ga.c_repeat_statement__loop(p[1])
     elif isinstance(p[1], ga.a_for_statement):
-        p[0] = ga.c_for_statement(p[1])
+        p[0] = ga.c_repeat_statement__for(p[1])
     else:
-        p[0] = ga.c_while_statement(p[1])
+        p[0] = ga.c_repeat_statement__while(p[1])
 
 def p_loop_statement(p):
     ''' loop_statement : LOOP cmd_loop END LOOP
@@ -231,17 +231,17 @@ def p_comp_op(p):
                 | EQUAL 
     '''
     if p[1] == '>':
-        p[0] = ga.c_comp_op__GT(p[1])
+        p[0] = ga.c_comp_op__GT()
     elif p[1] == '>=':
-        p[0] = ga.c_comp_op__GTE(p[1])
+        p[0] = ga.c_comp_op__GTE()
     elif p[1] == '<':
-        p[0] = ga.c_comp_op__LT(p[1])
+        p[0] = ga.c_comp_op__LT()
     elif p[1] == '<=':
-        p[0] = ga.c_comp_op__LTE(p[1])
+        p[0] = ga.c_comp_op__LTE()
     elif p[1] == '/=':
-        p[0] = ga.c_comp_op__NE(p[1])
+        p[0] = ga.c_comp_op__NE()
     else:
-        p[0] = ga.c_comp_op__E
+        p[0] = ga.c_comp_op__E()
 
 def p_op_arithmetic(p):
     ''' op_arithmetic : op_arithmetic PLUS factor

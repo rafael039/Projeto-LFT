@@ -8,15 +8,15 @@ class a_program(metaclass=ABCMeta):
         pass
 
 class c_program(a_program):
-    def __init__(self,decl,body): 
-        self.decl = decl
+    def __init__(self,body): 
         self.body = body
     def accept(self,visitor):
         pass
 
 class c_program__decl(a_program):
-    def __init__(self,body): 
+    def __init__(self,decl, body): 
         self.body = body
+        self.decl = decl
     def accept(self,visitor):
         pass
 
@@ -125,13 +125,13 @@ class a_var_loop(metaclass=ABCMeta):
     def accept(self,visitor):
         pass
 
-class _var_loop(a_var_loop):
-    def __init__(self,var_loop):
+class c_var_loop(a_var_loop):
+    def __init__(self):
         pass
     def accept(self,visitor):
         pass
 
-class _var_loop__loop(a_var_loop):
+class c_var_loop__loop(a_var_loop):
     def __init__(self,var_loop):
         self.var_loop = var_loop
     def accept(self,visitor):
@@ -164,7 +164,7 @@ class a_param(metaclass=ABCMeta):
         pass
 
 class c_param(a_param):
-    def __init__(self,param):
+    def __init__(self):
         pass
     def accept(self,visitor):
         pass
@@ -247,8 +247,8 @@ class c_cmd__puts(a_cmd):
         pass
 
 class c_cmd__return(a_cmd):
-    def __init__(self,return):
-        self.return = return
+    def __init__(self,retorno):
+        self.retorno = retorno
     def accept(self,visitor):
         pass
 
@@ -272,13 +272,12 @@ class a_cmd_loop(metaclass=ABCMeta):
         pass
 
 class c_cmd_loop(a_cmd_loop):
-    def __init__(self,cmd,cmd_loop):
+    def __init__(self,cmd):
         self.cmd = cmd
-        self.cmd_loop = cmd_loop
     def accept(self,visitor):
         pass
 
-class c_cmd_loop(a_cmd_loop):
+class c_cmd_loop__loop(a_cmd_loop):
     def __init__(self,cmd,cmd_loop):
         self.cmd = cmd
         self.cmd_loop = cmd_loop
@@ -374,7 +373,7 @@ class a_loop_statement(metaclass=ABCMeta):
         pass
 
 class c_loop_statement(a_loop_statement):
-    def __init__(self,cmd_loop):
+    def __init__(self,loop_statement):
         self.loop_statement = loop_statement
     def accept(self,visitor):
         pass
@@ -400,7 +399,7 @@ class a_for_statement(metaclass=ABCMeta):
     def accept(self,visitor):
         pass
 
-class a_for_statement(metaclass=ABCMeta):
+class c_for_statement(a_for_statement):
     def __init__(self,range,cmd_loop):
         self.range = range
         self.cmd_loop = cmd_loop
@@ -442,14 +441,14 @@ class a_expression(metaclass=ABCMeta):
 
 class c_expression(a_expression):
     def __init__(self,op_exp):
-        self.op_exp
+        self.op_exp = op_exp
     def accept(self,visitor):
         pass
 
 class c_expression__and(a_expression):
     def __init__(self,expression,or_exp):
         self.expression = expression
-        self.op_exp = op_exp
+        self.or_exp = or_exp
     def accept(self,visitor):
         pass
 
@@ -487,9 +486,10 @@ class c_comp_exp(a_comp_exp):
         pass
 
 class c_comp_exp__op_arithmetic(a_comp_exp):
-    def __init__(self,comp_op,op_arithmetic):
+    def __init__(self,comp_op,op_arithmetic, comp_exp):
         self.comp_op = comp_op
         self.op_arithmetic = op_arithmetic
+        self.comp_exp = comp_exp
     def accept(self,visitor):
         pass
 
