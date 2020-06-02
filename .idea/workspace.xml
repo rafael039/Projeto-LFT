@@ -4,17 +4,10 @@
     <list default="true" id="835da700-cf81-4ff5-8d52-ab80f4387643" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/CopiaCalcLex.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CopiaCalcLex.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/easy_install" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/easy_install" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/easy_install-3.6" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/easy_install-3.6" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip3" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip3.6" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip3.6" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/python" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/python" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/python3" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/python3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/python3.6" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/python3.6" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/lib64" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AbstractVisitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/AbstractVisitor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gramAbstrata.py" beforeDir="false" afterPath="$PROJECT_DIR$/gramAbstrata.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,14 +42,13 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../TutorialSemantico02" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
@@ -83,18 +75,6 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -120,34 +100,34 @@
       <workItem from="1586281981283" duration="278000" />
       <workItem from="1586282716603" duration="252000" />
       <workItem from="1586283069644" duration="256000" />
+      <workItem from="1591123066757" duration="6143000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="141" y="42" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586283331511">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="141" y="42" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1586283331511" />
-    <state x="460" y="127" width="424" height="509" key="FileChooserDialogImpl" timestamp="1584987924346">
+    <state x="460" y="127" width="424" height="482" key="FileChooserDialogImpl" timestamp="1591124278719">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="460" y="127" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1584987924346" />
+    <state x="460" y="127" width="424" height="482" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1591124278719" />
     <state x="461" y="127" width="424" height="509" key="FileChooserDialogImpl/0.0.1368.767@0.0.1368.767" timestamp="1583767624918" />
     <state width="1318" height="183" key="GridCell.Tab.0.bottom" timestamp="1586283334277">
       <screen x="0" y="0" width="1366" height="768" />
@@ -165,10 +145,10 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1318" height="183" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1586283334273" />
-    <state x="172" y="19" width="1022" height="736" key="SettingsEditor" timestamp="1586283246119">
+    <state x="171" y="10" width="1022" height="736" key="SettingsEditor" timestamp="1591123570417">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="172" y="19" width="1022" height="736" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1586283246119" />
+    <state x="171" y="10" width="1022" height="736" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1591123570414" />
     <state x="349" y="211" key="com.intellij.ide.util.TipDialog" timestamp="1584987811374">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

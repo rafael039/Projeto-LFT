@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/CopiaCalcLex.iml" filepath="$PROJECT_DIR$/.idea/CopiaCalcLex.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../TutorialSemantico02/.idea/TutorialSemantico02.iml" filepath="$PROJECT_DIR$/../../TutorialSemantico02/.idea/TutorialSemantico02.iml" />
     </modules>
   </component>
 </project>
