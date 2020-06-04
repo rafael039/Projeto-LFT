@@ -1,7 +1,5 @@
 from abc import abstractmethod
 from abc import ABCMeta
-
-
 # from visitor import visitor
 
 class a_program(metaclass=ABCMeta):
@@ -11,15 +9,18 @@ class a_program(metaclass=ABCMeta):
 
 
 class c_program(a_program):
-    def __init__(self, body):
+    def __init__(self,id,body):
+        self.id = id
         self.body = body
 
     def accept(self, visitor):
         pass
 
 
+
 class c_program__decl(a_program):
-    def __init__(self, decl, body):
+    def __init__(self,id,decl, body):
+        self.id = id
         self.body = body
         self.decl = decl
 
@@ -36,7 +37,8 @@ class a_subprogram(metaclass=ABCMeta):
 
 
 class c_subprogram(a_subprogram):
-    def __init__(self, decl_param, body):
+    def __init__(self,id,decl_param,body):
+        self.id = id
         self.decl_param = decl_param
         self.body = body
 
@@ -45,7 +47,8 @@ class c_subprogram(a_subprogram):
 
 
 class c_subprogram__decl(a_subprogram):
-    def __init__(self, decl_param, decl, body):
+    def __init__(self,id,decl_param, decl,body):
+        self.id = id
         self.decl_param = decl_param
         self.body = body
 
@@ -62,8 +65,9 @@ class a_body(metaclass=ABCMeta):
 
 
 class c_body(a_body):
-    def __init__(self, cmd_loop):
+    def __init__(self, cmd_loop,id):
         self.cmd_loop = cmd_loop
+        self.id = id
 
     def accept(self, visitor):
         pass
@@ -93,24 +97,6 @@ class c_decl__var_decl(a_decl):
     def accept(self, visitor):
         pass
 
-
-class c_decl__subprogram(a_decl):
-    def __init__(self, subprogram):
-        self.subprogram = subprogram
-
-    def accept(self, visitor):
-        pass
-
-
-class c_decl__subprogram_decl(a_decl):
-    def __init__(self, subprogram, decl):
-        self.subprogram = subprogram
-        self.decl = decl
-
-    def accept(self, visitor):
-        pass
-
-
 # ------------------------------------------------
 
 class a_var(metaclass=ABCMeta):
@@ -120,24 +106,26 @@ class a_var(metaclass=ABCMeta):
 
 
 class c_var(a_var):
-    def __init__(self):
-        pass
+    def __init__(self,id):
+        self.id = id
 
     def accept(self, visitor):
         pass
 
 
 class c_var__ID(a_var):
-    def __init__(self):
-        pass
+    def __init__(self,id1,id2):
+        self.id1 = id1
+        self.id2 = id2
 
     def accept(self, visitor):
         pass
 
 
 class c_var__var_loop(a_var):
-    def __init__(self, var_loop):
+    def __init__(self, var_loop,id):
         self.var_loop = var_loop
+        self.id = id
 
     def accept(self, visitor):
         pass
@@ -160,16 +148,17 @@ class a_var_loop(metaclass=ABCMeta):
 
 
 class c_var_loop(a_var_loop):
-    def __init__(self):
-        pass
+    def __init__(self,id):
+        self.id = id
 
     def accept(self, visitor):
         pass
 
 
 class c_var_loop__loop(a_var_loop):
-    def __init__(self, var_loop):
+    def __init__(self, var_loop,id):
         self.var_loop = var_loop
+        self.id = id
 
     def accept(self, visitor):
         pass
@@ -192,8 +181,9 @@ class c_decl_param(a_decl_param):
 
 
 class c_decl_param__return(a_decl_param):
-    def __init__(self, param):
+    def __init__(self, param,type):
         self.param = param
+        self.type = type
 
     def accept(self, visitor):
         pass
@@ -208,16 +198,17 @@ class a_param(metaclass=ABCMeta):
 
 
 class c_param(a_param):
-    def __init__(self):
-        pass
+    def __init__(self,id):
+        self.id = id
 
     def accept(self, visitor):
         pass
 
 
 class c_param__param(a_param):
-    def __init__(self, param):
+    def __init__(self, id, param):
         self.param = param
+        self.id = id
 
     def accept(self, visitor):
         pass
@@ -232,7 +223,8 @@ class a_function_call(metaclass=ABCMeta):
 
 
 class c_function_call(a_function_call):
-    def __init__(self, param_pass):
+    def __init__(self,id, param_pass):
+        self.id = id
         self.param_pass = param_pass
 
     def accept(self, visitor):
@@ -248,7 +240,8 @@ class a_function_call_exp(metaclass=ABCMeta):
 
 
 class c_function_call_exp(a_function_call_exp):
-    def __init__(self, param_pass):
+    def __init__(self, id,param_pass):
+        self.id = id
         self.param_pass = param_pass
 
     def accept(self, visitor):
@@ -504,13 +497,13 @@ class a_for_statement(metaclass=ABCMeta):
 
 
 class c_for_statement(a_for_statement):
-    def __init__(self, range, cmd_loop):
+    def __init__(self, id, range, cmd_loop):
+        self.id = id
         self.range = range
         self.cmd_loop = cmd_loop
 
     def accept(self, visitor):
         pass
-
 
 # -----------------------------------------------
 
@@ -521,8 +514,9 @@ class a_range(metaclass=ABCMeta):
 
 
 class c_range(a_range):
-    def __init__(self):
-        pass
+    def __init__(self,id1,id2):
+        self.id1 = id1
+        self.id2 = id2
 
     def accept(self, visitor):
         pass
@@ -537,7 +531,8 @@ class a_assign(metaclass=ABCMeta):
 
 
 class c_assign(a_assign):
-    def __init__(self, op_arithmetic):
+    def __init__(self, id, op_arithmetic):
+        self.id = id
         self.op_arithmetic = op_arithmetic
 
     def accept(self, visitor):
@@ -810,8 +805,8 @@ class a_term(metaclass=ABCMeta):
 
 
 class c_term__ID(a_term):
-    def __init__(self):
-        pass
+    def __init__(self,id):
+        self.id = id
 
     def accept(self, visitor):
         pass
@@ -842,7 +837,8 @@ class a_array(metaclass=ABCMeta):
 
 
 class c_array(a_array):
-    def __init__(self, range):
+    def __init__(self, id, range):
+        self.id = id
         self.range = range
 
     def accept(self, visitor):

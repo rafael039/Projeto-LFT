@@ -8,39 +8,28 @@ def p_program(p):
                | PROCEDURE ID IS body
     '''
     if len(p[0]) == 6:
-        p[0] = ga.c_program__decl(p[4],p[5])
+        p[0] = ga.c_program__decl(p[2],p[4],p[5])
     else:
-        p[0] = ga.c_program(p[4])
+        p[0] = ga.c_program(p[2],p[4])
 
 def p_subprogram(p):
-    '''subprogram : FUNCTION ID decl_param IS decl body
-                  | FUNCTION ID decl_param IS body
+    '''subprogram : FUNCTION ID decl_param IS body
     '''
-    if len(p[0]) == 7:
-        p[0] = ga.c_subprogram__decl(p[3],p[5],p[6])
-    else:
-        p[0] = ga.c_subprogram(p[3],p[5])
+        p[0] = ga.c_subprogram(p[2],p[3],p[5])
 
 def p_body(p):
     ''' body : BEGIN cmd_loop END ID SEMICOLON
     '''
-    p[0] = ga.c_body(p[2])
+    p[0] = ga.c_body(p[2],p[4])
 
 def p_decl(p):
     ''' decl : var SEMICOLON decl
              | var SEMICOLON
-		     | subprogram decl
-             | subprogram
     ''' 
     if len(p[0]) == 4:
         p[0] = ga.c_decl__var_decl(p[1],p[3])
-    elif len(p[0]) == 3:
-        if isinstance(p[1], ga.a_var):
-            p[0] = ga.c_decl__var(p[1])
-        else:
-            p[0] = ga.c_decl__subprogram_decl(p[1],p[2])
     else:
-        p[0] = ga.c_decl__subprogram(p[1])
+        p[0] = ga.c_decl__var(p[1])
 
 def p_var(p):
     ''' var : ID COMMA TYPE ASSIGN ID
@@ -49,11 +38,11 @@ def p_var(p):
 			| array
     '''
     if len(p[0]) == 6:
-        p[0] = ga.c_var__ID()
+        p[0] = ga.c_var__ID(p[1],p[5])
     elif len(p[0]) == 4:
-        p[0] = ga.c_var()
+        p[0] = ga.c_var(p[1])
     elif len(p[0]) == 5:
-        p[0] = ga.c_var__var_loop(p[1])
+        p[0] = ga.c_var__var_loop(p[1],p[2])
     else:
         p[0] = ga.c_var__array(p[1])
 
@@ -62,9 +51,9 @@ def p_var_loop(p):
                  | ID COMMA
     '''
     if len(p[0]) == 4:
-        p[0] = ga.c_var_loop__loop(p[1])
+        p[0] = ga.c_var_loop__loop(p[1],p[2])
     else:
-        p[0] = ga.c_var_loop()
+        p[0] = ga.c_var_loop(p[1])
 
 def p_decl_param(p):
     ''' decl_param : LPAREN param RPAREN
@@ -73,26 +62,26 @@ def p_decl_param(p):
     if len(p[0]) == 4:
         p[0] = ga.c_decl_param(p[2])
     else:
-        p[0] = ga.c_decl_param__return(p[2])
+        p[0] = ga.c_decl_param__return(p[2],p[4])
 
 def p_param(p):
     ''' param : ID COLON TYPE SEMICOLON param
               | ID COLON TYPE SEMICOLON
     '''
     if len(p[0]) == 6:
-        p[0] = ga.c_param__param(p[5])
+        p[0] = ga.c_param__param(p[1],p[5])
     else:
-        p[0] = ga.c_param()
+        p[0] = ga.c_param(p[1])
 
 def p_function_call(p):
     ''' function_call : ID LPAREN param_pass RPAREN SEMICOLON
     '''
-    p[0] = ga.c_function_call(p[3])
+    p[0] = ga.c_function_call(p[1],p[3])
 
 def p_function_call_exp(p):
     ''' function_call_exp : ID LPAREN param_pass RPAREN
     '''
-    p[0] = ga.c_function_call_exp(p[3])
+    p[0] = ga.c_function_call_exp(p[1],p[3])
 
 def p_param_pass(p):
     ''' param_pass : expression COMMA param_pass
@@ -183,12 +172,12 @@ def p_while_statement(p):
 def p_for_statement(p):
     ''' for_statement : FOR ID IN range LOOP cmd_loop END LOOP SEMICOLON
     '''
-    p[0] = ga.c_for_statement(p[4], p[6])
+    p[0] = ga.c_for_statement(p[2], p[4], p[6])
 
 def p_range(p):
     ''' range : ID DOTDOT ID
     '''
-    p[0] = ga.c_range()
+    p[0] = ga.c_range(p[1],p[3])
 
 def p_assign(p):
     ''' assign : ID ASSIGN op_arithmetic SEMICOLON
@@ -295,15 +284,16 @@ def p_term(p):
     '''
     if len(p[0]) == 3:
         p[0] = ga.c_term__expression(p[2])
-    elif len(p[0]) == 1:
-        p[0] = ga.c_term__function_call(p[1])
     else:
-        p[0] = ga.c_term__ID()        
+        if isinstance(p[1],ga.a_function_call_exp):
+            p[0] = ga.c_term__function_call(p[1])
+        else:
+            p[0] = ga.c_term__ID(p[1])
 
 def p_array(p):
     ''' array : TYPE ID IS ARRAY LPAREN range RPAREN OF TYPE SEMICOLON
     '''
-    p[0] = ga.c_array(p[6])
+    p[0] = ga.c_array(p[2],p[6])
 
 def p_return(p):
     ''' return : RETURN expression SEMICOLON

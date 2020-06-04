@@ -36,14 +36,6 @@ class AbstractVisitor(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def visitDeclSubprogram(self,decl):
-        pass
-
-    @abstractmethod
-    def visitDeclSubprogramDecl(self,decl):
-        pass
-
-    @abstractmethod
     def visitVar(self,var):
         pass
 

@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="835da700-cf81-4ff5-8d52-ab80f4387643" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/CopiaCalcLex.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CopiaCalcLex.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AbstractVisitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/AbstractVisitor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SemanticVisitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/SemanticVisitor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gramAbstrata.py" beforeDir="false" afterPath="$PROJECT_DIR$/gramAbstrata.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/visitor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +45,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -101,6 +102,10 @@
       <workItem from="1586282716603" duration="252000" />
       <workItem from="1586283069644" duration="256000" />
       <workItem from="1591123066757" duration="6143000" />
+      <workItem from="1591130164420" duration="52000" />
+      <workItem from="1591193431482" duration="2131000" />
+      <workItem from="1591293280842" duration="227000" />
+      <workItem from="1591293567923" duration="9415000" />
     </task>
     <servers />
   </component>
