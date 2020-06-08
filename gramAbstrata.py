@@ -45,17 +45,6 @@ class c_subprogram(a_subprogram):
     def accept(self, visitor):
         pass
 
-
-class c_subprogram__decl(a_subprogram):
-    def __init__(self,id,decl_param, decl,body):
-        self.id = id
-        self.decl_param = decl_param
-        self.body = body
-
-    def accept(self, visitor):
-        pass
-
-
 # ------------------------------------------------
 
 class a_body(metaclass=ABCMeta):
@@ -573,8 +562,8 @@ class a_or_exp(metaclass=ABCMeta):
 
 
 class c_or_exp(a_or_exp):
-    def __init__(self, or_exp):
-        self.or_exp = or_exp
+    def __init__(self, comp_exp):
+        self.comp_exp = comp_exp
 
     def accept(self, visitor):
         pass

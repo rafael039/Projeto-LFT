@@ -15,7 +15,7 @@ def p_program(p):
 def p_subprogram(p):
     '''subprogram : FUNCTION ID decl_param IS body
     '''
-        p[0] = ga.c_subprogram(p[2],p[3],p[5])
+    p[0] = ga.c_subprogram(p[2],p[3],p[5])
 
 def p_body(p):
     ''' body : BEGIN cmd_loop END ID SEMICOLON

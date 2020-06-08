@@ -16,10 +16,6 @@ class AbstractVisitor(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def visitSubprogramDecl(self,subprogram):
-        pass
-
-    @abstractmethod
     def visitBody(self,body):
         pass
 
@@ -96,10 +92,6 @@ class AbstractVisitor(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def visitCmd(self,cmd):
-        pass
-
-    @abstractmethod
     def visitCmdIfStatement(self,cmd):
         pass
 
@@ -138,10 +130,6 @@ class AbstractVisitor(metaclass=ABCMeta):
     @abstractmethod
     def visitIfStatement(self,if_statement):
         pass
-    
-    @abstractmethod
-    def visitIfStatementLoop(self,if_statement_loop):
-        pass
 
     @abstractmethod
     def visitIfStatementLoopElsif(self,if_statement_loop):
@@ -153,10 +141,6 @@ class AbstractVisitor(metaclass=ABCMeta):
 
     @abstractmethod
     def visitIfStatementLoopEnd(self,if_statement_loop):
-        pass
-
-    @abstractmethod
-    def visitRepeatStatement(self,repeat_statement):
         pass
 
     @abstractmethod
@@ -260,7 +244,7 @@ class AbstractVisitor(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def visitFactorDPower(self,factor):
+    def visitFactorPower(self,factor):
         pass
 
     @abstractmethod
