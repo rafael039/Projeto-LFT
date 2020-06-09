@@ -7,7 +7,6 @@
       <change beforePath="$PROJECT_DIR$/SemanticVisitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/SemanticVisitor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gramAbstrata.py" beforeDir="false" afterPath="$PROJECT_DIR$/gramAbstrata.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/visitor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +105,8 @@
       <workItem from="1591193431482" duration="2131000" />
       <workItem from="1591293280842" duration="227000" />
       <workItem from="1591293567923" duration="9415000" />
-      <workItem from="1591640590838" duration="7430000" />
+      <workItem from="1591640590838" duration="8030000" />
+      <workItem from="1591726496740" duration="9427000" />
     </task>
     <servers />
   </component>

@@ -8,7 +8,7 @@ class AbstractVisitor(metaclass=ABCMeta):
          pass
     
     @abstractmethod
-    def visitProgramDecl(self,program):
+    def visitProgramLoop(self,program):
          pass
 
     @abstractmethod
@@ -16,11 +16,15 @@ class AbstractVisitor(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def visitBody(self,body):
+    def visitSubprogramProcedure(self,subprogram):
         pass
 
     @abstractmethod
-    def visitDecl(self,decl):
+    def visitSubprogramProcedureDecl(self,subprogram):
+        pass
+
+    @abstractmethod
+    def visitBody(self,body):
         pass
 
     @abstractmethod

@@ -4,18 +4,26 @@ import gramAbstrata as ga
 import visitor as vis
 
 def p_program(p):
-    '''program : PROCEDURE ID IS decl body
-               | PROCEDURE ID IS body
+    '''program : subprogram
+               | subprogram program
     '''
-    if len(p[0]) == 6:
-        p[0] = ga.c_program__decl(p[2],p[4],p[5])
+    if len(p[0]) == 3:
+        p[0] = ga.c_program__decl(p[1],p[2])
     else:
-        p[0] = ga.c_program(p[2],p[4])
+        p[0] = ga.c_program(p[1])
 
 def p_subprogram(p):
     '''subprogram : FUNCTION ID decl_param IS body
+                  | PROCEDURE ID IS decl body
+                  | PROCEDURE ID IS body
     '''
-    p[0] = ga.c_subprogram(p[2],p[3],p[5])
+    if len(p[0]) == 6:
+        if isinstance(p[3],ga.a_decl_param):
+            p[0] = ga.c_subprogram(p[2],p[3],p[5])
+        else:
+            ga.c_subprogram__procedure_decl(p[2], p[4], p[5])
+    else:
+        ga.c_subprogram__procedure(p[2], p[4])
 
 def p_body(p):
     ''' body : BEGIN cmd_loop END ID SEMICOLON
@@ -38,11 +46,11 @@ def p_var(p):
 			| array
     '''
     if len(p[0]) == 6:
-        p[0] = ga.c_var__ID(p[1],p[5])
+        p[0] = ga.c_var__ID(p[1],p[3],p[5])
     elif len(p[0]) == 4:
-        p[0] = ga.c_var(p[1])
+        p[0] = ga.c_var(p[1],p[3])
     elif len(p[0]) == 5:
-        p[0] = ga.c_var__var_loop(p[1],p[2])
+        p[0] = ga.c_var__var_loop(p[1],p[2],p[4])
     else:
         p[0] = ga.c_var__array(p[1])
 

@@ -7,26 +7,20 @@ class a_program(metaclass=ABCMeta):
     def accept(self, visitor):
         pass
 
-
 class c_program(a_program):
-    def __init__(self,id,body):
-        self.id = id
-        self.body = body
+    def __init__(self,subprogram):
+        self.subprogram = subprogram
 
     def accept(self, visitor):
         pass
 
-
-
-class c_program__decl(a_program):
-    def __init__(self,id,decl, body):
-        self.id = id
-        self.body = body
-        self.decl = decl
+class c_program__loop(a_program):
+    def __init__(self,subprogram,program):
+        self.subprogram = subprogram
+        self.program = program
 
     def accept(self, visitor):
         pass
-
 
 # ------------------------------------------------
 
@@ -35,12 +29,28 @@ class a_subprogram(metaclass=ABCMeta):
     def accept(self, visitor):
         pass
 
-
-class c_subprogram(a_subprogram):
+class c_subprogram__function(a_subprogram):
     def __init__(self,id,decl_param,body):
         self.id = id
         self.decl_param = decl_param
         self.body = body
+
+    def accept(self, visitor):
+        pass
+
+class c_subprogram__procedure(a_subprogram):
+    def __init__(self,id,body):
+        self.id = id
+        self.body = body
+
+    def accept(self, visitor):
+        pass
+
+class c_subprogram__procedure_decl(a_subprogram):
+    def __init__(self,id,decl, body):
+        self.id = id
+        self.body = body
+        self.decl = decl
 
     def accept(self, visitor):
         pass
@@ -97,14 +107,17 @@ class a_var(metaclass=ABCMeta):
 class c_var(a_var):
     def __init__(self,id):
         self.id = id
+        self.type = type
+
 
     def accept(self, visitor):
         pass
 
 
 class c_var__ID(a_var):
-    def __init__(self,id1,id2):
+    def __init__(self,id1,type,id2):
         self.id1 = id1
+        self.type = type
         self.id2 = id2
 
     def accept(self, visitor):

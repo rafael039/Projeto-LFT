@@ -22,16 +22,14 @@ class SemanticVisitor(AbstractVisitor):
 
 
     def visitProgram(self,program):
-        program.id.accept(self)
-        program.body.accept(self)
+        program.subprogram.accept(self)
 
-    def visitProgramDecl(self,program__decl):
-        program__decl.id.accept(self)
-        program__decl.body.accept(self)
-        program__decl.decl.accept(self)
+    def visitProgramLoop(self,program):
+        program.subprogram.accept(self)
+        program.program.accept(self)
 
 
-    def visitSubprogram(self,subprogram):
+    def visitSubprogramFunction(self,subprogram):
         params = {}
         if subprogram.decl_param is not None:
             params = subprogram.decl_param.accept(self)
@@ -41,15 +39,29 @@ class SemanticVisitor(AbstractVisitor):
         st.beginScope(subprogram.id)
         for i in range(0, len(params), 2):
             st.addVar(params[i], params[i+1])
+        subprogram.body.accept(self)
 
+    def visitSubprogramProcedure(self,subprogram):
+        st.beginScope(subprogram.id)
+        subprogram.body.accept(self)
+
+
+    def visitSubprogramProcedureDecl(self,subprogram):
+        params = {}
+        if subprogram.decl is not None:
+            params = subprogram.decl.accept(self)
+            st.addFunction(subprogram.id,params,subprogram.decl.type)
+        else:
+            st.addFunction(subprogram.id, params, subprogram.decl.type)
+        st.beginScope(subprogram.id)
+        for i in range(0, len(params), 2):
+            st.addVar(params[i], params[i+1])
+        subprogram.body.accept(self)
 
     def visitBody(self,body):
         body.cmd_loop.accept(self)
         body.id.accept(self)
 
-
-    def visitDecl(self,decl):
-        decl.var.accept(self)
 
     def visitDeclVar(self,decl):
         decl.var.accept(self)
@@ -61,9 +73,13 @@ class SemanticVisitor(AbstractVisitor):
 
     def visitVar(self,var):
         var.id.accept(self) # accept nos ids?
+        var.type.accept(self)
+        st.addVar(var.id,var.type)
 
     def visitVarID(self,var):
         var.id1.accept(self)
+        var.type.accept(self)
+        st.addVar(var.id, var.type)
         var.id2.accept(self)
 
     def visitVarVarLoop(self,var):
@@ -72,7 +88,7 @@ class SemanticVisitor(AbstractVisitor):
 
     def visitVarArray(self,var):
         var.array.accept(self)
-
+#------------------------------------------------------------------------
 
     def visitVarLoop(self,var_loop):
         var_loop.id.accept(self)
