@@ -77,19 +77,28 @@ def p_param(p):
               | ID COLON TYPE SEMICOLON
     '''
     if len(p[0]) == 6:
-        p[0] = ga.c_param__param(p[1],p[5])
+        p[0] = ga.c_param__param(p[1],p[3],p[5])
     else:
-        p[0] = ga.c_param(p[1])
+        p[0] = ga.c_param(p[1],p[3])
 
 def p_function_call(p):
-    ''' function_call : ID LPAREN param_pass RPAREN SEMICOLON
+    ''' function_call : ID param_pass SEMICOLON
+                      | ID LPAREN RPAREN SEMICOLON
     '''
-    p[0] = ga.c_function_call(p[1],p[3])
+    if len(p[0]) == 4:
+        p[0] = ga.c_function_call(p[1],p[2])
+    else:
+        p[0] = ga.c_function_call_empty(p[1])
+
 
 def p_function_call_exp(p):
-    ''' function_call_exp : ID LPAREN param_pass RPAREN
+    ''' function_call_exp : ID param_pass
+                          | ID LPAREN RPAREN
     '''
-    p[0] = ga.c_function_call_exp(p[1],p[3])
+    if len(p[0]) == 3:
+        p[0] = ga.c_function_call_exp(p[1],p[2])
+    else:
+        p[0] = ga.c_function_call_exp_empty(p[1])
 
 def p_param_pass(p):
     ''' param_pass : expression COMMA param_pass
@@ -144,13 +153,13 @@ def p_if_statement(p):
 
 def p_if_statement_loop(p):
     ''' if_statement_loop : ELSIF expression cmd_loop if_statement_loop
-                          | ELSE expression cmd_loop END IF SEMICOLON
+                          | ELSE cmd_loop END IF SEMICOLON
                           | END IF SEMICOLON
     '''
     if len(p[0]) == 6:
        p[0] = ga.c_if_statement_loop__elsif(p[2],p[3],p[4])
     elif len(p[0]) == 7:
-       p[0] = ga.c_if_statement_loop__else(p[2],p[3])
+       p[0] = ga.c_if_statement_loop__else(p[2])
     else:
        p[0] = ga.c_if_statement_loop__end()
          

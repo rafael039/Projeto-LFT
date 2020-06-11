@@ -50,9 +50,9 @@ class SemanticVisitor(AbstractVisitor):
         params = {}
         if subprogram.decl is not None:
             params = subprogram.decl.accept(self)
-            st.addFunction(subprogram.id,params,subprogram.decl.type)
+            st.addFunction(subprogram.id,params,subprogram.decl_param.type)
         else:
-            st.addFunction(subprogram.id, params, subprogram.decl.type)
+            st.addFunction(subprogram.id, params, subprogram.decl_param.type)
         st.beginScope(subprogram.id)
         for i in range(0, len(params), 2):
             st.addVar(params[i], params[i+1])
@@ -63,7 +63,7 @@ class SemanticVisitor(AbstractVisitor):
         body.id.accept(self)
 
 
-    def visitDeclVar(self,decl):
+    def visitDeclVar(self,decl): # como tratar declaração de veriável?
         decl.var.accept(self)
 
     def visitDeclVarDecl(self,decl):
@@ -88,7 +88,6 @@ class SemanticVisitor(AbstractVisitor):
 
     def visitVarArray(self,var):
         var.array.accept(self)
-#------------------------------------------------------------------------
 
     def visitVarLoop(self,var_loop):
         var_loop.id.accept(self)
@@ -103,34 +102,69 @@ class SemanticVisitor(AbstractVisitor):
 
     def visitDeclParamReturn(self,decl_param):
         decl_param.param.accept(self)
-        decl_param.type.accept(self)
 
 
     def visitParam(self,param):
-        param.id.accept(self)
+        return [param.id,param.type]
 
     def visitParamParam(self,param):
-        param.param.accept(self)
-        param.id.accept(self)
+        return [param.id, param.type] + param.param.accept(type)
 
 
-    def visitFunctionCall(self,function_call): #return
-        function_call.id.accept(self)
-        function_call.param_pass.accept(self)
+    def visitFunctionCall(self,function_call):
+        bindable = st.getBindable(function_call.id)
+        if bindable is not None and bindable[st.BINDABLE] == st.FUNCTION:
+            typeParams = function_call.param_pass.accept(self)
+            if list(bindable[st.PARAMS][1::2]) == typeParams:
+                return bindable[st.TYPE]
+            function_call.accept(self.printer)
+            print("\n\t[Erro] Chamada de função inválida. Os tipos passados na chamada são:", typeParams)
+            print('\tenquanto que os tipos definidos na função são:', bindable[st.PARAMS][1::2], '\n')
+        else:
+            function_call.accept(self.printer)
+            print("\n\t[Erro] Chamada de funcao inválida. A função", function_call.id,
+                  "não existe, não foi definida ou foi definida após esta chamada\n")
+        return None
+
+    def visitFunctionCallEmpty(self,function_call):
+        bindable = st.getBindable(function_call.id)
+        if (bindable != None and bindable[st.BINDABLE] == st.FUNCTION):
+            return bindable[st.TYPE]
+        function_call.accept(self.printer)
+        print("\n\t[Erro] Chamada de funcao inválida. A função", function_call.id,
+                  "não existe, não foi definida ou foi definida após esta chamada\n")
+        return None
 
 
-    def visitFunctionCallExp(self,function_call_exp): #return
-        function_call_exp.id.accept(self)
-        function_call_exp.param_pass.accept(self)
+    def visitFunctionCallExp(self,function_call_exp):
+        bindable = st.getBindable(function_call_exp.id)
+        if bindable is not None and bindable[st.BINDABLE] == st.FUNCTION:
+            typeParams = function_call_exp.param_pass.accept(self)
+            if list(bindable[st.PARAMS][1::2]) == typeParams:
+                return bindable[st.TYPE]
+            function_call_exp.accept(self.printer)
+            print("\n\t[Erro] Chamada de função inválida. Os tipos passados na chamada são:", typeParams)
+            print('\tenquanto que os tipos definidos na função são:', bindable[st.PARAMS][1::2], '\n')
+        else:
+            function_call_exp.accept(self.printer)
+            print("\n\t[Erro] Chamada de funcao inválida. A função", function_call_exp.id,
+                  "não existe, nao foi definida ou foi definida após esta chamada\n")
+
+    def visitFunctionCallExpEmpty(self,function_call_exp):
+        bindable = st.getBindable(function_call_exp.id)
+        if (bindable != None and bindable[st.BINDABLE] == st.FUNCTION):
+            return bindable[st.TYPE]
+        function_call_exp.accept(self.printer)
+        print("\n\t[Erro] Chamada de funcao inválida. A função", function_call_exp.id,
+                  "não existe, não foi definida ou foi definida após esta chamada\n")
+        return None
 
 
     def visitParamPass(self,param_pass):
-        param_pass.expression.accept(self)
+        return [param_pass.expression.accept(self)]
 
     def visitParamPassParamPass(self,param_pass):
-        param_pass.expression.accept(self)
-        param_pass.param_pass.accept(self)
-
+        return [param_pass.expression.accept(self)] + param_pass.param_pass.accept(self)
 
     def visitCmdIfStatement(self,cmd):
         cmd.if_statement.accept(self)
@@ -147,7 +181,7 @@ class SemanticVisitor(AbstractVisitor):
     def visitCmdAssign(self,cmd):
         cmd.assign.accept(self)
 
-    def visitCmdFunctionCall(self,cmd): #return
+    def visitCmdFunctionCall(self,cmd):
         cmd.function_call.accept(self)
 
 
@@ -164,24 +198,35 @@ class SemanticVisitor(AbstractVisitor):
 
 
     def visitIfStatement(self,if_statement):
-        if_statement.expression.accept(self)
+        type = if_statement.expression.accept(self)
+        if type != st.BOOL:
+            if_statement.expression.accept(self.printer)
+            print("\n\t[Erro] A expressão ", end='')
+            if_statement.expression.accept(self.printer)
+            print(" é", type, end='')
+            print(". Ela deve retornar boolean\n")
         if_statement.cmd_loop.accept(self)
-        if_statement.if_statement_loop(self)
+        if_statement.if_statement_loop.accept(self)
 
 
     def visitIfStatementLoopElsif(self,if_statement_loop):
-        if_statement_loop.expression.accept(self)
+        type = if_statement_loop.expression.accept(self)
+        if type != st.BOOL:
+            if_statement_loop.expression.accept(self.printer)
+            print("\n\t[Erro] A expressão ", end='')
+            if_statement_loop.expression.accept(self.printer)
+            print(" é", type, end='')
+            print(". Ela deve retornar boolean\n")
         if_statement_loop.cmd_loop.accept(self)
         if_statement_loop.if_statement_loop(self)
 
     def visitIfStatementLoopElse(self,if_statement_loop):
-        if_statement_loop.expression.accept(self)
         if_statement_loop.cmd_loop.accept(self)
 
     def visitIfStatementLoopEnd(self,if_statement_loop):
         if_statement_loop.accept(self) #é um end if. Não tem variável.
 
-
+#---------------------------------------------------------------------------
     def visitRepeatStatementLoop(self,repeat_statement):
         repeat_statement.loop_statement.accept(self)
 

@@ -84,7 +84,15 @@ class AbstractVisitor(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def visitFunctionCallEmpty(self, function_call):
+        pass
+
+    @abstractmethod
     def visitFunctionCallExp(self,function_call_exp):
+        pass
+
+    @abstractmethod
+    def visitFunctionCallExpEmpty(self,function_call_exp):
         pass
     
     @abstractmethod

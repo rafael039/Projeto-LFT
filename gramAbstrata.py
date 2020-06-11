@@ -200,17 +200,19 @@ class a_param(metaclass=ABCMeta):
 
 
 class c_param(a_param):
-    def __init__(self,id):
+    def __init__(self,id,type):
         self.id = id
+        self.type = type
 
     def accept(self, visitor):
         pass
 
 
 class c_param__param(a_param):
-    def __init__(self, id, param):
+    def __init__(self, id, param, type):
         self.param = param
         self.id = id
+        self.type = type
 
     def accept(self, visitor):
         pass
@@ -232,6 +234,13 @@ class c_function_call(a_function_call):
     def accept(self, visitor):
         pass
 
+class c_function_call_empty(a_function_call):
+    def __init__(self,id):
+        self.id = id
+
+    def accept(self, visitor):
+        pass
+
 
 # -----------------------------------------------
 
@@ -245,6 +254,13 @@ class c_function_call_exp(a_function_call_exp):
     def __init__(self, id,param_pass):
         self.id = id
         self.param_pass = param_pass
+
+    def accept(self, visitor):
+        pass
+
+class c_function_call_exp_empty(a_function_call_exp):
+    def __init__(self, id):
+        self.id = id
 
     def accept(self, visitor):
         pass
@@ -410,7 +426,6 @@ class c_if_statement_loop__elsif(a_if_statement_loop):
 
 class c_if_statement_loop__else(a_if_statement_loop):
     def __init__(self, expression, cmd_loop):
-        self.expression = expression
         self.cmd_loop = cmd_loop
 
     def accept(self, visitor):
