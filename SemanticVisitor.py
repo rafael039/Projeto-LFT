@@ -2,7 +2,7 @@ from AbstractVisitor import AbstractVisitor
 import SymbolTable as st
 from Visitor import Visitor
 
-import SintaxeAbstrata as sa
+import gramAbstrata as ga
 
 
 def coercion(type1, type2):
@@ -63,7 +63,7 @@ class SemanticVisitor(AbstractVisitor):
         body.id.accept(self)
 
 
-    def visitDeclVar(self,decl): # como tratar declaração de veriável?
+    def visitDeclVar(self,decl):
         decl.var.accept(self)
 
     def visitDeclVarDecl(self,decl):
@@ -72,19 +72,24 @@ class SemanticVisitor(AbstractVisitor):
 
 
     def visitVar(self,var):
-        var.id.accept(self) # accept nos ids?
-        var.type.accept(self)
-        st.addVar(var.id,var.type)
+        if isinstance(var.id, ga.c_term__ID):
+            st.addVar(var.id, var.type)
+            return var.type
+        return None
 
     def visitVarID(self,var):
-        var.id1.accept(self)
-        var.type.accept(self)
-        st.addVar(var.id, var.type)
-        var.id2.accept(self)
+        typeVar = var.op_arithmetic.accept(self)
+        if isinstance(var.id, ga.c_term__ID):
+            st.addVar(var.id, typeVar)
+            return typeVar
+        return None
 
     def visitVarVarLoop(self,var):
-        var.id.accept(self)
         var.var_loop.accept(self)
+        if isinstance(var.id, ga.c_term__ID):
+            st.addVar(var.id, var.type)
+            return var.type
+        return None
 
     def visitVarArray(self,var):
         var.array.accept(self)
@@ -226,7 +231,7 @@ class SemanticVisitor(AbstractVisitor):
     def visitIfStatementLoopEnd(self,if_statement_loop):
         if_statement_loop.accept(self) #é um end if. Não tem variável.
 
-#---------------------------------------------------------------------------
+
     def visitRepeatStatementLoop(self,repeat_statement):
         repeat_statement.loop_statement.accept(self)
 
@@ -242,123 +247,236 @@ class SemanticVisitor(AbstractVisitor):
 
 
     def visitWhileStatement(self,while_statement):
-        while_statement.expression.accept(self)
+        type = while_statement.expression.accept(self)
+        if type != st.BOOL:
+            while_statement.expression.accept(self.printer)
+            print("\n\t[Erro] A expressão ", end='')
+            while_statement.expression.accept(self.printer)
+            print(" é", type, end='')
+            print(". Ela deve retornar boolean\n")
         while_statement.cmd_loop.accept(self)
 
 
     def visitForStatement(self,for_statement):
-        for_statement.expression.accept(self)
+        type = for_statement.expression.accept(self)
+        if type != st.BOOL:
+            for_statement.expression.accept(self.printer)
+            print("\n\t[Erro] A expressão ", end='')
+            for_statement.expression.accept(self.printer)
+            print(" é", type, end='')
+            print(". Ela deve retornar boolean\n")
         for_statement.cmd_loop.accept(self)
 
 
-    def visitRange(self,range):
-        range.id1.accept(self)
-        range.id2.accept(self)
+    def visitRange(self,range): #como fazer?
+        range.accept(self)
 
 
     def visitAssign(self,assign):
-        assign.id.accept(self)
-        assign.op_arithmetic.accept(self)
+        typeVar = assign.op_arithmetic.accept(self)
+        if isinstance(assign.id, ga.c_term__ID):
+            st.addVar(assign.id, typeVar)
+            return typeVar
+        return None
+
+    def visitExpression(self,expression):
+        return expression.op_exp.accept(self)
+
+    def visitExpressionAnd(self,expression):
+        typeExp1 = expression.expression.accept(self)
+        typeExp2 = expression.or_exp.accept(self)
+        if typeExp1 is not st.BOOL | typeExp2 is not st.BOOL:
+            expression.accept(self.printer)
+            print('\n\t[Erro] Operação booleana inválida. A expressão ', end='')
+            expression.expression.accept(self.printer)
+            print(' é do tipo', typeExp1, 'enquanto a expressão ', end='')
+            expression.or_exp.accept(self.printer)
+            print(' é do tipo', typeExp2, '\n')
+            return None
+        return st.BOOL
 
 
-    def visitExpression(self,expression): #return
-        expression.op_exp.accept(self)
+    def visitOrExp(self,or_exp):
+        return or_exp.comp_exp.accept(self)
 
-    def visitExpressionAnd(self,expression): #return
-        expression.expression.accept(self)
-        expression.or_exp.accept(self)
+    def visitOrExpOr(self,or_exp):
+        typeExp1 = or_exp.or_exp.accept(self)
+        typeExp2 = or_exp.comp_exp.accept(self)
+        if typeExp1 is not st.BOOL | typeExp2 is not st.BOOL:
+            or_exp.accept(self.printer)
+            print('\n\t[Erro] Operação booleana inválida. A expressão ', end='')
+            or_exp.or_exp.accept(self.printer)
+            print(' é do tipo', typeExp1, 'enquanto a expressão ', end='')
+            or_exp.comp_exp.accept(self.printer)
+            print(' é do tipo', typeExp2, '\n')
+            return None
+        return st.BOOL
 
 
-    def visitOrExp(self,or_exp): #return
-        or_exp.comp_exp.accept(self)
-
-    def visitOrExpOr(self,or_exp): #return
-        or_exp.or_exp.accept(self)
-        or_exp.comp_exp.accept(self)
-
-
-    def visitCompExp(self,comp_exp): #return
-        comp_exp.op_arithmetic.accept(self)
+    def visitCompExp(self,comp_exp):
+        return comp_exp.op_arithmetic.accept(self)
 
     def visitCompExpOpArithmetic(self,comp_exp):
-        comp_exp.comp_op.accept(self)
-        comp_exp.op_arithmetic.accept(self)
-        comp_exp.comp_exp.accept(self)
+        typeExp1 = comp_exp.comp_exp.accept(self)
+        typeExp2 = comp_exp.comp_op.accept(self)
+
+        if typeExp1 in st.Number | typeExp2 in st.Number:
+            return st.BOOL
+        comp_exp.accept(self.printer)
+        print('\n\t[Erro] Comparação inválida. A expressão ', end='')
+        comp_exp.comp_exp.accept(self.printer)
+        print(' é do tipo', typeExp1, 'enquanto a expressão ', end='')
+        comp_exp.comp_op.accept(self.printer)
+        print(' é do tipo', typeExp2, '\n')
+        return None
 
 
-    def visitCompOpGT(self,comp_op): #return
+    def visitCompOpGT(self,comp_op): # como fazer?
         comp_op.accept(self)
 
-    def visitCompOpGTE(self,comp_op): #return
+    def visitCompOpGTE(self,comp_op):
         comp_op.accept(self)
 
-    def visitCompOpLT(self,comp_op): #return
+    def visitCompOpLT(self,comp_op):
         comp_op.accept(self)
 
-    def visitCompOpLTE(self,comp_op): #return
+    def visitCompOpLTE(self,comp_op):
         comp_op.accept(self)
 
-    def visitCompOpNE(self,comp_op): #return
+    def visitCompOpNE(self,comp_op):
         comp_op.accept(self)
 
-    def visitCompOpE(self,comp_op): #return
+    def visitCompOpE(self,comp_op):
         comp_op.accept(self)
 
 
-    def visitOpArithmeticPLUS(self,op_arithmetic): #return
-        op_arithmetic.op_arithmetic.accept(self)
-        op_arithmetic.factor.accept(self)
+    def visitOpArithmeticPLUS(self,op_arithmetic):
+        typeExp1 = op_arithmetic.op_arithmetic.accept(self)
+        typeExp2 = op_arithmetic.factor.accept(self)
+        c = coercion(typeExp1,typeExp2)
+        if c == None:
+            op_arithmetic.accept(self.printer)
+            print('\n\t[Erro] Soma inválida. A expressão ', end='')
+            op_arithmetic.op_arithmetic.accept(self.printer)
+            print(' é do tipo', typeExp1, 'enquanto a expressão ', end='')
+            op_arithmetic.factor.accept(self.printer)
+            print(' é do tipo', typeExp2, '\n')
+            return None
+        return c
 
-    def visitOpArithmeticMINUS(self,op_arithmetic): #return
-        op_arithmetic.op_arithmetic.accept(self)
-        op_arithmetic.factor.accept(self)
-
-    def visitOpArithmeticFactor(self,op_arithmetic): #return
-        op_arithmetic.factor.accept(self)
-
-
-    def visitFactorTIMES(self,factor): #return
-        factor.factor.accept(self)
-        factor.power.accept(self)
-
-    def visitFactorDIVIDE(self,factor): #return
-        factor.factor.accept(self)
-        factor.power.accept(self)
-
-    def visitFactorPower(self,factor): #return
-        factor.power.accept(self)
-
-
-    def visitPower(self,power): #return
-        power.power.accept(self)
-        power.unary.accept(self)
-
-    def visitPowerUnary(self,power): #return
-        power.unary.accept(self)
+    def visitOpArithmeticMINUS(self,op_arithmetic):
+        typeExp1 = op_arithmetic.op_arithmetic.accept(self)
+        typeExp2 = op_arithmetic.factor.accept(self)
+        c = coercion(typeExp1,typeExp2)
+        if c == None:
+            op_arithmetic.accept(self.printer)
+            print('\n\t[Erro] Subtração inválida. A expressão ', end='')
+            op_arithmetic.op_arithmetic.accept(self.printer)
+            print(' é do tipo', typeExp1, 'enquanto a expressão ', end='')
+            op_arithmetic.factor.accept(self.printer)
+            print(' é do tipo', typeExp2, '\n')
+            return None
+        return c
 
 
-    def visitUnaryPLUS(self,unary): #return
-        unary.term.accept(self)
-
-    def visitUnaryMINUS(self,unary): #return
-        unary.term.accept(self)
-
-    def visitUnary(self,unary): #return
-        unary.term.accept(self)
+    def visitOpArithmeticFactor(self,op_arithmetic):
+        return op_arithmetic.factor.accept(self)
 
 
-    def visitTermID(self,term): #return
-        term.id.accpet(self)
+    def visitFactorTIMES(self,factor):
+        typeExp1 = factor.factor.accept(self)
+        typeExp2 = factor.power.accept(self)
+        c = coercion(typeExp1,typeExp2)
+        if c == None:
+            factor.accept(self.printer)
+            print('\n\t[Erro] Multiplicação inválida. A expressão ', end='')
+            factor.factor.accept(self.printer)
+            print(' é do tipo', typeExp1, 'enquanto a expressão ', end='')
+            factor.power.accept(self.printer)
+            print(' é do tipo', typeExp2, '\n')
+            return None
+        return c
 
-    def visitTermFunctionCall(self,term): #return
-        term.function_call_exp.accept(self)
+    def visitFactorDIVIDE(self,factor):
+        typeExp1 = factor.factor.accept(self)
+        typeExp2 = factor.power.accept(self)
+        c = coercion(typeExp1,typeExp2)
+        if c == None:
+            factor.accept(self.printer)
+            print('\n\t[Erro] Divisão inválida. A expressão ', end='')
+            factor.factor.accept(self.printer)
+            print(' é do tipo', typeExp1, 'enquanto a expressão ', end='')
+            factor.power.accept(self.printer)
+            print(' é do tipo', typeExp2, '\n')
+            return None
+        return c
 
-    def visitTermExpression(self,term): #return
-        term.expression.accept(self)
+    def visitFactorPower(self,factor):
+        return factor.power.accept(self)
 
-    def visitArray(self,array):
+
+    def visitPower(self,power):
+        typeExp1 = power.power.accept(self)
+        typeExp2 = power.unary.accept(self)
+        c = coercion(typeExp1,typeExp2)
+        if c == None:
+            power.accept(self.printer)
+            print('\n\t[Erro] Potência inválida. A expressão ', end='')
+            power.power.accept(self.printer)
+            print(' é do tipo', typeExp1, 'enquanto a expressão ', end='')
+            power.unary.accept(self.printer)
+            print(' é do tipo', typeExp2, '\n')
+            return None
+        return c
+
+    def visitPowerUnary(self,power):
+        return power.unary.accept(self)
+
+
+    def visitUnaryPLUS(self,unary):
+        typeExp = unary.term.accept(self)
+        if typeExp in st.Number:
+            return typeExp
+        unary.accept(self.printer)
+        print('\n\t[Erro] Não é possivel fazer a opeação unária na expressão', end='')
+        unary.term.accept(self.printer)
+        return None
+
+    def visitUnaryMINUS(self,unary):
+        typeExp = unary.term.accept(self)
+        if typeExp in st.Number:
+            return typeExp
+        unary.accept(self.printer)
+        print('\n\t[Erro] Não é possivel fazer a opeação unária na expressão', end='')
+        unary.term.accept(self.printer)
+        return None
+
+    def visitUnary(self,unary):
+        return unary.term.accept(self)
+
+
+    def visitTermID(self,term):
+        idName = st.getBindable(term.id)
+        if (idName != None):
+            return idName[st.TYPE]
+        return None
+
+    def visitTermFunctionCall(self,term):
+        return term.function_call_exp.accept(self)
+
+    def visitTermExpression(self,term):
+        return term.expression.accept(self)
+
+    def visitArray(self,array): # como fazer?
         array.id.accept(self)
         array.range.accept(self)
 
     def visitReturn(self,retorno):
-        retorno.expression.accept(self)
+        typeExp = retorno.expression.accept(self)
+        scope = st.symbolTable[-1][st.SCOPE]
+        bindable = st.getBindable(scope)
+        if (typeExp != bindable[st.TYPE]):
+            retorno.accept(self.printer)
+            print('\t[Erro] O retorno da funcao', scope, 'é do tipo', bindable[st.TYPE], end='')
+            print(' no entanto, o retorno passado foi do tipo', typeExp, '\n')
+        st.endScope()

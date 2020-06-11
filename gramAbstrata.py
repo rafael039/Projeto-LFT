@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from abc import ABCMeta
-# from visitor import visitor
+from visitor import Visitor
 
 class a_program(metaclass=ABCMeta):
     @abstractmethod
@@ -12,7 +12,7 @@ class c_program(a_program):
         self.subprogram = subprogram
 
     def accept(self, visitor):
-        pass
+        Visitor.visitProgram(self,visitor)
 
 class c_program__loop(a_program):
     def __init__(self,subprogram,program):
@@ -20,7 +20,7 @@ class c_program__loop(a_program):
         self.program = program
 
     def accept(self, visitor):
-        pass
+        Visitor.visitProgramLoop(self,visitor)
 
 # ------------------------------------------------
 
@@ -36,7 +36,7 @@ class c_subprogram__function(a_subprogram):
         self.body = body
 
     def accept(self, visitor):
-        pass
+        Visitor.visitSubprogramFunction(self,visitor)
 
 class c_subprogram__procedure(a_subprogram):
     def __init__(self,id,body):
@@ -44,7 +44,7 @@ class c_subprogram__procedure(a_subprogram):
         self.body = body
 
     def accept(self, visitor):
-        pass
+        Visitor.visitSubprogramProcedure(self,visitor)
 
 class c_subprogram__procedure_decl(a_subprogram):
     def __init__(self,id,decl, body):
@@ -53,7 +53,7 @@ class c_subprogram__procedure_decl(a_subprogram):
         self.decl = decl
 
     def accept(self, visitor):
-        pass
+        Visitor.visitSubprogramProcedureDecl(self, visitor)
 
 # ------------------------------------------------
 
@@ -69,7 +69,7 @@ class c_body(a_body):
         self.id = id
 
     def accept(self, visitor):
-        pass
+        Visitor.visitBody(self,visitor)
 
 
 # ------------------------------------------------
@@ -85,7 +85,7 @@ class c_decl__var(a_decl):
         self.var = var
 
     def accept(self, visitor):
-        pass
+        Visitor.visitDeclVar(self,visitor)
 
 
 class c_decl__var_decl(a_decl):
@@ -94,7 +94,7 @@ class c_decl__var_decl(a_decl):
         self.decl = decl
 
     def accept(self, visitor):
-        pass
+        Visitor.visitDeclVarDecl(self,visitor)
 
 # ------------------------------------------------
 
@@ -111,7 +111,7 @@ class c_var(a_var):
 
 
     def accept(self, visitor):
-        pass
+        Visitor.visitVar(self,visitor)
 
 
 class c_var__ID(a_var):
@@ -121,7 +121,7 @@ class c_var__ID(a_var):
         self.id2 = id2
 
     def accept(self, visitor):
-        pass
+        Visitor.visitVarID(self,visitor)
 
 
 class c_var__var_loop(a_var):
@@ -130,7 +130,7 @@ class c_var__var_loop(a_var):
         self.id = id
 
     def accept(self, visitor):
-        pass
+        Visitor.visitVarVarLoop(self,visitor)
 
 
 class c_var__array(a_var):
@@ -138,7 +138,7 @@ class c_var__array(a_var):
         self.array = array
 
     def accept(self, visitor):
-        pass
+        Visitor.visitVarArray(self,visitor)
 
 
 # ------------------------------------------------

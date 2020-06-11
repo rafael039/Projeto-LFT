@@ -8,83 +8,94 @@ def blank():
         p = p + ' '
     return p
 
+
 class Visitor(AbstractVisitor):
 
     def visitProgram(self,program):
-        program.id.accept(self)
-        program.body.accept(self)
+        program.subprogam.accept(self)
 
-    def visitProgramDecl(self,program__decl):
-        program__decl.id.accept(self)
-        program__decl.body.accept(self)
-        program__decl.decl.accept(self)
+    def visitProgramLoop(self,program):
+        program.subprogam.accept(self)
+        program.program.accept(self)
 
 
-    def visitSubprogram(self,subprogram):
-        params = {}
-        if subprogram.decl_param is not None:
-            params = subprogram.decl_param.accept(self)
-            st.addFunction(subprogram.id,params,subprogram.decl_param.type)
-        else:
-            st.addFunction(subprogram.id, params, subprogram.decl_param.type)
-        st.beginScope(subprogram.id)
-        for i in range(0, len(params), 2):
-            st.addVar(params[i], params[i+1])
+    def visitSubprogramFunction(self,subprogram):
+        print(blank(),'function ',subprogram.id,end='',sep='')
+        subprogram.decl_param.accept(self)
+        print('is')
+        subprogram.body.accept(self)
+
+    def visitSubprogramProcedure(self,subprogram):
+        print(blank(),'procedure ',subprogram.id,end='',sep='')
+        subprogram.decl.accept(self)
+        print('is')
+        subprogram.body.accept(self)
+
+    def visitSubprogramProcedureDecl(self,subprogram):
+        print(blank(), 'procedure ', subprogram.id, end='', sep='')
+        print('is')
+        subprogram.body.accept(self)
 
 
     def visitBody(self,body):
-        body.cmd_loop.accept(self)
-        body.id.accept(self)
+        global tab
+        print ('begin')
+        tab =  tab + 3
+        if body.cmd_loop != None:
+            body.cmd_loop.accept(self)
+        tab =  tab - 3
+        print (blank(), 'end ',body.id, sep='')
 
-
-    def visitDecl(self,decl):
-        decl.var.accept(self)
 
     def visitDeclVar(self,decl):
         decl.var.accept(self)
+        print(';')
 
     def visitDeclVarDecl(self,decl):
         decl.var.accept(self)
+        print(';')
         decl.decl.accept(self)
 
 
     def visitVar(self,var):
-        var.id.accept(self) # accept nos ids?
+        print(var.id,',',var.type,end='',sep='')
 
     def visitVarID(self,var):
-        var.id1.accept(self)
-        var.id2.accept(self)
+        print (var.id1,',',var.type,':=',var.id2,end='',sep='')
 
     def visitVarVarLoop(self,var):
-        var.id.accept(self)
         var.var_loop.accept(self)
+        print(var.id, ',', var.type, end='', sep='')
 
     def visitVarArray(self,var):
         var.array.accept(self)
 
 
     def visitVarLoop(self,var_loop):
-        var_loop.id.accept(self)
+        print(var_loop.id,',',end='', sep='')
 
     def visitVarLoopLoop(self,var_loop):
         var_loop.var_loop.accept(self)
-        var_loop.id.accept(self)
+        print(var_loop.id, ',',end = '', sep = '')
 
 
     def visitDeclParam(self,decl_param):
+        print('(',end='', sep='')
         decl_param.param.accept(self)
+        print(')', end='', sep='')
 
     def visitDeclParamReturn(self,decl_param):
+        print('(',end='', sep='')
         decl_param.param.accept(self)
-        decl_param.type.accept(self)
+        print(')','return', decl_param.type,end='', sep='')
 
 
     def visitParam(self,param):
-        param.id.accept(self)
+        print(param.id,':',param.type,';')
 
     def visitParamParam(self,param):
+        print(param.id, ':', param.type, ';')
         param.param.accept(self)
-        param.id.accept(self)
 
 
     def visitFunctionCall(self,function_call):

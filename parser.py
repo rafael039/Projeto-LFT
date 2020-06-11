@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 from calclex import tokens
 import gramAbstrata as ga
-import visitor as vis
+from visitor import Visitor
 
 def p_program(p):
     '''program : subprogram
