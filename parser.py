@@ -144,7 +144,7 @@ def p_cmd_loop(p):
 def p_puts(p):
     ''' puts : PUTS LPAREN STRING RPAREN SEMICOLON
     '''
-    p[0] = ga.c_puts()  
+    p[0] = ga.c_puts(p[3])
 
 def p_if_statement(p):
     ''' if_statement : IF expression THEN cmd_loop if_statement_loop
@@ -177,14 +177,14 @@ def p_repeat_statement(p):
         p[0] = ga.c_repeat_statement__while(p[1])
 
 def p_loop_statement(p):
-    ''' loop_statement : LOOP cmd_loop END LOOP
+    ''' loop_statement : LOOP cmd_loop END LOOP SEMICOLON
     '''
     p[0] = ga.c_loop_statement(p[2])
 
 def p_while_statement(p):
-    ''' while_statement : WHILE expression NUMBER_INT LOOP cmd_loop END LOOP SEMICOLON
+    ''' while_statement : WHILE expression LOOP cmd_loop END LOOP SEMICOLON
     '''
-    p[0] = ga.c_while_statement(p[2], p[5])
+    p[0] = ga.c_while_statement(p[2], p[4])
 
 def p_for_statement(p):
     ''' for_statement : FOR ID IN range LOOP cmd_loop END LOOP SEMICOLON

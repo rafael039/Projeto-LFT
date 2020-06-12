@@ -99,13 +99,20 @@ class Visitor(AbstractVisitor):
 
 
     def visitFunctionCall(self,function_call):
-        function_call.id.accept(self)
+        print(function_call.id,end='', sep='')
         function_call.param_pass.accept(self)
+        print(';',end='', sep='')
 
+    def visitFunctionCallEmpty(self, function_call):
+        print(function_call.id,'(',end='', sep='')
+        print(')',';',end='', sep='')
 
     def visitFunctionCallExp(self,function_call_exp):
-        function_call_exp.id.accept(self)
+        print(function_call_exp.id,end='', sep='')
         function_call_exp.param_pass.accept(self)
+
+    def visitFunctionCallExpEmpty(self,function_call_exp):
+        print(function_call_exp.id,'(',')', end='', sep='')
 
 
     def visitParamPass(self,param_pass):
@@ -113,6 +120,7 @@ class Visitor(AbstractVisitor):
 
     def visitParamPassParamPass(self,param_pass):
         param_pass.expression.accept(self)
+        print(',',end='', sep='')
         param_pass.param_pass.accept(self)
 
 
@@ -143,27 +151,32 @@ class Visitor(AbstractVisitor):
         cmd_loop.cmd_loop.accept(self)
 
 
-    def visitPuts(self,puts):
+    def visitPuts(self,puts): #Avaliar com o professor
+        print('puts')
         puts.accept(self) #é um print. Não tem variável.
 
 
     def visitIfStatement(self,if_statement):
+        print('if', end='', sep='')
         if_statement.expression.accept(self)
+        print('then', end='', sep='')
         if_statement.cmd_loop.accept(self)
         if_statement.if_statement_loop(self)
 
 
     def visitIfStatementLoopElsif(self,if_statement_loop):
+        print('elsif', end='', sep='')
         if_statement_loop.expression.accept(self)
         if_statement_loop.cmd_loop.accept(self)
         if_statement_loop.if_statement_loop(self)
 
     def visitIfStatementLoopElse(self,if_statement_loop):
-        if_statement_loop.expression.accept(self)
+        print('else', end='', sep='')
         if_statement_loop.cmd_loop.accept(self)
+        print('end if;')
 
     def visitIfStatementLoopEnd(self,if_statement_loop):
-        if_statement_loop.accept(self) #é um end if. Não tem variável.
+        print('end if;')
 
 
     def visitRepeatStatementLoop(self,repeat_statement):
@@ -177,27 +190,35 @@ class Visitor(AbstractVisitor):
 
 
     def visitLoopStatement(self,loop_statement):
+        print('loop', end='', sep='')
         loop_statement.loop_statement.accept(self)
+        print('end loop;')
 
 
     def visitWhileStatement(self,while_statement):
+        print('while', end='', sep='')
         while_statement.expression.accept(self)
-        while_statement.cmd_loop.accept(self)
+        print('loop', end='', sep='')
+        while_statement.loop_statement.accept(self)
+        print('end loop;')
 
 
     def visitForStatement(self,for_statement):
+        print('for', end='', sep='')
         for_statement.expression.accept(self)
+        print('loop', end='', sep='')
         for_statement.cmd_loop.accept(self)
+        print('end loop;')
 
 
     def visitRange(self,range):
-        range.id1.accept(self)
-        range.id2.accept(self)
+        print(range.id1,'..',range.id2, sep='')
 
 
     def visitAssign(self,assign):
-        assign.id.accept(self)
+        print(assign.id,':=', end='', sep='')
         assign.op_arithmetic.accept(self)
+        print(';')
 
 
     def visitExpression(self,expression):
@@ -205,6 +226,7 @@ class Visitor(AbstractVisitor):
 
     def visitExpressionAnd(self,expression):
         expression.expression.accept(self)
+        print('and', end='')
         expression.or_exp.accept(self)
 
 
@@ -213,6 +235,7 @@ class Visitor(AbstractVisitor):
 
     def visitOrExpOr(self,or_exp):
         or_exp.or_exp.accept(self)
+        print('or', end='')
         or_exp.comp_exp.accept(self)
 
 
@@ -226,30 +249,32 @@ class Visitor(AbstractVisitor):
 
 
     def visitCompOpGT(self,comp_op):
-        comp_op.accept(self)
+        print('>',end='')
 
     def visitCompOpGTE(self,comp_op):
-        comp_op.accept(self)
+        print('>=',end='')
 
     def visitCompOpLT(self,comp_op):
-        comp_op.accept(self)
+        print('<',end='')
 
     def visitCompOpLTE(self,comp_op):
-        comp_op.accept(self)
+        print('<=',end='')
 
     def visitCompOpNE(self,comp_op):
-        comp_op.accept(self)
+        print('!=',end='')
 
     def visitCompOpE(self,comp_op):
-        comp_op.accept(self)
+        print('=',end='')
 
 
     def visitOpArithmeticPLUS(self,op_arithmetic):
         op_arithmetic.op_arithmetic.accept(self)
+        print('+', end='')
         op_arithmetic.factor.accept(self)
 
     def visitOpArithmeticMINUS(self,op_arithmetic):
         op_arithmetic.op_arithmetic.accept(self)
+        print('-', end='')
         op_arithmetic.factor.accept(self)
 
     def visitOpArithmeticFactor(self,op_arithmetic):
@@ -258,10 +283,12 @@ class Visitor(AbstractVisitor):
 
     def visitFactorTIMES(self,factor):
         factor.factor.accept(self)
+        print('*', end='')
         factor.power.accept(self)
 
     def visitFactorDIVIDE(self,factor):
         factor.factor.accept(self)
+        print('/', end='')
         factor.power.accept(self)
 
     def visitFactorPower(self,factor):
@@ -270,6 +297,7 @@ class Visitor(AbstractVisitor):
 
     def visitPower(self,power):
         power.power.accept(self)
+        print('**', end='')
         power.unary.accept(self)
 
     def visitPowerUnary(self,power):
@@ -277,9 +305,11 @@ class Visitor(AbstractVisitor):
 
 
     def visitUnaryPLUS(self,unary):
+        print('+', end='')
         unary.term.accept(self)
 
     def visitUnaryMINUS(self,unary):
+        print('-', end='')
         unary.term.accept(self)
 
     def visitUnary(self,unary):
@@ -287,18 +317,25 @@ class Visitor(AbstractVisitor):
 
 
     def visitTermID(self,term):
-        term.id.accpet(self)
+        print(term.id,end='')
 
     def visitTermFunctionCall(self,term):
         term.function_call_exp.accept(self)
 
+
     def visitTermExpression(self,term):
+        print('(', end='')
         term.expression.accept(self)
+        print(')', end='')
 
     def visitArray(self,array):
-        array.id.accept(self)
+        print('type',array.id,'is','(',end='')
         array.range.accept(self)
+        print(')','of','type',';',sep='')
 
     def visitReturn(self,retorno):
+        print('return',end='')
         retorno.expression.accept(self)
+        print(';',end='')
+
 
