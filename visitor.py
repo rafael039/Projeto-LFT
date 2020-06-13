@@ -60,8 +60,9 @@ class Visitor(AbstractVisitor):
     def visitVar(self,var):
         print(var.id,',',var.type,end='',sep='')
 
-    def visitVarID(self,var):
-        print (var.id1,',',var.type,':=',var.id2,end='',sep='')
+    def visitVarTerm(self,var):
+        print (var.id,',',var.type,':=',end='',sep='')
+        var.term.accept(self)
 
     def visitVarVarLoop(self,var):
         var.var_loop.accept(self)
@@ -77,6 +78,25 @@ class Visitor(AbstractVisitor):
     def visitVarLoopLoop(self,var_loop):
         var_loop.var_loop.accept(self)
         print(var_loop.id, ',',end = '', sep = '')
+
+    def visitTypeBoolean(self, type): # como fazer?
+        print('Boolean',end = '')
+
+
+    def visitTypeCharacter(self, type):
+        print('Character',end = '')
+
+
+    def visitTypeFloat(self, type):
+        print('Float',end = '')
+
+
+    def visitTypeInteger(self, type):
+        print('Integer',end = '')
+
+
+    def visitTypeString(self, type):
+        print('String',end = '')
 
 
     def visitDeclParam(self,decl_param):
@@ -327,6 +347,27 @@ class Visitor(AbstractVisitor):
         print('(', end='')
         term.expression.accept(self)
         print(')', end='')
+
+    def visitTermLiteral(self, term):
+        term.literal.accept(self)
+
+    def visitLiteralChar(self,literal):
+        print(literal.value,end='')
+
+    def visitLiteralInt(self,literal):
+        print(literal.value,end='')
+
+    def visitLiteralFloat(self,literal):
+        print(literal.value,end='')
+
+    def visitLiteralStr(self,literal):
+        print(literal.value,end='')
+
+    def visitLiteralTrue(self,literal):
+        print(literal.value,end='')
+
+    def visitLiteralFalse(self,literal):
+        print(literal.value,end='')
 
     def visitArray(self,array):
         print('type',array.id,'is','(',end='')

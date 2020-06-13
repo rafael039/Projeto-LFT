@@ -3,10 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="835da700-cf81-4ff5-8d52-ab80f4387643" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AbstractVisitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/AbstractVisitor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SemanticVisitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/SemanticVisitor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calclex.py" beforeDir="false" afterPath="$PROJECT_DIR$/calclex.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gramAbstrata.py" beforeDir="false" afterPath="$PROJECT_DIR$/gramAbstrata.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser.out" beforeDir="false" afterPath="$PROJECT_DIR$/parser.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parsetab.py" beforeDir="false" afterPath="$PROJECT_DIR$/parsetab.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/progExemplo.adb" beforeDir="false" afterPath="$PROJECT_DIR$/progExemplo.adb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/visitor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -109,7 +113,9 @@
       <workItem from="1591640590838" duration="8030000" />
       <workItem from="1591726496740" duration="9427000" />
       <workItem from="1591827812527" duration="8541000" />
-      <workItem from="1591899764029" duration="20729000" />
+      <workItem from="1591899764029" duration="21329000" />
+      <workItem from="1592053402037" duration="12912000" />
+      <workItem from="1592080854358" duration="94000" />
     </task>
     <servers />
   </component>
@@ -170,6 +176,10 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="293" y="0" width="770" height="766" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.768@0.0.1366.768" timestamp="1591924545423" />
+    <state x="463" y="300" width="430" height="166" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1592079129199">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="463" y="300" width="430" height="166" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.768@0.0.1366.768" timestamp="1592079129199" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Projeto_LFT$calclex.coverage" NAME="calclex Coverage Results" MODIFIED="1586283152105" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

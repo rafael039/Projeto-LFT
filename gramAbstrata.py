@@ -105,7 +105,7 @@ class a_var(metaclass=ABCMeta):
 
 
 class c_var(a_var):
-    def __init__(self,id):
+    def __init__(self,id,type):
         self.id = id
         self.type = type
 
@@ -114,14 +114,14 @@ class c_var(a_var):
         Visitor.visitVar(self,visitor)
 
 
-class c_var__ID(a_var):
-    def __init__(self,id1,type,id2):
-        self.id1 = id1
+class c_var__term(a_var):
+    def __init__(self,id,type,term):
+        self.id = id
         self.type = type
-        self.id2 = id2
+        self.term = term
 
     def accept(self, visitor):
-        Visitor.visitVarID(self,visitor)
+        Visitor.visitVarTerm(self,visitor)
 
 
 class c_var__var_loop(a_var):
@@ -165,6 +165,51 @@ class c_var_loop__loop(a_var_loop):
     def accept(self, visitor):
         Visitor.visitVarLoopLoop(self,visitor)
 
+# ------------------------------------------------
+class a_type(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+
+class c_type__bool(a_type):
+    def __init__(self):
+        pass
+
+    def accept(self, visitor):
+        Visitor.visitTypeBool(self,visitor)
+
+
+class c_type__char(a_type):
+    def __init__(self):
+        pass
+
+    def accept(self, visitor):
+        Visitor.visitTypeChar(self, visitor)
+
+
+class c_type__float(a_type):
+    def __init__(self):
+        pass
+
+    def accept(self, visitor):
+        Visitor.visitTypeFloat(self, visitor)
+
+
+class c_type__integer(a_type):
+    def __init__(self):
+        pass
+
+    def accept(self, visitor):
+        Visitor.visitTypeInteger(self, visitor)
+
+
+class c_type__string(a_type):
+    def __init__(self):
+        pass
+
+    def accept(self, visitor):
+        Visitor.visitTypeString(self, visitor)
 
 # ------------------------------------------------
 
@@ -843,6 +888,62 @@ class c_term__expression(a_term):
     def accept(self, visitor):
         Visitor.visitTermExpression(self,visitor)
 
+class c_term__literal(a_term):
+    def __init__(self, literal):
+        self.literal = literal
+
+    def accept(self, visitor):
+        Visitor.visitTermLiteral(self,visitor)
+
+# -----------------------------------------------
+class a_literal(metaclass=ABCMeta):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+
+class c_literal_char(a_literal):
+    def __init__(self,value):
+        self.value = value
+
+    def accept(self, visitor):
+        Visitor.visitLiteralChar(self,visitor)
+
+
+class c_literal_int(a_literal):
+    def __init__(self,value):
+        self.value = value
+
+    def accept(self, visitor):
+        Visitor.visitLiteralInt(self,visitor)
+
+class c_literal_float(a_literal):
+    def __init__(self,value):
+        self.value = value
+
+    def accept(self, visitor):
+        Visitor.visitLiteralFloat(self,visitor)
+
+class c_literal_str(a_literal):
+    def __init__(self,value):
+        self.value = value
+
+    def accept(self, visitor):
+        Visitor.visitLiteralStr(self,visitor)
+
+class c_literal_true(a_literal):
+    def __init__(self,value):
+        self.value = value
+
+    def accept(self, visitor):
+        Visitor.visitLiteralTrue(self,visitor)
+
+class c_literal_false(a_literal):
+    def __init__(self,value):
+        self.value = value
+
+    def accept(self, visitor):
+        Visitor.visitLiteralFalse(self,visitor)
 
 # -----------------------------------------------
 
@@ -853,9 +954,11 @@ class a_array(metaclass=ABCMeta):
 
 
 class c_array(a_array):
-    def __init__(self, id, range):
+    def __init__(self,type1,id,range,type2):
+        self.type1 = type1
         self.id = id
         self.range = range
+        self.type2 = type2
 
     def accept(self, visitor):
         Visitor.visitArray(self,visitor)

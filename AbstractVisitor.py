@@ -12,10 +12,6 @@ class AbstractVisitor(metaclass=ABCMeta):
          pass
 
     @abstractmethod
-    def visitSubprogram(self,subprogram):
-        pass
-
-    @abstractmethod
     def visitSubprogramProcedure(self,subprogram):
         pass
 
@@ -44,7 +40,7 @@ class AbstractVisitor(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def visitVarID(self,var):
+    def visitVarTerm(self,var):
         pass
 
     @abstractmethod
@@ -61,6 +57,26 @@ class AbstractVisitor(metaclass=ABCMeta):
 
     @abstractmethod
     def visitVarLoopLoop(self,var_loop):
+        pass
+
+    @abstractmethod
+    def visitTypeBoolean(self, type):
+        pass
+
+    @abstractmethod
+    def visitTypeCharacter(self, type):
+        pass
+
+    @abstractmethod
+    def visitTypeFloat(self, type):
+        pass
+
+    @abstractmethod
+    def visitTypeInteger(self, type):
+        pass
+
+    @abstractmethod
+    def visitTypeString(self, type):
         pass
 
     @abstractmethod
@@ -292,7 +308,31 @@ class AbstractVisitor(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def visitArray(self,array):
+    def visitTermLiteral(self, term):
+        pass
+
+    @abstractmethod
+    def visitLiteralChar(self,literal):
+        pass
+
+    @abstractmethod
+    def visitLiteralInt(self,literal):
+        pass
+
+    @abstractmethod
+    def visitLiteralFloat(self,literal):
+        pass
+
+    @abstractmethod
+    def visitLiteralStr(self,literal):
+        pass
+
+    @abstractmethod
+    def visitLiteralTrue(self,literal):
+        pass
+
+    @abstractmethod
+    def visitLiteralFalse(self,array):
         pass
     
     @abstractmethod

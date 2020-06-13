@@ -22,31 +22,36 @@ tabSize = 4
 palRESERVADA =  {
     'and' : 'AND',
     'array' : 'ARRAY',
-    'begin' : 'BEGIN', 
+    'begin' : 'BEGIN',
+    'Boolean' : 'BOOLEAN',
+    'Character' : 'CHARACTER',
     'else' : 'ELSE',
     'elsif' : 'ELSIF',
     'end' : 'END',
+    'False' : 'FALSE',
+    'Float' : 'FLOAT',
     'for' : 'FOR',
     'function' : 'FUNCTION',
     'procedure' : 'PROCEDURE',
     'if' : 'IF',
     'in' : 'IN',
+    'Integer' : 'INTEGER',
     'is' : 'IS',
     'loop' : 'LOOP',
     'of' : 'OF',
     'or' : 'OR',
     'puts' : 'PUTS',
     'return' : 'RETURN',
+    'String' : 'STRING',
     'then' : 'THEN',
-    'while' : 'WHILE',
+    'True' : 'TRUE',
+    'while' : 'WHILE'
   }
 
 # List of token names. This is always required
 tokens = [
     'NUMBER_INT',
     'NUMBER_FLOAT',
-    'NUMBER_EXPONENT',
-    'BOOLEAN',
     'CHAR',
     'PLUS',
     'MINUS',
@@ -55,10 +60,9 @@ tokens = [
     'POWER',
     'LPAREN',
     'RPAREN',
-    'STRING',
+    'STR',
     'COMMA',
     'COLON',
-    'TYPE',
     'SEMICOLON',
     'DOTDOT',
     'ASSIGN', 
@@ -93,8 +97,8 @@ t_LESSTHANEQUAL = r'<='
 t_NOTEQUAL = r'/='
 t_EQUAL = r'='
 t_DOTDOT = r'\.\.'
-t_BOOLEAN = r'true|false'
-t_TYPE = r'Integer|Float|Character|String|Boolean'
+
+
 
 identList = []
 def t_IDENT(t):
@@ -136,12 +140,7 @@ def t_NUMBER_INT(t):
     return t
 
 def t_NUMBER_FLOAT(t):
-    r'\d+\.\d+'
-    t.value = float(t.value)
-    return t
-
-def t_NUMBER_EXPONENT(t):
-    r'\d+E[+-]\d+|\d+\.\d+E[+-]\d+'
+    r'(\d+\.\d+E[+-]\d+)|(\d+\.\d+)|(\d+E[+-]\d+)'
     t.value = float(t.value)
     return t
 
@@ -170,7 +169,7 @@ lexer = lex.lex()
 
 #sourceCode = open('progExemplo.adc','r')
 #data = sourceCode.read()
-data = ''
+
 sourceCode = open('progExemplo.adb','r')
 data = sourceCode.read()
 

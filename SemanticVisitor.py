@@ -77,7 +77,7 @@ class SemanticVisitor(AbstractVisitor):
             return var.type
         return None
 
-    def visitVarID(self,var):
+    def visitVarTerm(self,var):
         typeVar = var.op_arithmetic.accept(self)
         if isinstance(var.id, ga.c_term__ID):
             st.addVar(var.id, typeVar)
@@ -100,6 +100,26 @@ class SemanticVisitor(AbstractVisitor):
     def visitVarLoopLoop(self,var_loop):
         var_loop.var_loop.accept(self)
         var_loop.id.accept(self)
+
+
+    def visitTypeBoolean(self, type): # como fazer?
+        type.accept(self)
+
+
+    def visitTypeCharacter(self, type):
+        type.accept(self)
+
+
+    def visitTypeFloat(self, type):
+        type.accept(self)
+
+
+    def visitTypeInteger(self, type):
+        type.accept(self)
+
+
+    def visitTypeString(self, type):
+        type.accept(self)
 
 
     def visitDeclParam(self,decl_param):
@@ -466,6 +486,29 @@ class SemanticVisitor(AbstractVisitor):
 
     def visitTermExpression(self,term):
         return term.expression.accept(self)
+
+    def visitTermLiteral(self, term):
+        return term.literal.accept(self)
+
+
+    def visitLiteralChar(self,literal): # como fazer
+        return literal.value.accept(self)
+
+    def visitLiteralInt(self,literal):
+        return literal.value.accept(self)
+
+    def visitLiteralFloat(self,literal):
+        return literal.value.accept(self)
+
+    def visitLiteralStr(self,literal):
+        return literal.value.accept(self)
+
+    def visitLiteralTrue(self,literal):
+        return literal.value.accept(self)
+
+    def visitLiteralFalse(self,literal):
+        return literal.value.accept(self)
+
 
     def visitArray(self,array): # como fazer?
         array.id.accept(self)

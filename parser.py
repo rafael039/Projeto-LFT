@@ -7,7 +7,7 @@ def p_program(p):
     '''program : subprogram
                | subprogram program
     '''
-    if len(p[0]) == 3:
+    if len(p) == 3:
         p[0] = ga.c_program__decl(p[1],p[2])
     else:
         p[0] = ga.c_program(p[1])
@@ -17,7 +17,7 @@ def p_subprogram(p):
                   | PROCEDURE ID IS decl body
                   | PROCEDURE ID IS body
     '''
-    if len(p[0]) == 6:
+    if len(p) == 6:
         if isinstance(p[3],ga.a_decl_param):
             p[0] = ga.c_subprogram(p[2],p[3],p[5])
         else:
@@ -34,22 +34,22 @@ def p_decl(p):
     ''' decl : var SEMICOLON decl
              | var SEMICOLON
     ''' 
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_decl__var_decl(p[1],p[3])
     else:
         p[0] = ga.c_decl__var(p[1])
 
 def p_var(p):
-    ''' var : ID COMMA TYPE ASSIGN ID
-			| ID COLON TYPE
-			| var_loop ID COLON TYPE
+    ''' var : ID COLON type ASSIGN term
+			| ID COLON type
+			| var_loop ID COLON type
 			| array
     '''
-    if len(p[0]) == 6:
-        p[0] = ga.c_var__ID(p[1],p[3],p[5])
-    elif len(p[0]) == 4:
+    if len(p) == 6:
+        p[0] = ga.c_var__term(p[1],p[3],p[5])
+    elif len(p) == 4:
         p[0] = ga.c_var(p[1],p[3])
-    elif len(p[0]) == 5:
+    elif len(p) == 5:
         p[0] = ga.c_var__var_loop(p[1],p[2],p[4])
     else:
         p[0] = ga.c_var__array(p[1])
@@ -58,25 +58,45 @@ def p_var_loop(p):
     ''' var_loop : var_loop ID COMMA
                  | ID COMMA
     '''
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_var_loop__loop(p[1],p[2])
     else:
         p[0] = ga.c_var_loop(p[1])
 
+def p_type(p):
+    ''' type : BOOLEAN
+             | CHARACTER
+             | FLOAT
+             | INTEGER
+             | STRING
+    '''
+    if p[1] == 'Boolean':
+        p[0] = ga.c_type__bool()
+    elif p[1] == 'Character':
+        p[0] = ga.c_type__char()
+    elif p[1] == 'Float':
+        p[0] = ga.c_type__float()
+    elif p[1] == 'Integer':
+        p[0] = ga.c_type__integer()
+    else:
+        p[0] = ga.c_type__string()
+
+
+
 def p_decl_param(p):
     ''' decl_param : LPAREN param RPAREN
-                   | LPAREN param RPAREN RETURN TYPE
+                   | LPAREN param RPAREN RETURN type
     '''
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_decl_param(p[2])
     else:
-        p[0] = ga.c_decl_param__return(p[2],p[4])
+        p[0] = ga.c_decl_param__return(p[2],p[5])
 
 def p_param(p):
-    ''' param : ID COLON TYPE SEMICOLON param
-              | ID COLON TYPE SEMICOLON
+    ''' param : ID COLON type SEMICOLON param
+              | ID COLON type SEMICOLON
     '''
-    if len(p[0]) == 6:
+    if len(p) == 6:
         p[0] = ga.c_param__param(p[1],p[3],p[5])
     else:
         p[0] = ga.c_param(p[1],p[3])
@@ -85,7 +105,7 @@ def p_function_call(p):
     ''' function_call : ID param_pass SEMICOLON
                       | ID LPAREN RPAREN SEMICOLON
     '''
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_function_call(p[1],p[2])
     else:
         p[0] = ga.c_function_call_empty(p[1])
@@ -95,7 +115,7 @@ def p_function_call_exp(p):
     ''' function_call_exp : ID param_pass
                           | ID LPAREN RPAREN
     '''
-    if len(p[0]) == 3:
+    if len(p) == 3:
         p[0] = ga.c_function_call_exp(p[1],p[2])
     else:
         p[0] = ga.c_function_call_exp_empty(p[1])
@@ -104,7 +124,7 @@ def p_param_pass(p):
     ''' param_pass : expression COMMA param_pass
                    | expression
     '''
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_param_pass__param_pass(p[1],p[3])
     else:
         p[0] = ga.c_param_pass(p[1])
@@ -135,7 +155,7 @@ def p_cmd_loop(p):
     '''cmd_loop : cmd_loop cmd
                 | cmd
     '''
-    if len(p[0]) == 3:
+    if len(p) == 3:
         p[0] = ga.c_cmd_loop__loop(p[1],p[2])
     else:
         p[0] = ga.c_cmd_loop(p[1])
@@ -156,9 +176,9 @@ def p_if_statement_loop(p):
                           | ELSE cmd_loop END IF SEMICOLON
                           | END IF SEMICOLON
     '''
-    if len(p[0]) == 6:
+    if len(p) == 6:
        p[0] = ga.c_if_statement_loop__elsif(p[2],p[3],p[4])
-    elif len(p[0]) == 7:
+    elif len(p) == 7:
        p[0] = ga.c_if_statement_loop__else(p[2])
     else:
        p[0] = ga.c_if_statement_loop__end()
@@ -205,7 +225,7 @@ def p_expression(p):
     ''' expression : expression AND or_exp
                    | or_exp
     '''
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_expression__and(p[1], p[3])
     else:
         p[0] = ga.c_expression(p[1])
@@ -214,7 +234,7 @@ def p_or_exp(p):
     ''' or_exp : or_exp OR comp_exp
                | comp_exp
     '''
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_or_exp__or(p[1], p[3])
     else:
         p[0] = ga.c_or_exp(p[1])
@@ -223,7 +243,7 @@ def p_comp_exp(p):
     ''' comp_exp : comp_exp comp_op op_arithmetic
                  | op_arithmetic
     '''
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_comp_exp__op_arithmetic(p[1], p[2], p[3])
     else:
         p[0] = ga.c_comp_exp(p[1])
@@ -271,13 +291,13 @@ def p_factor(p):
     elif p[2] == '/':
         p[0] = ga.c_factor__DIVIDE(p[1], p[3])
     else:
-        p[0] = ga.c_factor__power
+        p[0] = ga.c_factor__power(p[1])
 
 def p_power(p):
     ''' power : power POWER unary
               | unary
     '''
-    if len(p[0]) == 4:
+    if len(p) == 4:
         p[0] = ga.c_power(p[1], p[3])
     else:
         p[0] = ga.c_power__unary(p[1])
@@ -292,25 +312,50 @@ def p_unary(p):
     elif p[1] == '-':
         p[0] = ga.c_unary__MINUS(p[2])
     else:
-        p[0] = ga.c_unary
+        p[0] = ga.c_unary(p[1])
 
 def p_term(p):
     ''' term : ID
              | function_call_exp
              | LPAREN expression RPAREN
+             | literal
     '''
-    if len(p[0]) == 3:
+    if len(p) == 3:
         p[0] = ga.c_term__expression(p[2])
     else:
         if isinstance(p[1],ga.a_function_call_exp):
             p[0] = ga.c_term__function_call(p[1])
+        elif isinstance(p[1], ga.a_literal):
+            p[0] = ga.c_term__literal(p[1])
         else:
             p[0] = ga.c_term__ID(p[1])
 
-def p_array(p):
-    ''' array : TYPE ID IS ARRAY LPAREN range RPAREN OF TYPE SEMICOLON
+def p_literal(p):
+    ''' literal : CHAR
+                | NUMBER_FLOAT
+                | NUMBER_INT
+                | STR
+                | TRUE
+                | FALSE
     '''
-    p[0] = ga.c_array(p[2],p[6])
+    if type(p[1]) == float:
+        p[0] = ga.c_literal_float(p[1])
+    elif type(p[1]) == int:
+        p[0] = ga.c_literal_int(p[1])
+    elif type(p[1]) == str:
+        p[0] = ga.c_literal_str(p[1])
+    elif p[1] == 'True':
+        p[0] = ga.c_literal_true(p[1])
+    elif p[1] == 'False':
+        p[0] = ga.c_literal_false(p[1])
+    else:
+        p[0] = ga.c_literal_char(p[1])
+
+
+def p_array(p):
+    ''' array : type ID IS ARRAY LPAREN range RPAREN OF type SEMICOLON
+    '''
+    p[0] = ga.c_array(p[1],p[2],p[6],p[9])
 
 def p_return(p):
     ''' return : RETURN expression SEMICOLON
@@ -323,5 +368,8 @@ def p_error(p):
  
 # Build the parser
 parser = yacc.yacc()
-
-parser.parse(debug=False)
+result = parser.parse(debug=True)
+visitor = Visitor()
+result.accept(visitor)
+# semanticVisitor = SemanticVisitor()
+# result.accept(semanticVisitor)
