@@ -304,9 +304,10 @@ def p_power(p):
 
 def p_unary(p):
     ''' unary : PLUS term
-              | MINUS term 
-              | term 
+              | MINUS term
+              | term
     '''
+
     if p[1] == '+':
         p[0] = ga.c_unary__PLUS(p[2])
     elif p[1] == '-':
@@ -319,6 +320,7 @@ def p_term(p):
              | function_call_exp
              | LPAREN expression RPAREN
              | literal
+
     '''
     if len(p) == 3:
         p[0] = ga.c_term__expression(p[2])
