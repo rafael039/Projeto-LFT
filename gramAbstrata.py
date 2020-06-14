@@ -125,9 +125,10 @@ class c_var__term(a_var):
 
 
 class c_var__var_loop(a_var):
-    def __init__(self, var_loop,id):
+    def __init__(self, var_loop,id,type):
         self.var_loop = var_loop
         self.id = id
+        self.type = type
 
     def accept(self, visitor):
         Visitor.visitVarVarLoop(self,visitor)

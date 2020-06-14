@@ -102,7 +102,7 @@ def p_param(p):
         p[0] = ga.c_param(p[1],p[3])
 
 def p_function_call(p):
-    ''' function_call : ID param_pass SEMICOLON
+    ''' function_call : ID LPAREN param_pass RPAREN SEMICOLON
                       | ID LPAREN RPAREN SEMICOLON
     '''
     if len(p) == 4:
@@ -112,11 +112,11 @@ def p_function_call(p):
 
 
 def p_function_call_exp(p):
-    ''' function_call_exp : ID param_pass
+    ''' function_call_exp : ID LPAREN param_pass RPAREN
                           | ID LPAREN RPAREN
     '''
     if len(p) == 3:
-        p[0] = ga.c_function_call_exp(p[1],p[2])
+        p[0] = ga.c_function_call_exp(p[1],p[3])
     else:
         p[0] = ga.c_function_call_exp_empty(p[1])
 
@@ -148,7 +148,7 @@ def p_cmd(p):
     elif isinstance(p[0], ga.a_assign):
         p[0] = ga.c_cmd__assign(p[1])
     else:
-        p[0] = ga.c_function_call(p[1])
+        p[0] = ga.c_cmd__function_call(p[1])
         
         
 def p_cmd_loop(p):
@@ -162,7 +162,7 @@ def p_cmd_loop(p):
 
 
 def p_puts(p):
-    ''' puts : PUTS LPAREN STRING RPAREN SEMICOLON
+    ''' puts : PUTS LPAREN STR RPAREN SEMICOLON
     '''
     p[0] = ga.c_puts(p[3])
 
@@ -212,14 +212,14 @@ def p_for_statement(p):
     p[0] = ga.c_for_statement(p[2], p[4], p[6])
 
 def p_range(p):
-    ''' range : ID DOTDOT ID
+    ''' range : NUMBER_INT DOTDOT NUMBER_INT
     '''
     p[0] = ga.c_range(p[1],p[3])
 
 def p_assign(p):
     ''' assign : ID ASSIGN op_arithmetic SEMICOLON
     '''
-    p[0] = ga.c_assign(p[3])
+    p[0] = ga.c_assign(p[1],p[3])
 
 def p_expression(p):
     ''' expression : expression AND or_exp
@@ -269,29 +269,31 @@ def p_comp_op(p):
     else:
         p[0] = ga.c_comp_op__E()
 
+ #-----------------------------------------------------------
 def p_op_arithmetic(p):
     ''' op_arithmetic : op_arithmetic PLUS factor
                       | op_arithmetic MINUS factor
                       | factor
     '''
-    if p[2] == '+':
-        p[0] = ga.c_op_arithmetic__PLUS(p[1], p[3])
-    elif p[2] == '-':
-        p[0] = ga.c_op_arithmetic__MINUS(p[1], p[3])
-    else: 
-        p[0] = ga.c_op_arithmetic__factor(p[1])
+    # if p[2] == '+':
+    #     p[0] = ga.c_op_arithmetic__PLUS(p[1], p[3])
+    # elif p[2] == '-':
+    #     p[0] = ga.c_op_arithmetic__MINUS(p[1], p[3])
+    # else:
+    #     p[0] = ga.c_op_arithmetic__factor(p[1])
 
 def p_factor(p):
     ''' factor : factor TIMES power
                | factor DIVIDE power
                | power
     '''
-    if p[2] == '*':
-        p[0] = ga.c_factor__TIMES(p[1], p[3])
-    elif p[2] == '/':
-        p[0] = ga.c_factor__DIVIDE(p[1], p[3])
-    else:
-        p[0] = ga.c_factor__power(p[1])
+    # if p[2] == '*':
+    #     p[0] = ga.c_factor__TIMES(p[1], p[3])
+    # elif p[2] == '/':
+    #     p[0] = ga.c_factor__DIVIDE(p[1], p[3])
+    # else:
+    #     p[0] = ga.c_factor__power(p[1])
+#-----------------------------------------------------------
 
 def p_power(p):
     ''' power : power POWER unary
@@ -320,9 +322,8 @@ def p_term(p):
              | function_call_exp
              | LPAREN expression RPAREN
              | literal
-
     '''
-    if len(p) == 3:
+    if len(p) == 4:
         p[0] = ga.c_term__expression(p[2])
     else:
         if isinstance(p[1],ga.a_function_call_exp):

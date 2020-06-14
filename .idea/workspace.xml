@@ -3,8 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="835da700-cf81-4ff5-8d52-ab80f4387643" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calclex.py" beforeDir="false" afterPath="$PROJECT_DIR$/calclex.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gramAbstrata.py" beforeDir="false" afterPath="$PROJECT_DIR$/gramAbstrata.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parsetab.py" beforeDir="false" afterPath="$PROJECT_DIR$/parsetab.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/progExemplo.adb" beforeDir="false" afterPath="$PROJECT_DIR$/progExemplo.adb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +49,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../TutorialSemantico02" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="file.status.colors" />
   </component>
   <component name="RunManager">
     <configuration name="calclex" type="PythonConfigurationType" factoryName="Python">
@@ -109,7 +111,8 @@
       <workItem from="1591899764029" duration="21329000" />
       <workItem from="1592053402037" duration="12912000" />
       <workItem from="1592080854358" duration="94000" />
-      <workItem from="1592092806936" duration="4330000" />
+      <workItem from="1592092806936" duration="4453000" />
+      <workItem from="1592158218523" duration="11516000" />
     </task>
     <servers />
   </component>
@@ -158,10 +161,10 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1318" height="183" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1586283334273" />
-    <state x="171" y="10" width="1022" height="736" key="SettingsEditor" timestamp="1591123570417">
+    <state x="171" y="10" width="1022" height="736" key="SettingsEditor" timestamp="1592158360691">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="171" y="10" width="1022" height="736" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1591123570414" />
+    <state x="171" y="10" width="1022" height="736" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1592158360691" />
     <state x="349" y="211" key="com.intellij.ide.util.TipDialog" timestamp="1584987811374">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

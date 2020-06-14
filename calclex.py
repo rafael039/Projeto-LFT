@@ -84,7 +84,7 @@ t_DIVIDE = r'/'
 t_POWER = r'\*\*'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_STRING = r'"[^--]*"'
+t_STR = r'"[^--]*"'
 t_CHAR  = r"'[^\r\n\t\f]'"
 t_ASSIGN = r':='
 t_COMMA = r','
