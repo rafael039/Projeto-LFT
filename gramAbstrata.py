@@ -471,7 +471,7 @@ class c_if_statement_loop__elsif(a_if_statement_loop):
 
 
 class c_if_statement_loop__else(a_if_statement_loop):
-    def __init__(self, expression, cmd_loop):
+    def __init__(self, cmd_loop):
         self.cmd_loop = cmd_loop
 
     def accept(self, visitor):

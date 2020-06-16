@@ -4,8 +4,8 @@ import gramAbstrata as ga
 from visitor import Visitor
 
 def p_program(p):
-    '''program : subprogram
-               | subprogram program
+    '''program : subprogram program
+               | subprogram
     '''
     if len(p) == 3:
         p[0] = ga.c_program__loop(p[1],p[2])
@@ -19,7 +19,7 @@ def p_subprogram(p):
     '''
     if len(p) == 6:
         if isinstance(p[3],ga.a_decl_param):
-            p[0] = ga.c_subprogram(p[2],p[3],p[5])
+            p[0] = ga.c_subprogram__function(p[2],p[3],p[5])
         else:
             p[0] = ga.c_subprogram__procedure_decl(p[2], p[4], p[5])
     else:
@@ -94,7 +94,8 @@ def p_decl_param(p):
 
 def p_param(p):
     ''' param : ID COLON type SEMICOLON param
-              | ID COLON type SEMICOLON
+              | ID COLON type
+
     '''
     if len(p) == 6:
         p[0] = ga.c_param__param(p[1],p[3],p[5])
@@ -105,8 +106,8 @@ def p_function_call(p):
     ''' function_call : ID LPAREN param_pass RPAREN SEMICOLON
                       | ID LPAREN RPAREN SEMICOLON
     '''
-    if len(p) == 4:
-        p[0] = ga.c_function_call(p[1],p[2])
+    if len(p) == 6:
+        p[0] = ga.c_function_call(p[1],p[3])
     else:
         p[0] = ga.c_function_call_empty(p[1])
 
@@ -115,7 +116,7 @@ def p_function_call_exp(p):
     ''' function_call_exp : ID LPAREN param_pass RPAREN
                           | ID LPAREN RPAREN
     '''
-    if len(p) == 3:
+    if len(p) == 5:
         p[0] = ga.c_function_call_exp(p[1],p[3])
     else:
         p[0] = ga.c_function_call_exp_empty(p[1])
@@ -137,15 +138,15 @@ def p_cmd(p):
 			| assign
 			| function_call
     '''
-    if isinstance(p[0], ga.a_if_statement):
+    if isinstance(p[1], ga.a_if_statement):
         p[0] = ga.c_cmd__if_statement(p[1])
-    elif isinstance(p[0], ga.a_repeat_statement):
+    elif isinstance(p[1], ga.a_repeat_statement):
         p[0] = ga.c_cmd__repeat_statement(p[1])
-    elif isinstance(p[0], ga.a_puts):
+    elif isinstance(p[1], ga.a_puts):
         p[0] = ga.c_cmd__puts(p[1])
-    elif isinstance(p[0], ga.a_return):
+    elif isinstance(p[1], ga.a_return):
         p[0] = ga.c_cmd__return(p[1])
-    elif isinstance(p[0], ga.a_assign):
+    elif isinstance(p[1], ga.a_assign):
         p[0] = ga.c_cmd__assign(p[1])
     else:
         p[0] = ga.c_cmd__function_call(p[1])
@@ -176,9 +177,9 @@ def p_if_statement_loop(p):
                           | ELSE cmd_loop END IF SEMICOLON
                           | END IF SEMICOLON
     '''
-    if len(p) == 6:
+    if len(p) == 5:
        p[0] = ga.c_if_statement_loop__elsif(p[2],p[3],p[4])
-    elif len(p) == 7:
+    elif len(p) == 6:
        p[0] = ga.c_if_statement_loop__else(p[2])
     else:
        p[0] = ga.c_if_statement_loop__end()
