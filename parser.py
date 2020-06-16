@@ -8,7 +8,7 @@ def p_program(p):
                | subprogram program
     '''
     if len(p) == 3:
-        p[0] = ga.c_program__decl(p[1],p[2])
+        p[0] = ga.c_program__loop(p[1],p[2])
     else:
         p[0] = ga.c_program(p[1])
 
@@ -21,9 +21,9 @@ def p_subprogram(p):
         if isinstance(p[3],ga.a_decl_param):
             p[0] = ga.c_subprogram(p[2],p[3],p[5])
         else:
-            ga.c_subprogram__procedure_decl(p[2], p[4], p[5])
+            p[0] = ga.c_subprogram__procedure_decl(p[2], p[4], p[5])
     else:
-        ga.c_subprogram__procedure(p[2], p[4])
+        p[0] = ga.c_subprogram__procedure(p[2], p[4])
 
 def p_body(p):
     ''' body : BEGIN cmd_loop END ID SEMICOLON
@@ -275,24 +275,26 @@ def p_op_arithmetic(p):
                       | op_arithmetic MINUS factor
                       | factor
     '''
-    # if p[2] == '+':
-    #     p[0] = ga.c_op_arithmetic__PLUS(p[1], p[3])
-    # elif p[2] == '-':
-    #     p[0] = ga.c_op_arithmetic__MINUS(p[1], p[3])
-    # else:
-    #     p[0] = ga.c_op_arithmetic__factor(p[1])
+    if (len(p) == 2):
+        p[0] = ga.c_op_arithmetic__factor(p[1])
+    else:
+        if p[2] == '+':
+            p[0] = ga.c_op_arithmetic__PLUS(p[1], p[3])
+        elif p[2] == '-':
+            p[0] = ga.c_op_arithmetic__MINUS(p[1], p[3])
 
 def p_factor(p):
     ''' factor : factor TIMES power
                | factor DIVIDE power
                | power
     '''
-    # if p[2] == '*':
-    #     p[0] = ga.c_factor__TIMES(p[1], p[3])
-    # elif p[2] == '/':
-    #     p[0] = ga.c_factor__DIVIDE(p[1], p[3])
-    # else:
-    #     p[0] = ga.c_factor__power(p[1])
+    if (len(p) == 2):
+        p[0] = ga.c_factor__power(p[1])
+    else:
+        if p[2] == '*':
+            p[0] = ga.c_factor__TIMES(p[1], p[3])
+        elif p[2] == '/':
+            p[0] = ga.c_factor__DIVIDE(p[1], p[3])
 #-----------------------------------------------------------
 
 def p_power(p):

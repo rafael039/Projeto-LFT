@@ -1,5 +1,5 @@
 from AbstractVisitor import AbstractVisitor
-
+#from gramAbstrata import *
 tab = 0
 
 def blank():
@@ -12,10 +12,10 @@ def blank():
 class Visitor(AbstractVisitor):
 
     def visitProgram(self,program):
-        program.subprogam.accept(self)
+        program.subprogram.accept(self)
 
     def visitProgramLoop(self,program):
-        program.subprogam.accept(self)
+        program.subprogram.accept(self)
         program.program.accept(self)
 
 
@@ -181,7 +181,8 @@ class Visitor(AbstractVisitor):
         if_statement.expression.accept(self)
         print('then', end='', sep='')
         if_statement.cmd_loop.accept(self)
-        if_statement.if_statement_loop(self)
+        #print()
+        if_statement.if_statement_loop.accept(self)
 
 
     def visitIfStatementLoopElsif(self,if_statement_loop):
