@@ -3,29 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="835da700-cf81-4ff5-8d52-ab80f4387643" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calclex.py" beforeDir="false" afterPath="$PROJECT_DIR$/calclex.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SemanticVisitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/SemanticVisitor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gramAbstrata.py" beforeDir="false" afterPath="$PROJECT_DIR$/gramAbstrata.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progExemplo.adb" beforeDir="false" afterPath="$PROJECT_DIR$/progExemplo.adb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/visitor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand />
-    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -112,7 +98,9 @@
       <workItem from="1592053402037" duration="12912000" />
       <workItem from="1592080854358" duration="94000" />
       <workItem from="1592092806936" duration="4453000" />
-      <workItem from="1592158218523" duration="11516000" />
+      <workItem from="1592158218523" duration="12426000" />
+      <workItem from="1592265651549" duration="2091000" />
+      <workItem from="1592310086035" duration="3786000" />
     </task>
     <servers />
   </component>
@@ -177,6 +165,17 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="463" y="300" width="430" height="166" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1366.768@0.0.1366.768" timestamp="1592079129199" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/gramAbstrata.py</url>
+          <line>946</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Projeto_LFT$calclex.coverage" NAME="calclex Coverage Results" MODIFIED="1586283152105" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -372,7 +372,7 @@ class Visitor(AbstractVisitor):
     def visitArray(self,array):
         print('type',array.id,'is','(',end='')
         array.range.accept(self)
-        print(')','of','type',';',sep='')
+        print(')','of',array.type,';',sep='')
 
     def visitReturn(self,retorno):
         print('return',end='')

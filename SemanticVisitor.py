@@ -1,6 +1,6 @@
 from AbstractVisitor import AbstractVisitor
 import SymbolTable as st
-from Visitor import Visitor
+from visitor import Visitor
 
 import gramAbstrata as ga
 

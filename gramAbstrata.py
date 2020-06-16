@@ -12,7 +12,7 @@ class c_program(a_program):
         self.subprogram = subprogram
 
     def accept(self, visitor):
-        Visitor.visitProgram(self,visitor)
+        visitor.visitProgram(self)
 
 class c_program__loop(a_program):
     def __init__(self,subprogram,program):
@@ -20,7 +20,7 @@ class c_program__loop(a_program):
         self.program = program
 
     def accept(self, visitor):
-        Visitor.visitProgramLoop(self,visitor)
+        visitor.visitProgramLoop(self)
 
 # ------------------------------------------------
 
@@ -36,7 +36,7 @@ class c_subprogram__function(a_subprogram):
         self.body = body
 
     def accept(self, visitor):
-        Visitor.visitSubprogramFunction(self,visitor)
+        visitor.visitSubprogramFunction(self)
 
 class c_subprogram__procedure(a_subprogram):
     def __init__(self,id,body):
@@ -44,7 +44,7 @@ class c_subprogram__procedure(a_subprogram):
         self.body = body
 
     def accept(self, visitor):
-        Visitor.visitSubprogramProcedure(self,visitor)
+        visitor.visitSubprogramProcedure(self)
 
 class c_subprogram__procedure_decl(a_subprogram):
     def __init__(self,id,decl, body):
@@ -53,7 +53,7 @@ class c_subprogram__procedure_decl(a_subprogram):
         self.decl = decl
 
     def accept(self, visitor):
-        Visitor.visitSubprogramProcedureDecl(self, visitor)
+        visitor.visitSubprogramProcedureDecl(self)
 
 # ------------------------------------------------
 
@@ -69,7 +69,7 @@ class c_body(a_body):
         self.id = id
 
     def accept(self, visitor):
-        Visitor.visitBody(self,visitor)
+        visitor.visitBody(self)
 
 
 # ------------------------------------------------
@@ -85,7 +85,7 @@ class c_decl__var(a_decl):
         self.var = var
 
     def accept(self, visitor):
-        Visitor.visitDeclVar(self,visitor)
+        visitor.visitDeclVar(self)
 
 
 class c_decl__var_decl(a_decl):
@@ -94,7 +94,7 @@ class c_decl__var_decl(a_decl):
         self.decl = decl
 
     def accept(self, visitor):
-        Visitor.visitDeclVarDecl(self,visitor)
+        visitor.visitDeclVarDecl(self)
 
 # ------------------------------------------------
 
@@ -111,7 +111,7 @@ class c_var(a_var):
 
 
     def accept(self, visitor):
-        Visitor.visitVar(self,visitor)
+        visitor.visitVar(self)
 
 
 class c_var__term(a_var):
@@ -121,7 +121,7 @@ class c_var__term(a_var):
         self.term = term
 
     def accept(self, visitor):
-        Visitor.visitVarTerm(self,visitor)
+        visitor.visitVarTerm(self)
 
 
 class c_var__var_loop(a_var):
@@ -131,7 +131,7 @@ class c_var__var_loop(a_var):
         self.type = type
 
     def accept(self, visitor):
-        Visitor.visitVarVarLoop(self,visitor)
+        visitor.visitVarVarLoop(self)
 
 
 class c_var__array(a_var):
@@ -139,7 +139,7 @@ class c_var__array(a_var):
         self.array = array
 
     def accept(self, visitor):
-        Visitor.visitVarArray(self,visitor)
+        visitor.visitVarArray(self)
 
 
 # ------------------------------------------------
@@ -155,7 +155,7 @@ class c_var_loop(a_var_loop):
         self.id = id
 
     def accept(self, visitor):
-        Visitor.visitVarLoop(self,visitor)
+        visitor.visitVarLoop(self)
 
 
 class c_var_loop__loop(a_var_loop):
@@ -164,7 +164,7 @@ class c_var_loop__loop(a_var_loop):
         self.id = id
 
     def accept(self, visitor):
-        Visitor.visitVarLoopLoop(self,visitor)
+        visitor.visitVarLoopLoop(self)
 
 # ------------------------------------------------
 class a_type(metaclass=ABCMeta):
@@ -178,7 +178,7 @@ class c_type__bool(a_type):
         pass
 
     def accept(self, visitor):
-        Visitor.visitTypeBool(self,visitor)
+        visitor.visitTypeBool(self)
 
 
 class c_type__char(a_type):
@@ -186,7 +186,7 @@ class c_type__char(a_type):
         pass
 
     def accept(self, visitor):
-        Visitor.visitTypeChar(self, visitor)
+        visitor.visitTypeChar(self)
 
 
 class c_type__float(a_type):
@@ -194,7 +194,7 @@ class c_type__float(a_type):
         pass
 
     def accept(self, visitor):
-        Visitor.visitTypeFloat(self, visitor)
+        visitor.visitTypeFloat(self)
 
 
 class c_type__integer(a_type):
@@ -202,7 +202,7 @@ class c_type__integer(a_type):
         pass
 
     def accept(self, visitor):
-        Visitor.visitTypeInteger(self, visitor)
+        visitor.visitTypeInteger(self)
 
 
 class c_type__string(a_type):
@@ -210,7 +210,7 @@ class c_type__string(a_type):
         pass
 
     def accept(self, visitor):
-        Visitor.visitTypeString(self, visitor)
+        visitor.visitTypeString(self)
 
 # ------------------------------------------------
 
@@ -225,7 +225,7 @@ class c_decl_param(a_decl_param):
         self.param = param
 
     def accept(self, visitor):
-        Visitor.visitDeclParam(self,visitor)
+        visitor.visitDeclParam(self)
 
 
 class c_decl_param__return(a_decl_param):
@@ -234,7 +234,7 @@ class c_decl_param__return(a_decl_param):
         self.type = type
 
     def accept(self, visitor):
-        Visitor.visitDeclParamReturn(self,visitor)
+        visitor.visitDeclParamReturn(self)
 
 
 # -----------------------------------------------
@@ -251,7 +251,7 @@ class c_param(a_param):
         self.type = type
 
     def accept(self, visitor):
-        Visitor.visitParam(self,visitor)
+        visitor.visitParam(self)
 
 
 class c_param__param(a_param):
@@ -261,7 +261,7 @@ class c_param__param(a_param):
         self.type = type
 
     def accept(self, visitor):
-        Visitor.visitParamParam(self,visitor)
+        visitor.visitParamParam(self)
 
 
 # -----------------------------------------------
@@ -278,14 +278,14 @@ class c_function_call(a_function_call):
         self.param_pass = param_pass
 
     def accept(self, visitor):
-        Visitor.visitFunctionCall(self,visitor)
+        visitor.visitFunctionCall(self)
 
 class c_function_call_empty(a_function_call):
     def __init__(self,id):
         self.id = id
 
     def accept(self, visitor):
-        Visitor.visitFunctionCallEmpty(self,visitor)
+        visitor.visitFunctionCallEmpty(self)
 
 
 # -----------------------------------------------
@@ -302,14 +302,14 @@ class c_function_call_exp(a_function_call_exp):
         self.param_pass = param_pass
 
     def accept(self, visitor):
-        Visitor.visitFunctionCallExp(self,visitor)
+        visitor.visitFunctionCallExp(self)
 
 class c_function_call_exp_empty(a_function_call_exp):
     def __init__(self, id):
         self.id = id
 
     def accept(self, visitor):
-        Visitor.visitFunctionCallEmpty(self,visitor)
+        visitor.visitFunctionCallEmpty(self)
 
 
 # -----------------------------------------------
@@ -325,7 +325,7 @@ class c_param_pass(a_param_pass):
         self.expression = expression
 
     def accept(self, visitor):
-        Visitor.visitParamPass(self,visitor)
+        visitor.visitParamPass(self)
 
 
 class c_param_pass__param_pass(a_param_pass):
@@ -334,7 +334,7 @@ class c_param_pass__param_pass(a_param_pass):
         self.param_pass = param_pass
 
     def accept(self, visitor):
-        Visitor.visitParamPassParamPass(self,visitor)
+        visitor.visitParamPassParamPass(self)
 
 
 # -----------------------------------------------
@@ -350,7 +350,7 @@ class c_cmd__if_statement(a_cmd):
         self.if_statement = if_statement
 
     def accept(self, visitor):
-        Visitor.visitCmdIfStatement(self,visitor)
+        visitor.visitCmdIfStatement(self)
 
 
 class c_cmd__repeat_statement(a_cmd):
@@ -358,7 +358,7 @@ class c_cmd__repeat_statement(a_cmd):
         self.repeat_statement = repeat_statement
 
     def accept(self, visitor):
-        Visitor.visitCmdRepeatStatement(self,visitor)
+        visitor.visitCmdRepeatStatement(self)
 
 
 class c_cmd__puts(a_cmd):
@@ -366,7 +366,7 @@ class c_cmd__puts(a_cmd):
         self.puts = puts
 
     def accept(self, visitor):
-        Visitor.visitCmdPuts(self,visitor)
+        visitor.visitCmdPuts(self)
 
 
 class c_cmd__return(a_cmd):
@@ -374,7 +374,7 @@ class c_cmd__return(a_cmd):
         self.retorno = retorno
 
     def accept(self, visitor):
-        Visitor.visitCmdReturn(self,visitor)
+        visitor.visitCmdReturn(self)
 
 
 class c_cmd__assign(a_cmd):
@@ -382,7 +382,7 @@ class c_cmd__assign(a_cmd):
         self.assign = assign
 
     def accept(self, visitor):
-        Visitor.visitCmdAssign(self,visitor)
+        visitor.visitCmdAssign(self)
 
 
 class c_cmd__function_call(a_cmd):
@@ -390,7 +390,7 @@ class c_cmd__function_call(a_cmd):
         self.function_call = function_call
 
     def accept(self, visitor):
-        Visitor.visitCmdFunctionCall(self,visitor)
+        visitor.visitCmdFunctionCall(self)
 
 
 # -----------------------------------------------
@@ -406,7 +406,7 @@ class c_cmd_loop(a_cmd_loop):
         self.cmd = cmd
 
     def accept(self, visitor):
-        Visitor.visitCmdLoop(self,visitor)
+        visitor.visitCmdLoop(self)
 
 
 class c_cmd_loop__loop(a_cmd_loop):
@@ -415,7 +415,7 @@ class c_cmd_loop__loop(a_cmd_loop):
         self.cmd_loop = cmd_loop
 
     def accept(self, visitor):
-        Visitor.visitCmdLoopLoop(self,visitor)
+        visitor.visitCmdLoopLoop(self)
 
 
 # -----------------------------------------------
@@ -431,7 +431,7 @@ class c_puts(a_puts):
         self.string = string
 
     def accept(self, visitor):
-        Visitor.visitCmdPuts(self,visitor)
+        visitor.visitCmdPuts(self)
 
 
 # -----------------------------------------------
@@ -449,7 +449,7 @@ class c_if_statement(a_if_statement):
         self.if_statement_loop = if_statement_loop
 
     def accept(self, visitor):
-        Visitor.visitIfStatement(self,visitor)
+        visitor.visitIfStatement(self)
 
 
 # -----------------------------------------------
@@ -467,7 +467,7 @@ class c_if_statement_loop__elsif(a_if_statement_loop):
         self.if_statement_loop = if_statement_loop
 
     def accept(self, visitor):
-        Visitor.visitIfStatementLoopElsif(self,visitor)
+        visitor.visitIfStatementLoopElsif(self)
 
 
 class c_if_statement_loop__else(a_if_statement_loop):
@@ -475,7 +475,7 @@ class c_if_statement_loop__else(a_if_statement_loop):
         self.cmd_loop = cmd_loop
 
     def accept(self, visitor):
-        Visitor.visitIfStatementLoopElse(self,visitor)
+        visitor.visitIfStatementLoopElse(self)
 
 
 class c_if_statement_loop__end(a_if_statement_loop):
@@ -483,7 +483,7 @@ class c_if_statement_loop__end(a_if_statement_loop):
         pass
 
     def accept(self, visitor):
-        Visitor.visitIfStatementLoopEnd(self,visitor)
+        visitor.visitIfStatementLoopEnd(self)
 
 
 # -----------------------------------------------
@@ -499,7 +499,7 @@ class c_repeat_statement__loop(a_repeat_statement):
         self.loop_statement = loop_statement
 
     def accept(self, visitor):
-        Visitor.visitRepeatStatementLoop(self,visitor)
+        visitor.visitRepeatStatementLoop(self)
 
 
 class c_repeat_statement__for(a_repeat_statement):
@@ -507,7 +507,7 @@ class c_repeat_statement__for(a_repeat_statement):
         self.for_statement = for_statement
 
     def accept(self, visitor):
-        Visitor.visitRepeatStatementFor(self,visitor)
+        visitor.visitRepeatStatementFor(self)
 
 
 class c_repeat_statement__while(a_repeat_statement):
@@ -515,7 +515,7 @@ class c_repeat_statement__while(a_repeat_statement):
         self.while_statement = while_statement
 
     def accept(self, visitor):
-        Visitor.visitWhileStatement(self,visitor)
+        visitor.visitWhileStatement(self)
 
 
 # -----------------------------------------------
@@ -531,7 +531,7 @@ class c_loop_statement(a_loop_statement):
         self.loop_statement = loop_statement
 
     def accept(self, visitor):
-        Visitor.visitLoopStatement(self,visitor)
+        visitor.visitLoopStatement(self)
 
 
 # -----------------------------------------------
@@ -548,7 +548,7 @@ class c_while_statement(a_while_statement):
         self.cmd_loop = cmd_loop
 
     def accept(self, visitor):
-        Visitor.visitWhileStatement(self,visitor)
+        visitor.visitWhileStatement(self)
 
 
 # -----------------------------------------------
@@ -566,7 +566,7 @@ class c_for_statement(a_for_statement):
         self.cmd_loop = cmd_loop
 
     def accept(self, visitor):
-        Visitor.visitForStatement(self,visitor)
+        visitor.visitForStatement(self)
 
 # -----------------------------------------------
 
@@ -582,7 +582,7 @@ class c_range(a_range):
         self.id2 = id2
 
     def accept(self, visitor):
-        Visitor.visitRange(self,visitor)
+        visitor.visitRange(self)
 
 
 # -----------------------------------------------
@@ -599,7 +599,7 @@ class c_assign(a_assign):
         self.op_arithmetic = op_arithmetic
 
     def accept(self, visitor):
-        Visitor.visitAssign(self,visitor)
+        visitor.visitAssign(self)
 
 
 # -----------------------------------------------
@@ -615,7 +615,7 @@ class c_expression(a_expression):
         self.op_exp = op_exp
 
     def accept(self, visitor):
-        Visitor.visitExpression(self,visitor)
+        visitor.visitExpression(self)
 
 
 class c_expression__and(a_expression):
@@ -624,7 +624,7 @@ class c_expression__and(a_expression):
         self.or_exp = or_exp
 
     def accept(self, visitor):
-        Visitor.visitExpressionAnd(self,visitor)
+        visitor.visitExpressionAnd(self)
 
 
 # -----------------------------------------------
@@ -640,7 +640,7 @@ class c_or_exp(a_or_exp):
         self.comp_exp = comp_exp
 
     def accept(self, visitor):
-        Visitor.visitOrExp(self,visitor)
+        visitor.visitOrExp(self)
 
 
 class c_or_exp__or(a_or_exp):
@@ -649,7 +649,7 @@ class c_or_exp__or(a_or_exp):
         self.comp_exp = comp_exp
 
     def accept(self, visitor):
-        Visitor.visitOrExpOr(self,visitor)
+        visitor.visitOrExpOr(self)
 
 
 # -----------------------------------------------
@@ -665,7 +665,7 @@ class c_comp_exp(a_comp_exp):
         self.op_arithmetic = op_arithmetic
 
     def accept(self, visitor):
-        Visitor.visitCompExp(self,visitor)
+        visitor.visitCompExp(self)
 
 
 class c_comp_exp__op_arithmetic(a_comp_exp):
@@ -675,7 +675,7 @@ class c_comp_exp__op_arithmetic(a_comp_exp):
         self.comp_exp = comp_exp
 
     def accept(self, visitor):
-        Visitor.visitCompExpOpArithmetic(self,visitor)
+        visitor.visitCompExpOpArithmetic(self)
 
 
 # -----------------------------------------------
@@ -691,14 +691,14 @@ class c_comp_op__GT(a_comp_op):
         pass
 
     def accept(self, visitor):
-        Visitor.visitCompOpGT(self,visitor)
+        visitor.visitCompOpGT(self)
 
 class c_comp_op__GTE(a_comp_op):
     def __init__(self):
         pass
 
     def accept(self, visitor):
-        Visitor.visitCompOpGTE(self,visitor)
+        visitor.visitCompOpGTE(self)
 
 
 class c_comp_op__LT(a_comp_op):
@@ -706,7 +706,7 @@ class c_comp_op__LT(a_comp_op):
         pass
 
     def accept(self, visitor):
-        Visitor.visitCompOpLT(self,visitor)
+        visitor.visitCompOpLT(self)
 
 
 class c_comp_op__LTE(a_comp_op):
@@ -714,7 +714,7 @@ class c_comp_op__LTE(a_comp_op):
         pass
 
     def accept(self, visitor):
-        Visitor.visitCompOpLTE(self,visitor)
+        visitor.visitCompOpLTE(self)
 
 
 class c_comp_op__NE(a_comp_op):
@@ -722,7 +722,7 @@ class c_comp_op__NE(a_comp_op):
         pass
 
     def accept(self, visitor):
-        Visitor.visitCompOpNE(self,visitor)
+        visitor.visitCompOpNE(self)
 
 
 class c_comp_op__E(a_comp_op):
@@ -730,7 +730,7 @@ class c_comp_op__E(a_comp_op):
         pass
 
     def accept(self, visitor):
-        Visitor.visitCompOpE(self,visitor)
+        visitor.visitCompOpE(self)
 
 
 # -----------------------------------------------
@@ -747,7 +747,7 @@ class c_op_arithmetic__PLUS(a_op_arithmetic):
         self.factor = factor
 
     def accept(self, visitor):
-        Visitor.visitOpArithmeticPLUS(self,visitor)
+        visitor.visitOpArithmeticPLUS(self)
 
 
 class c_op_arithmetic__MINUS(a_op_arithmetic):
@@ -756,7 +756,7 @@ class c_op_arithmetic__MINUS(a_op_arithmetic):
         self.factor = factor
 
     def accept(self, visitor):
-        Visitor.visitOpArithmeticMINUS(self,visitor)
+        visitor.visitOpArithmeticMINUS(self)
 
 
 class c_op_arithmetic__factor(a_op_arithmetic):
@@ -764,7 +764,7 @@ class c_op_arithmetic__factor(a_op_arithmetic):
         self.factor = factor
 
     def accept(self, visitor):
-        Visitor.visitOpArithmeticFactor(self,visitor)
+        visitor.visitOpArithmeticFactor(self)
 
 
 # -----------------------------------------------
@@ -781,7 +781,7 @@ class c_factor__TIMES(a_factor):
         self.power = power
 
     def accept(self, visitor):
-        Visitor.visitFactorTIMES(self,visitor)
+        visitor.visitFactorTIMES(self)
 
 
 class c_factor__DIVIDE(a_factor):
@@ -790,7 +790,7 @@ class c_factor__DIVIDE(a_factor):
         self.power = power
 
     def accept(self, visitor):
-        Visitor.visitFactorDIVIDE(self,visitor)
+        visitor.visitFactorDIVIDE(self)
 
 
 class c_factor__power(a_factor):
@@ -798,7 +798,7 @@ class c_factor__power(a_factor):
         self.power = power
 
     def accept(self, visitor):
-        Visitor.visitFactorPower(self,visitor)
+        visitor.visitFactorPower(self)
 
 
 # -----------------------------------------------
@@ -815,7 +815,7 @@ class c_power(a_power):
         self.unary = unary
 
     def accept(self, visitor):
-        Visitor.visitPower(self,visitor)
+        visitor.visitPower(self)
 
 
 class c_power__unary(a_power):
@@ -823,7 +823,7 @@ class c_power__unary(a_power):
         self.unary = unary
 
     def accept(self, visitor):
-        Visitor.visitPowerUnary(self,visitor)
+        visitor.visitPowerUnary(self)
 
 
 # -----------------------------------------------
@@ -839,7 +839,7 @@ class c_unary__PLUS(a_unary):
         self.term = term
 
     def accept(self, visitor):
-        Visitor.visitUnaryPLUS(self,visitor)
+        visitor.visitUnaryPLUS(self)
 
 
 class c_unary__MINUS(a_unary):
@@ -847,7 +847,7 @@ class c_unary__MINUS(a_unary):
         self.term = term
 
     def accept(self, visitor):
-        Visitor.visitUnaryMINUS(self,visitor)
+        visitor.visitUnaryMINUS(self)
 
 
 class c_unary(a_unary):
@@ -855,7 +855,7 @@ class c_unary(a_unary):
         self.term = term
 
     def accept(self, visitor):
-        Visitor.visitUnary(self,visitor)
+        visitor.visitUnary(self)
 
 
 # -----------------------------------------------
@@ -871,7 +871,7 @@ class c_term__ID(a_term):
         self.id = id
 
     def accept(self, visitor):
-        Visitor.visitTermID(self,visitor)
+        visitor.visitTermID(self)
 
 
 class c_term__function_call(a_term):
@@ -879,7 +879,7 @@ class c_term__function_call(a_term):
         self.function_call_exp = function_call_exp
 
     def accept(self, visitor):
-        Visitor.visitTermFunctionCall(self,visitor)
+        visitor.visitTermFunctionCall(self)
 
 
 class c_term__expression(a_term):
@@ -887,14 +887,14 @@ class c_term__expression(a_term):
         self.expression = expression
 
     def accept(self, visitor):
-        Visitor.visitTermExpression(self,visitor)
+        visitor.visitTermExpression(self)
 
 class c_term__literal(a_term):
     def __init__(self, literal):
         self.literal = literal
 
     def accept(self, visitor):
-        Visitor.visitTermLiteral(self,visitor)
+        visitor.visitTermLiteral(self)
 
 # -----------------------------------------------
 class a_literal(metaclass=ABCMeta):
@@ -908,7 +908,7 @@ class c_literal_char(a_literal):
         self.value = value
 
     def accept(self, visitor):
-        Visitor.visitLiteralChar(self,visitor)
+        visitor.visitLiteralChar(self)
 
 
 class c_literal_int(a_literal):
@@ -916,35 +916,35 @@ class c_literal_int(a_literal):
         self.value = value
 
     def accept(self, visitor):
-        Visitor.visitLiteralInt(self,visitor)
+        visitor.visitLiteralInt(self)
 
 class c_literal_float(a_literal):
     def __init__(self,value):
         self.value = value
 
     def accept(self, visitor):
-        Visitor.visitLiteralFloat(self,visitor)
+        visitor.visitLiteralFloat(self)
 
 class c_literal_str(a_literal):
     def __init__(self,value):
         self.value = value
 
     def accept(self, visitor):
-        Visitor.visitLiteralStr(self,visitor)
+        visitor.visitLiteralStr(self)
 
 class c_literal_true(a_literal):
     def __init__(self,value):
         self.value = value
 
     def accept(self, visitor):
-        Visitor.visitLiteralTrue(self,visitor)
+        visitor.visitLiteralTrue(self)
 
 class c_literal_false(a_literal):
     def __init__(self,value):
         self.value = value
 
     def accept(self, visitor):
-        Visitor.visitLiteralFalse(self,visitor)
+        visitor.visitLiteralFalse(self)
 
 # -----------------------------------------------
 
@@ -955,14 +955,13 @@ class a_array(metaclass=ABCMeta):
 
 
 class c_array(a_array):
-    def __init__(self,type1,id,range,type2):
-        self.type1 = type1
+    def __init__(self,id,range,type):
         self.id = id
         self.range = range
-        self.type2 = type2
+        self.type = type
 
     def accept(self, visitor):
-        Visitor.visitArray(self,visitor)
+        visitor.visitArray(self)
 
 
 # -----------------------------------------------
@@ -978,4 +977,4 @@ class c_return(a_return):
         self.expression = expression
 
     def accept(self, visitor):
-        Visitor.visitReturn(self,visitor)
+        visitor.visitReturn(self)
