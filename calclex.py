@@ -44,6 +44,7 @@ palRESERVADA =  {
     'return' : 'RETURN',
     'String' : 'STRING',
     'then' : 'THEN',
+    'type' : 'TYPE',
     'True' : 'TRUE',
     'while' : 'WHILE'
   }

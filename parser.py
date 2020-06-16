@@ -356,7 +356,7 @@ def p_literal(p):
 
 
 def p_array(p):
-    ''' array : TYPE ID IS ARRAY LPAREN range RPAREN OF type SEMICOLON
+    ''' array : TYPE ID IS ARRAY LPAREN range RPAREN OF type
     '''
     p[0] = ga.c_array(p[2],p[6],p[9])
 

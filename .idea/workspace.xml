@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="835da700-cf81-4ff5-8d52-ab80f4387643" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SemanticVisitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/SemanticVisitor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gramAbstrata.py" beforeDir="false" afterPath="$PROJECT_DIR$/gramAbstrata.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calclex.py" beforeDir="false" afterPath="$PROJECT_DIR$/calclex.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/visitor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/progExemplo.adb" beforeDir="false" afterPath="$PROJECT_DIR$/progExemplo.adb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +99,8 @@
       <workItem from="1592092806936" duration="4453000" />
       <workItem from="1592158218523" duration="12426000" />
       <workItem from="1592265651549" duration="2091000" />
-      <workItem from="1592310086035" duration="3786000" />
+      <workItem from="1592310086035" duration="3855000" />
+      <workItem from="1592323282762" duration="312000" />
     </task>
     <servers />
   </component>
