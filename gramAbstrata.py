@@ -174,40 +174,40 @@ class a_type(metaclass=ABCMeta):
 
 
 class c_type__bool(a_type):
-    def __init__(self):
-        pass
+    def __init__(self,value):
+        self.value = value
 
     def accept(self, visitor):
         visitor.visitTypeBool(self)
 
 
 class c_type__char(a_type):
-    def __init__(self):
-        pass
+    def __init__(self,value):
+        self.value = value
 
     def accept(self, visitor):
         visitor.visitTypeChar(self)
 
 
 class c_type__float(a_type):
-    def __init__(self):
-        pass
+    def __init__(self,value):
+        self.value = value
 
     def accept(self, visitor):
         visitor.visitTypeFloat(self)
 
 
 class c_type__integer(a_type):
-    def __init__(self):
-        pass
+    def __init__(self,value):
+        self.value = value
 
     def accept(self, visitor):
         visitor.visitTypeInteger(self)
 
 
 class c_type__string(a_type):
-    def __init__(self):
-        pass
+    def __init__(self,value):
+        self.value = value
 
     def accept(self, visitor):
         visitor.visitTypeString(self)
@@ -255,7 +255,7 @@ class c_param(a_param):
 
 
 class c_param__param(a_param):
-    def __init__(self, id, param, type):
+    def __init__(self, id, type, param):
         self.param = param
         self.id = id
         self.type = type

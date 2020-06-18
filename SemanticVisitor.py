@@ -103,23 +103,28 @@ class SemanticVisitor(AbstractVisitor):
 
 
     def visitTypeBoolean(self, type): # como fazer?
-        type.accept(self)
+        type.value = st.BOOL
+        return type
 
 
     def visitTypeCharacter(self, type):
-        type.accept(self)
+        type.value = st.CHAR
+        return type
 
 
     def visitTypeFloat(self, type):
-        type.accept(self)
+        type.value = st.FLOAT
+        return type
 
 
     def visitTypeInteger(self, type):
-        type.accept(self)
+        type.value = st.INT
+        return type
 
 
     def visitTypeString(self, type):
-        type.accept(self)
+        type.value = st.STR
+        return type
 
 
     def visitDeclParam(self,decl_param):
@@ -130,10 +135,10 @@ class SemanticVisitor(AbstractVisitor):
 
 
     def visitParam(self,param):
-        return [param.id,param.type]
+        return [param.id,param.type.value]
 
     def visitParamParam(self,param):
-        return [param.id, param.type] + param.param.accept(type)
+        return [param.id, param.type.value] + param.param.accept(self)
 
 
     def visitFunctionCall(self,function_call):

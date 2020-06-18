@@ -2,6 +2,7 @@ import ply.yacc as yacc
 from calclex import tokens
 import gramAbstrata as ga
 from visitor import Visitor
+from SemanticVisitor import SemanticVisitor
 
 def p_program(p):
     '''program : subprogram program
@@ -71,15 +72,15 @@ def p_type(p):
              | STRING
     '''
     if p[1] == 'Boolean':
-        p[0] = ga.c_type__bool()
+        p[0] = ga.c_type__bool(p[1])
     elif p[1] == 'Character':
-        p[0] = ga.c_type__char()
+        p[0] = ga.c_type__char(p[1])
     elif p[1] == 'Float':
-        p[0] = ga.c_type__float()
+        p[0] = ga.c_type__float(p[1])
     elif p[1] == 'Integer':
-        p[0] = ga.c_type__integer()
+        p[0] = ga.c_type__integer(p[1])
     else:
-        p[0] = ga.c_type__string()
+        p[0] = ga.c_type__string(p[1])
 
 
 
@@ -375,7 +376,7 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 result = parser.parse(debug=True)
-visitor = Visitor()
-result.accept(visitor)
-# semanticVisitor = SemanticVisitor()
-# result.accept(semanticVisitor)
+#visitor = Visitor()
+#result.accept(visitor)
+semanticVisitor = SemanticVisitor()
+result.accept(semanticVisitor)
